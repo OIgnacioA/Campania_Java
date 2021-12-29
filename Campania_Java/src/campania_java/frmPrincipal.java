@@ -22,7 +22,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
-        setTitle("Generar Bases para campaña por mail");
+        setTitle("Generar Bases para campaña por mail V1");
         
         Generar.setEnabled(false);
         
