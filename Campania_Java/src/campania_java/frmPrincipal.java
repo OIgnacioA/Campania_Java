@@ -2,13 +2,20 @@ package campania_java;
 
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class frmPrincipal extends javax.swing.JFrame {
-
+    
+    private String txtOrigen = "";
+    private String txtDestino = "";
+    private int cantidad = 0;
     private String Dir = ""; 
     private String Path = "";
+    private String ImpuestoV = "";
+    private String NombreOrigen = ""; 
+    
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
   
     public frmPrincipal() {
@@ -16,6 +23,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Generar Bases para campaña por mail");
+        
+        Generar.setEnabled(false);
         
         
     }
@@ -48,6 +57,8 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         Impuesto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Impuesto Automotor", "Impuesto a las Embarcaciones", "Impuesto Urbano Edificado", "Impuesto Urbano Baldío", "Impuesto Rural", "Impuesto Complementario" }));
 
+        txtCantidad.setText("5");
+
         jLabel1.setText("Cant. Suscripciones ");
 
         jLabel2.setText("URL");
@@ -60,6 +71,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
 
         Generar.setText("Generar");
+        Generar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GenerarActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Subscripciones Leidas");
 
@@ -185,25 +201,87 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void OrigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrigenActionPerformed
        
         //Dir = javax.swing.filechooser.FileSystemView.getFileSystemView().getHomeDirectory().toString();
-        Dir = "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de prueba\\sehent";
+        Dir = "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";
         File archivoSeleccionado;
         
         
         JFileChooser seleccionarArchivo = new JFileChooser();
         seleccionarArchivo.setFileFilter(filter);
-        
         seleccionarArchivo.setCurrentDirectory(new File(Dir + "\\"));
-        
         seleccionarArchivo.showOpenDialog(null);
         archivoSeleccionado = seleccionarArchivo.getSelectedFile();
         Path = archivoSeleccionado.getAbsoluteFile().toString();
         
-        System.out.print ("-------------->"+Path);
+        txtOrigen = Path; 
         
+        if(txtOrigen != ""){ 
+        txtArchivoOrigen.setText(txtOrigen);
+        Generar.setEnabled(true);
+        }
     }//GEN-LAST:event_OrigenActionPerformed
 
+    private void GenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerarActionPerformed
+        boolean seguir = false;
+      
+            try
+            {
+                int cantidad = Integer.parseInt(this.txtCantidad.getText());
+                seguir = true;
+            }
+            catch (Exception e) {
+                
+             }
+
+            if (seguir){
+                
+                ImpuestoV = Impuesto.getSelectedItem().toString();
+                txtDestino = Path;
+                
+                MyReplace(Dir, txtDestino);
+  
+               //procesar();
+            }
+            else
+            {
+                txtCantidad.requestFocus();
+                JOptionPane.showMessageDialog(null, " Ingrese la cantidad de suscripciones a procesar. ", " Boleta Electrónica ", JOptionPane.ERROR_MESSAGE);    
+              
+            }
+    }//GEN-LAST:event_GenerarActionPerformed
+
     
-    
+    public String MyReplace(String Val1, String Val2){
+     
+        String resultado = "";
+        
+        int diff = ( Val2.length() - Val1.length());
+         
+            System.out.println ("diff-----> " + diff);
+            
+        for (int j = 0 ; j < diff ; j++){
+            Val1 += " "; 
+        }
+            
+            
+        for (int i= 11 ; i<Val2.length();i++) {
+        
+           if (Val2.charAt(i) != Val1.charAt(i)){
+               NombreOrigen += Val2.charAt(i);
+           }
+        }
+        
+       System.out.print("Dir-------------> " + Dir) ;
+       System.out.println("");
+       System.out.print("Original--------> " + txtDestino);
+       System.out.println("");
+      
+       
+        resultado = NombreOrigen.substring(1);
+       
+        System.out.print("Final----------> " + resultado);
+        
+       return resultado; 
+    }
     
     
   /* 
