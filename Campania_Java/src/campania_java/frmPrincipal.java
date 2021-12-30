@@ -1,5 +1,6 @@
 package campania_java;
 
+import java.awt.Color;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -247,6 +248,8 @@ public class frmPrincipal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, " Ingrese la cantidad de suscripciones a procesar. ", " Boleta Electrónica ", JOptionPane.ERROR_MESSAGE);    
               
             }
+            
+            this.getContentPane().setBackground(Color.orange);
     }//GEN-LAST:event_GenerarActionPerformed
 
     
