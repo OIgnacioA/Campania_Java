@@ -1,5 +1,6 @@
 package campania_java;
 
+import java.awt.Color;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -201,7 +202,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void OrigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrigenActionPerformed
        
         //Dir = javax.swing.filechooser.FileSystemView.getFileSystemView().getHomeDirectory().toString();
-        Dir = "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";
+        Dir = "C:\\Users\\nicol.cruz\\Desktop\\CarpetaDePrueba";
         File archivoSeleccionado;
         
         
@@ -247,6 +248,10 @@ public class frmPrincipal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, " Ingrese la cantidad de suscripciones a procesar. ", " Boleta Electrónica ", JOptionPane.ERROR_MESSAGE);    
               
             }
+        Color Color = null;
+            Generar.setBackground(new Color(115,225,100));
+            
+        this.getContentPane().setBackground(Color.red);
     }//GEN-LAST:event_GenerarActionPerformed
 
     
@@ -269,6 +274,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                NombreOrigen += Val2.charAt(i);
            }
         }
+
         
        System.out.print("Dir-------------> " + Dir) ;
        System.out.println("");
