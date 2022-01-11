@@ -1,14 +1,18 @@
 package campania_java;
 
 import java.awt.Color;
+import java.awt.List;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
-public class frmPrincipal extends javax.swing.JFrame {
+public class frmPrincipal extends javax.swing.JFrame { 
     
+
+    private String directorioOrigen = "";
+    private String directorioDestino = "";
     private String txtOrigen = "";
     private String txtDestino = "";
     private int cantidad = 0;
@@ -16,6 +20,15 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String Path = "";
     private String ImpuestoV = "";
     private String NombreOrigen = ""; 
+    private String FraccionImpuesto =  "";
+    
+    private String objeto = ""; 
+    private String nombreImpuesto = "";
+    private String impuestoLiquidar = "";
+    private String medioPago = "";
+    private String debitoCredito = ""; //ejemplo con contenid previo
+    
+    
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
   
@@ -24,10 +37,12 @@ public class frmPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Generar Bases para campaña por mail V1");
-        
+       
         Generar.setEnabled(false);
+        Origen.setEnabled(false);
         
-        
+        Dir = "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Origen";
+    
     }
 
     @SuppressWarnings("unchecked")
@@ -57,6 +72,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         Impuesto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Impuesto Automotor", "Impuesto a las Embarcaciones", "Impuesto Urbano Edificado", "Impuesto Urbano Baldío", "Impuesto Rural", "Impuesto Complementario" }));
+        Impuesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ImpuestoActionPerformed(evt);
+            }
+        });
 
         txtCantidad.setText("5");
 
@@ -201,14 +221,19 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void OrigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrigenActionPerformed
        
+        String DirOrigen ="";
         //Dir = javax.swing.filechooser.FileSystemView.getFileSystemView().getHomeDirectory().toString();
-        Dir = "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";
+        
+        //Dir = "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";
+          DirOrigen = Dir + "\\" + directorioOrigen;
+        
+          
         File archivoSeleccionado;
         
         
         JFileChooser seleccionarArchivo = new JFileChooser();
         seleccionarArchivo.setFileFilter(filter);
-        seleccionarArchivo.setCurrentDirectory(new File(Dir + "\\"));
+        seleccionarArchivo.setCurrentDirectory(new File(DirOrigen));
         seleccionarArchivo.showOpenDialog(null);
         archivoSeleccionado = seleccionarArchivo.getSelectedFile();
         Path = archivoSeleccionado.getAbsoluteFile().toString();
@@ -219,6 +244,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         txtArchivoOrigen.setText(txtOrigen);
         Generar.setEnabled(true);
         }
+
     }//GEN-LAST:event_OrigenActionPerformed
 
     private void GenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerarActionPerformed
@@ -252,7 +278,97 @@ public class frmPrincipal extends javax.swing.JFrame {
             this.getContentPane().setBackground(Color.orange);
     }//GEN-LAST:event_GenerarActionPerformed
 
+    private void ImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImpuestoActionPerformed
+
+            FraccionImpuesto = Impuesto.getSelectedItem().toString();
+
+            directorioOrigen = "";
+
+            directorioDestino = "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";
+
+            //List<String> cuotas = new List<String>();
+
+
+
+            switch (FraccionImpuesto)
+            {
+                case "Impuesto Automotor":
+                    {
+                        directorioOrigen += "Automotores\\";
+                        directorioDestino += "Automotores\\";
+
+                        System.out.println("Origen-------------> " + directorioOrigen) ;
+                        System.out.println("Destino-------------> " + directorioDestino) ;    
+                        
+                        impuestoLiquidar = "1";
+                        nombreImpuesto = "Automotor";
+                        txturl.setText ("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D1%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+
+
+                        break;
+                    }
+                case "Impuesto Embarcaciones":
+                    {
+                        directorioOrigen += "Embarcaciones\\";
+                        directorioDestino += "Embarcaciones\\";
+                        nombreImpuesto = "Embarcaciones";
+                        impuestoLiquidar = "3";
+                        txturl.setText ("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D3%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                        break;
+
+                    }
+                case "Impuesto Edificado":
+                    {
+                        directorioOrigen += "Edificado\\";
+                        directorioDestino += "Edificado\\";
+                        nombreImpuesto = "Edificado";
+                        impuestoLiquidar = "0";
+                        txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                        break;
+                    }
+                case "Impuesto Baldio":
+                    {
+                        directorioOrigen += "Baldio\\";
+                        directorioDestino += "Baldio\\";
+                        nombreImpuesto = "Baldio";
+                        impuestoLiquidar = "0";
+                        txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                        break;
+                    }
+                case "Impuesto Rural":
+                    {
+                        directorioOrigen += "Rural\\";
+                        directorioDestino += "Rural\\";
+                        impuestoLiquidar = "0";
+                        nombreImpuesto = "Rural";
+                        txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                        break;
+                    }
+                case "Impuesto Complementario":
+                    {
+                        directorioOrigen += "Complementario\\";
+                        directorioDestino += "Complementario\\";
+                        nombreImpuesto = "Complementario";
+                        impuestoLiquidar = "10";
+                        txturl.setText ("https://www.arba.gov.ar/aplicaciones/LiqPredet.asp?imp=10&Fame=NO&origen=WEB&op=IIC");
+                        break;
+                    }
+
+                default:
+                    {
+                       // cuotas = new List<string>() { "0" };
+                        break;
+                    }       
+                   
+    }//GEN-LAST:event_ImpuestoActionPerformed
+       
+            if(FraccionImpuesto != ""){
+            
+            Origen.setEnabled(true);
+            }
     
+    }  
+   
     public String MyReplace(String Val1, String Val2){
      
         String resultado = "";
@@ -273,20 +389,82 @@ public class frmPrincipal extends javax.swing.JFrame {
            }
         }
         
-       System.out.print("Dir-------------> " + Dir) ;
-       System.out.println("");
-       System.out.print("Original--------> " + txtDestino);
-       System.out.println("");
       
+   
        
         resultado = NombreOrigen.substring(1);
        
-        System.out.print("Final----------> " + resultado);
+        System.out.print("my Replace----------> " + resultado);
         
        return resultado; 
     }
     
-    
+    private void ArmarDatosMail() 
+        {
+
+            switch (debitoCredito) 
+            {
+                case "1":
+                    {
+                        medioPago = "Débito en Cuenta";
+                        break;
+                    }
+                case "D":
+                    {
+                        medioPago = "Débito en Cuenta";                        
+                        break;
+                    }
+                case "2":
+                    {
+                        medioPago = "Tarjeta de Crédito";                        
+                        break;
+                    }
+                case "0":
+                case "C":
+                    {
+                        medioPago = "<a href=\"" + txturl.getText() + objeto + "\">Ingresar</a>";
+                        
+                        /*
+                        if (this.Impuesto.SelectedIndex == 5)
+                        {
+                            //medioPago = "<a href=\"https://sso.arba.gov.ar/Login/login?service=http%3A%2F%2Fwww4.arba.gov.ar%2FLiqPredet%2Fsso%2FInicioLiquidacionIIC.do%3FFrame%3DNO%26origen%3DWEB%26imp%3D10%26cuit%3D\">Ingresar</a>";
+                            medioPago =  "<a href=\"https://www.arba.gov.ar/aplicaciones/LiqPredet.asp?imp=10&Fame=NO&origen=WEB&op=IIC\">Ingresar</a>";
+                        }
+                        else
+                        {
+                            medioPago = string.Format("<a href=\"http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D{0}%26opc%3DLIC%26Frame%3DSI%26oi%3D{1}\">Ingresar</a>", impuestoLiquidar, objeto);
+                        }      
+                        */
+                        break;
+                    }
+             /*   case "C":
+                    {
+                        if (this.Impuesto.SelectedIndex == 5)
+                        {
+                            medioPago = "<a href=\"https://sso.arba.gov.ar/Login/login?service=http%3A%2F%2Fwww4.arba.gov.ar%2FLiqPredet%2Fsso%2FInicioLiquidacionIIC.do%3FFrame%3DNO%26origen%3DWEB%26imp%3D10%26cuit%3D\">Ingresar</a>";
+                        }
+                        else
+                        {
+                            medioPago = string.Format("<a href=\"http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D{0}%26opc%3DLIC%26Frame%3DSI%26oinombreImpuesto%3D{1}\">Ingresar</a>", impuestoLiquidar, objeto);
+                        }
+                        break;
+                    }*/
+                default:
+                    {
+                        // medioPago = "ERROR";
+                        // break;
+
+                        /* Automotores entra acá por defaoult, el "txturl.text" de 
+                           automotores suma "+ {0}" que acá 
+                           va a tomar el valor de 'objeto' */
+
+
+
+                        medioPago = "<a href=\"" + txturl.getText() + objeto +"\">Ingresar</a>"; 
+                        break;
+                    }
+            }
+        }
   /* 
     public static void main(String args[]) {
       
