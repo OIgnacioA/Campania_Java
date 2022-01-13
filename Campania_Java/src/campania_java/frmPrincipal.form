@@ -59,7 +59,7 @@
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtCantidad1" min="-2" pref="72" max="-2" attributes="0"/>
+                                      <Component id="txtCantidadCorte" min="-2" pref="72" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="txtArchivoOrigen" alignment="1" min="-2" pref="620" max="-2" attributes="0"/>
                               </Group>
@@ -115,7 +115,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="txtCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtCantidad1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCantidadCorte" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -225,7 +225,7 @@
         <Property name="text" type="java.lang.String" value="Contar Cada"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtCantidad1">
+    <Component class="javax.swing.JTextField" name="txtCantidadCorte">
       <Properties>
         <Property name="text" type="java.lang.String" value="15000"/>
       </Properties>

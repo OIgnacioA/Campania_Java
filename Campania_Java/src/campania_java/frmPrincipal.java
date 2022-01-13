@@ -3,6 +3,14 @@ package campania_java;
 import java.awt.Color;
 import java.awt.List;
 import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -11,23 +19,45 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class frmPrincipal extends javax.swing.JFrame { 
     
 
-    private String directorioOrigen = "";
-    private String directorioDestino = "";
-    private String txtOrigen = "";
-    private String txtDestino = "";
+    private String directorioOrigen = ".";
+    private String directorioDestino = ".";
+    private String txtOrigen = ".";
+    private String txtDestino = ".";
     private int cantidad = 0;
-    private String Dir = ""; 
-    private String Path = "";
-    private String ImpuestoV = "";
-    private String NombreOrigen = ""; 
-    private String FraccionImpuesto =  "";
+    private String Dir = "."; 
+    private String Path = ".";
+    private String ImpuestoV = ".";
+    private String NombreOrigen = "."; 
+    private String FraccionImpuesto =  ".";
     
-    private String objeto = ""; 
-    private String nombreImpuesto = "";
-    private String impuestoLiquidar = "";
-    private String medioPago = "";
-    private String debitoCredito = ""; //ejemplo con contenid previo
-    
+    private String objeto = "."; 
+    private String nombreImpuesto = ".";
+    private String impuestoLiquidar = ".";
+    private String medioPago = ".";
+    private String debitoCredito = "."; //ejemplo con contenid previo
+    private String mailAux =".";
+    private String mail =".";
+    private String razonsocialAux =".";
+    private String cuitAux =".";
+    private String cuit =".";
+    private String razonsocial =".";
+    private String porcentaje = ".";
+    private String anio = ".";
+    private String cuota = ".";
+    private String cuotaNumero = ".";
+    private String fechaVencimiento = ".";
+    private String fechaVencimientoNumero = ".";
+    private String montoCuota = ".";
+    private String montoAnual = ".";
+    private String codigoElectronico = ".";
+    private String buenContribuyente = ".";
+    private String cuitFormateado = ".";
+    private String planta = ".";
+    private String plantaDescri = ".";
+    private String impuesto = ".";
+    private String fechaOpcion = ".";
+    private String datosObjeto = ".";
+
     
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
@@ -62,7 +92,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtCantidad1 = new javax.swing.JTextField();
+        txtCantidadCorte = new javax.swing.JTextField();
         ConCabecera = new javax.swing.JCheckBox();
         ConAnual = new javax.swing.JCheckBox();
         DiferenciarMails = new javax.swing.JCheckBox();
@@ -104,7 +134,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jLabel5.setText("Contar Cada");
 
-        txtCantidad1.setText("15000");
+        txtCantidadCorte.setText("15000");
 
         ConCabecera.setText("Con Cabecera");
 
@@ -151,7 +181,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jLabel5)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtCantidad1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtCantidadCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(txtArchivoOrigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,7 +220,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)
-                        .addComponent(txtCantidad1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCantidadCorte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)
                         .addComponent(jLabel6))
                     .addComponent(FechaOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -237,6 +267,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         seleccionarArchivo.showOpenDialog(null);
         archivoSeleccionado = seleccionarArchivo.getSelectedFile();
         Path = archivoSeleccionado.getAbsoluteFile().toString();
+         System.out.println ("path1-----> " + Path);
         
         txtOrigen = Path; 
         
@@ -276,8 +307,214 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
             
             this.getContentPane().setBackground(Color.orange);
+            
+            Procesar();
+   
     }//GEN-LAST:event_GenerarActionPerformed
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public void Procesar(){
+        
+        int cantidadMailIgual = 0;
+        int counter = 0; 
+        int distintos = 0; 
+        int contador = 0;        
+        int escritos = 0;
+        int cantidadCorte = Integer.parseInt(txtCantidadCorte.getText());
+        String line ;
+        String mailLinea = ".";
+        String datosTodosObjetos =".";
+        String ultimoMail = ".";
+        int cont=0;
+        BufferedReader file = null; 
+        FileWriter sw = null;
+        BufferedWriter buffer = null; 
+        
+        
+        String  Patth = directorioOrigen + "informe.txt"; 
+        String nombreArchivoGenerado = txtDestino + "-Parte-{1}.csv";
+        
+          /*ver: 
+        
+            StreamWriter SWinforme = new StreamWriter(Path);
+
+            SWinforme.Write("Se generearon los siguientes archivos:");
+            SWinforme.WriteLine();
+            SWinforme.Write(string.Format("Archivo ** {0} ** ", nombreArchivoGenerado));*/
+        
+     
+        
+        try{
+        file = new BufferedReader (new FileReader(txtOrigen));
+
+        while((line = file.readLine()) != null){
+        
+            
+            
+            
+            
+           /* while((line = file.readLine()) != null){
+
+
+                LeerLinea(line);
+
+                if(mailAux == "")
+                {
+                 mailAux = mail; 
+                 razonsocialAux = razonsocial;
+                 cuitAux = cuit;
+                }
+
+                ArmarDatosMail();
+
+            if ((mail != mailAux) || (razonsocial != razonsocialAux))
+            {
+
+
+                if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail))
+                {
+                    cantidadMailIgual++;
+                }
+                else
+                {
+                    cantidadMailIgual = 0;             
+                }                   
+                  if (cantidadMailIgual == 0)
+                {
+                    mailLinea = (mailAux + "|");             
+                }
+                else
+                {
+                    mailLinea = mailAux + (String.valueOf(cantidadMailIgual))+ "|";                  
+                }
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  /*
+                    ultimoMail = mailAux;
+
+                    mailLinea += String.format("'%s','|Cuit:','%s','|','%s','|','%s','|', '%s','|','%s','|','%s','|','%s','|', %s", razonsocialAux, formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, impuesto, datosTodosObjetos, porcentaje); 
+    
+
+                     if (escritos == cantidadCorte)
+                    {
+                      SWinforme.Write(string.Format("Con {0} suscripciones y {1} mails para enviar", contador, escritos));
+                      SWinforme.WriteLine();
+                      escritos = 0;
+                      contador = 0;
+                      cantidadArchivosGenerados++;
+                      sw.Flush();
+                      sw.Close();
+
+                      nombreArchivoGenerado = string.Format("{0}-Parte-{1}.csv", txtDestino, cantidadArchivosGenerados);//SISTE.BAL.C012021.CO - copia(20).txt-Parte-1.csv ¿?
+
+                      sw = new System.IO.StreamWriter(nombreArchivoGenerado);
+                      SWinforme.Write(string.Format("Archivo ** {0} **", nombreArchivoGenerado));                        
+                      this.EscribirCabecera(sw);
+                    }
+
+                        distintos++;//
+                        escritos++;//
+
+
+                        if (distintos <= this.barraGenerados.Maximum)
+                        {
+                            this.barraGenerados.Value = distintos;       //                 
+                        }
+
+                      */
+                  
+                  ///Prueba Ñ : Writer 
+                  
+                  /* FileWriter sw = null;
+                   PrintWriter pw= null;*/
+                  
+                  try {
+                     String archivo = directorioDestino + "prueba.txt";
+                     
+                    cont = cont +1;
+                     mailLinea = ("Esto es una prueba num: " + String.valueOf(cont));
+                       sw = new FileWriter(archivo,true);
+                       
+                       
+                   System.out.println ("archivo-----> " + archivo);
+                       
+                      buffer = new BufferedWriter(sw);
+                      
+                      buffer.write(mailLinea);
+                      buffer.newLine();
+                      
+                      buffer.flush();
+                      buffer.close();
+                                             
+                  } catch (FileNotFoundException e) {
+
+                         System.out.println("Archivo no encontrado. Cambia la ruta");
+                  }
+
+                        
+    
+            }
+           //}//if
+
+         //}//while
+
+        }catch(FileNotFoundException e){
+
+             System.out.println("Error: Fichero no encontrado");
+            System.out.println(e.getMessage());
+        }
+        catch(Exception e) {
+            System.out.println("Error de lectura del fichero");
+            System.out.println(e.getMessage());
+        }
+        finally {
+            try {
+                if(file != null)
+                    file.close();
+            }
+            catch (Exception e) {
+                System.out.println("Error al cerrar el fichero");
+                System.out.println(e.getMessage());
+            }
+        }
+    
+        
+ }
+
+    public void formatearCuit(String mail){
+                
+    }
+
+    public void LeerLinea(String linea){
+    
+ 
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     private void ImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImpuestoActionPerformed
 
             FraccionImpuesto = Impuesto.getSelectedItem().toString();
@@ -375,7 +612,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         
         int diff = ( Val2.length() - Val1.length());
          
-            System.out.println ("diff-----> " + diff);
+           
             
         for (int j = 0 ; j < diff ; j++){
             Val1 += " "; 
@@ -493,7 +730,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField txtArchivoOrigen;
     private javax.swing.JTextField txtCantidad;
-    private javax.swing.JTextField txtCantidad1;
+    private javax.swing.JTextField txtCantidadCorte;
     private javax.swing.JTextField txturl;
     // End of variables declaration//GEN-END:variables
 }
