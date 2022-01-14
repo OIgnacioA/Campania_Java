@@ -11,6 +11,16 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -18,45 +28,47 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class frmPrincipal extends javax.swing.JFrame { 
     
-
-    private String directorioOrigen = ".";
-    private String directorioDestino = ".";
-    private String txtOrigen = ".";
-    private String txtDestino = ".";
+    public static SimpleDateFormat sdf2 = new SimpleDateFormat("DD/MM/YYYY");
+    private String directorioOrigen = "";
+    private String directorioDestino = "";
+    private String txtOrigen = "";
+    private String txtDestino = "";
     private int cantidad = 0;
-    private String Dir = "."; 
-    private String Path = ".";
-    private String ImpuestoV = ".";
-    private String NombreOrigen = "."; 
-    private String FraccionImpuesto =  ".";
+    private String Dir = ""; 
+    private String Path = "";
+    private String ImpuestoV = "";
+    private String NombreOrigen = ""; 
+    private String FraccionImpuesto =  "";
     
-    private String objeto = "."; 
-    private String nombreImpuesto = ".";
-    private String impuestoLiquidar = ".";
-    private String medioPago = ".";
-    private String debitoCredito = "."; //ejemplo con contenid previo
-    private String mailAux =".";
-    private String mail =".";
-    private String razonsocialAux =".";
-    private String cuitAux =".";
-    private String cuit =".";
-    private String razonsocial =".";
-    private String porcentaje = ".";
-    private String anio = ".";
-    private String cuota = ".";
-    private String cuotaNumero = ".";
-    private String fechaVencimiento = ".";
-    private String fechaVencimientoNumero = ".";
-    private String montoCuota = ".";
-    private String montoAnual = ".";
-    private String codigoElectronico = ".";
-    private String buenContribuyente = ".";
-    private String cuitFormateado = ".";
-    private String planta = ".";
-    private String plantaDescri = ".";
-    private String impuesto = ".";
-    private String fechaOpcion = ".";
-    private String datosObjeto = ".";
+    private String objeto = ""; 
+    private String nombreImpuesto = "";
+    private String impuestoLiquidar = "";
+    private String medioPago = "";
+    private String debitoCredito = ""; //ejemplo con contenid previo
+    private String mailAux ="";
+    private String mail ="";
+    private String razonsocialAux = "";
+    private String cuitAux ="";
+    private String cuit ="";
+    private String razonsocial ="";
+    private String porcentaje = "";
+    private String anio = "";
+    private String cuota = "";
+    private String cuotaNumero = "";
+    private String fechaVencimiento = "";
+    private String fechaVencimientoNumero = "";
+    private String montoCuota = "";
+    private String montoAnual = "";
+    private String codigoElectronico = "";
+    private String buenContribuyente = "";
+    private String cuitFormateado = "";
+    private String planta = "";
+    private String plantaDescri = "";
+    private String impuesto = "";
+    private String fechaOpcion = "";
+    private String datosObjeto = "";
+    private String objetoFormateado = "";
+    private String Variable = "";
 
     
     
@@ -396,16 +408,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                     mailLinea = mailAux + (String.valueOf(cantidadMailIgual))+ "|";                  
                 }
                   
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
+
                   
                   /*
                     ultimoMail = mailAux;
@@ -455,7 +458,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                        
                        
                    System.out.println ("archivo-----> " + archivo);
-                       
+                   LeerLinea(line);    
                       buffer = new BufferedWriter(sw);
                       
                       buffer.write(mailLinea);
@@ -503,17 +506,149 @@ public class frmPrincipal extends javax.swing.JFrame {
                 
     }
 
-    public void LeerLinea(String linea){
-    
+    private void LeerLinea(String line)
+        {
+            
+            String fechaf = ""; 
+            switch (ImpuestoV)
+            {
+                case "Impuesto Automotor":
+                case "Impuesto Embarcaciones":
+                    {
+                        
+                        mail = ((line.substring(0, 255).toLowerCase()).replaceAll(" ","") );
+                        objeto = (line.substring(255,266).replaceAll(" ",""));                                                    
+                        objetoFormateado = objeto.toUpperCase();
+                        razonsocial = trimEnd(line.substring(266,326));   
+                        porcentaje = "";  
+                        fechaVencimientoNumero = (line.substring(334, 344).replaceAll(" ",""));                        
+                        fechaVencimiento = StringaDate(fechaVencimientoNumero); 
+                        montoCuota = line.substring(345, 362).replaceAll(" ","") ;
+                        montoAnual = line.substring(362, 378) ;
+                        codigoElectronico = line.substring(378, 392).replaceAll(" ","");
+                        debitoCredito = line.substring(392, 393).replaceAll(" ","");                           
+                        buenContribuyente = line.substring(393, 394).replaceAll(" ","");                           
+                        cuit = line.substring(394, 405).replaceAll(" ","");
+                           
+                            System.out.println ("mail----->"+ mail);
+                            System.out.println ("objeto----->"+ objeto);
+                            System.out.println ("razon social----->"+ razonsocial);
+                            System.out.println ("fecha de vencimiento----->"+ fechaVencimientoNumero);
+                            System.out.println ("monto cuota----->"+ montoCuota);
+                            System.out.println ("monto anual----->"+ montoAnual);
+                            System.out.println ("codigo electronico----->"+ codigoElectronico);
+                            System.out.println ("debito credito----->"+ debitoCredito);
+                            System.out.println ("buen contribuyente----->"+ buenContribuyente);
+                            System.out.println ("cuit----->"+ cuit);
  
+                        Variable = "Prueba  Automotor" ;
+
+
+                        porcentaje = "20";
+                        anio = "2020";
+                        cuota = "3";
+
+                        break;
+                    }
+                case "Impuesto Edificado":
+                case "Impuesto Baldio":
+                case "Impuesto Rural":
+                    {
+                       
+                        mail = ((line.substring(0, 255).toLowerCase()).replaceAll(" ","") );
+                        objeto = (line.substring(255,266).replaceAll(" ",""));                                                    
+                        objetoFormateado = formatearObjetoInmobiliario(objeto);
+                        razonsocial = trimEnd(line.substring(266,326));   
+                        porcentaje = "";  
+                        fechaVencimientoNumero = (line.substring(334, 344).replaceAll(" ",""));                        
+                        fechaVencimiento = StringaDate(fechaVencimientoNumero); 
+                        montoCuota = line.substring(345, 362).replaceAll(" ","") ;
+                        montoAnual = line.substring(362, 378) ;
+                       // codigoElectronico = line.substring(378, 392).replaceAll(" ","");
+                        debitoCredito = line.substring(392, 393).replaceAll(" ","");                           
+                        buenContribuyente = line.substring(393, 394).replaceAll(" ","");                           
+                        cuit = line.substring(394, 405).replaceAll(" ","");
+
+                        Variable = "Prueba Edificacion -baldio -rural ";    
+                                    
+                        break;
+                    }
+                case "Impuesto Complementario":
+                    {
+                        LeerLineaNuevo(line);
+                        break;
+                    }
+
+                default:
+
+                    break;
+            }
+
+           /* TextInfo myTI = CultureInfo.CurrentCulture.TextInfo;
+            razonsocial = myTI.ToTitleCase(razonsocial);*/
+
+        }
+    private void LeerLineaNuevo(String line){
+    
+         mail = ((line.substring(0, 120).toLowerCase()).replaceAll(" ","") );
+         objeto = (line.substring(120,131).replaceAll(" ",""));                                                    
+         objetoFormateado = formatearObjetoInmobiliario(objeto);
+         planta = (line.substring(131,132).replaceAll(" ",""));
+         razonsocial = trimEnd(line.substring(132,192));   
+         porcentaje = (line.substring(192,194).replaceAll(" ",""));
+         anio = (line.substring(194,198).replaceAll(" ",""));
+         cuota = (line.substring(198,200).replaceAll(" ",""));
+         fechaVencimientoNumero = (line.substring(200, 210).replaceAll(" ",""));                        
+         fechaVencimiento = StringaDate(fechaVencimientoNumero); 
+         montoCuota = line.substring(210, 227).replaceAll(" ","") ;
+         montoAnual = line.substring(227, 244) ;
+         debitoCredito = line.substring(244, 245).replaceAll(" ","");                                                  
+         cuit = line.substring(245, 256).replaceAll(" ","");
+    
+         Variable = "Prueba  Complementario ";
+
+           
+            if (ConAnual.isSelected())
+            {
+                cuota = cuota + " y Saldo Anual";
+            }
+
+            switch (planta)
+            {
+                case "B":
+                    {
+                        plantaDescri = "Baldio";
+                        break;
+                    }
+                case "E":
+                    {
+                        plantaDescri = "Edificado";
+                        break;
+                    }
+                case "R":
+                    {
+                        plantaDescri = "Rural";
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+
+            /*TextInfo myTI = CultureInfo.CurrentCulture.TextInfo;
+            razonsocial = myTI.ToTitleCase(razonsocial);*/
+
     }
     
-    
-    
-    
-    
-    
-    
+    private String formatearObjetoInmobiliario(String pObjeto)
+        {
+           
+            String partido = pObjeto.substring(0, 3).replaceAll(" ","") ;
+            String partida = pObjeto.substring(3, 9).replaceAll(" ","") ;
+            String digito = pObjeto.substring(9, 10).replaceAll(" ","") ;
+
+            return (partido + "-" + partida + "-" + digito );
+        }  
     
     private void ImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImpuestoActionPerformed
 
@@ -606,36 +741,6 @@ public class frmPrincipal extends javax.swing.JFrame {
     
     }  
    
-    public String MyReplace(String Val1, String Val2){
-     
-        String resultado = "";
-        
-        int diff = ( Val2.length() - Val1.length());
-         
-           
-            
-        for (int j = 0 ; j < diff ; j++){
-            Val1 += " "; 
-        }
-            
-            
-        for (int i= 11 ; i<Val2.length();i++) {
-        
-           if (Val2.charAt(i) != Val1.charAt(i)){
-               NombreOrigen += Val2.charAt(i);
-           }
-        }
-        
-      
-   
-       
-        resultado = NombreOrigen.substring(1);
-       
-        System.out.print("my Replace----------> " + resultado);
-        
-       return resultado; 
-    }
-    
     private void ArmarDatosMail() 
         {
 
@@ -702,6 +807,76 @@ public class frmPrincipal extends javax.swing.JFrame {
                     }
             }
         }
+    
+    
+    
+    /////////////////extras Ñ: 
+    
+    public static String trimEnd(String value) {
+        return value.replaceFirst("\\s+$", "");
+    }
+    
+    public static String StringaDate(String fechaCadena){
+        
+       int anio, mes, dia;
+     
+       String Fechas;
+       
+       dia =  Integer.valueOf(fechaCadena.substring(0,2));
+       mes =  Integer.valueOf(fechaCadena.substring(3,5));
+       anio =  Integer.valueOf(fechaCadena.substring(6,10));
+ 
+        ZoneId zoneId = ZoneId.of( "Europe/Madrid" );
+        ZonedDateTime zdt = ZonedDateTime.of(anio,  mes, dia,  0,  0,  0,  0,  zoneId );   
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate ( FormatStyle.FULL );
+        Locale locale = new Locale ( "es" , "ES" );
+        formatter = formatter.withLocale ( locale );
+
+        String output = zdt.format ( formatter );    
+
+        //("zdt: " + zdt + " with locale: " + locale + " | output: " + output);
+
+        Fechas = output;
+
+       System.out.println ("La fecha final ---->"+Fechas);
+      
+    return Fechas; 
+    
+    }
+    
+    public String MyReplace(String Val1, String Val2){
+     
+        String resultado = "";
+        
+        int diff = ( Val2.length() - Val1.length());
+         
+           
+            
+        for (int j = 0 ; j < diff ; j++){
+            Val1 += " "; 
+        }
+            
+            
+        for (int i= 11 ; i<Val2.length();i++) {
+        
+           if (Val2.charAt(i) != Val1.charAt(i)){
+               NombreOrigen += Val2.charAt(i);
+           }
+        }
+        
+      
+   
+       
+        resultado = NombreOrigen.substring(1);
+       
+        System.out.print("my Replace----------> " + resultado);
+        
+       return resultado; 
+    }
+    
+    
+    
+    
   /* 
     public static void main(String args[]) {
       

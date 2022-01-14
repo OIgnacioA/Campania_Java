@@ -1,1 +1,5 @@
 prueba en version 1
+
+- Verresultado de  "objetoformateado"en el .NET original
+- Código electronico" en impuesto rural (case4), está comentado en el original?
+- testear el recorte sobre "impuesto complementario"
