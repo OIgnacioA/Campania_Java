@@ -333,7 +333,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     
     
     
-    public void Procesar(){
+    public void Procesar() throws IOException{
         
         int cantidadMailIgual = 0;
         int counter = 0; 
@@ -348,22 +348,27 @@ public class frmPrincipal extends javax.swing.JFrame {
         int cont=0;
         BufferedReader file = null; 
         FileWriter sw = null;
+        FileWriter SWinforme = null;
         BufferedWriter buffer = null; 
-        
+        int cantidadArchivosGenerados = 1;
         
         String  Patth = directorioOrigen + "informe.txt"; 
         String nombreArchivoGenerado = txtDestino + "-Parte-{1}.csv";
         
-          /*ver: 
+         try{
+            SWinforme = new FileWriter(Path,true);
+                buffer = new BufferedWriter(SWinforme);
+                buffer.write("Se generearon los siguientes archivos:");
+                buffer.newLine();
+                buffer.flush();
+                buffer.close();             
+                buffer.write(String.format("Archivo ** %s ** ", nombreArchivoGenerado));
         
-            StreamWriter SWinforme = new StreamWriter(Path);
+        } catch (FileNotFoundException e) {
+                    System.out.println("Archivo no encontrado. Cambia la ruta de INFORME");
+        }
+         
 
-            SWinforme.Write("Se generearon los siguientes archivos:");
-            SWinforme.WriteLine();
-            SWinforme.Write(string.Format("Archivo ** {0} ** ", nombreArchivoGenerado));*/
-        
-     
-        
         try{
         file = new BufferedReader (new FileReader(txtOrigen));
 
@@ -401,43 +406,58 @@ public class frmPrincipal extends javax.swing.JFrame {
                 }                   
                   if (cantidadMailIgual == 0)
                 {
-                    mailLinea = (mailAux + "|");             
+                    mailLinea = String.format("%s"|,mailAux);             
                 }
                 else
                 {
-                    mailLinea = mailAux + (String.valueOf(cantidadMailIgual))+ "|";                  
-                }
+                    mailLinea = String.format("s% s%|", mailAux, String.valueOf(cantidadMailIgual);                  
+                }*/
                   
 
+                  //Esto es una prueba num
                   
-                  /*
                     ultimoMail = mailAux;
-
-                    mailLinea += String.format("'%s','|Cuit:','%s','|','%s','|','%s','|', '%s','|','%s','|','%s','|','%s','|', %s", razonsocialAux, formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, impuesto, datosTodosObjetos, porcentaje); 
+                    
+                    formatearCuit(cuitAux);
+                    mailLinea += String.format("%s|Cuit: %s | %s |  %s  | %s | %s | %s | %s | %s", razonsocialAux, cuitAux, fechaVencimiento, fechaOpcion, anio, cuota, impuesto, datosTodosObjetos, porcentaje); 
     
-
-                     if (escritos == cantidadCorte)
+                    System.out.println("--Mai Linea ---" + mailLinea);
+                    
+                   if (escritos == cantidadCorte)
                     {
-                      SWinforme.Write(string.Format("Con {0} suscripciones y {1} mails para enviar", contador, escritos));
-                      SWinforme.WriteLine();
+                     buffer = new BufferedWriter(SWinforme);
+                     buffer.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
+                      buffer.newLine();
+                      buffer.flush();
+                      buffer.close();
+                    
                       escritos = 0;
                       contador = 0;
                       cantidadArchivosGenerados++;
-                      sw.Flush();
-                      sw.Close();
+                    
+                      buffer = new BufferedWriter(sw);
+                      buffer.flush();
+                      buffer.close();
+                                        
+                    
 
-                      nombreArchivoGenerado = string.Format("{0}-Parte-{1}.csv", txtDestino, cantidadArchivosGenerados);//SISTE.BAL.C012021.CO - copia(20).txt-Parte-1.csv ¿?
+                      nombreArchivoGenerado = String.format(" %s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);
 
                       sw = new System.IO.StreamWriter(nombreArchivoGenerado);
-                      SWinforme.Write(string.Format("Archivo ** {0} **", nombreArchivoGenerado));                        
+                      
+                      
+                      
+                      
+                      
+                      SWinforme.Write(String.format("Archivo ** {0} **", nombreArchivoGenerado));                        
                       this.EscribirCabecera(sw);
-                    }
+                    }*/
 
                         distintos++;//
                         escritos++;//
 
 
-                        if (distintos <= this.barraGenerados.Maximum)
+                       /* if (distintos <= this.barraGenerados.Maximum)
                         {
                             this.barraGenerados.Value = distintos;       //                 
                         }
@@ -452,13 +472,10 @@ public class frmPrincipal extends javax.swing.JFrame {
                   try {
                      String archivo = directorioDestino + "prueba.txt";
                      
-                    cont = cont +1;
-                     mailLinea = ("Esto es una prueba num: " + String.valueOf(cont));
-                       sw = new FileWriter(archivo,true);
-                       
-                       
-                   System.out.println ("archivo-----> " + archivo);
-                   LeerLinea(line);    
+                   
+                      sw = new FileWriter(archivo,true);
+     
+                      LeerLinea(line);    
                       buffer = new BufferedWriter(sw);
                       
                       buffer.write(mailLinea);
@@ -504,12 +521,16 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     public void formatearCuit(String mail){
                 
+        
+        
+        
+        
     }
 
     private void LeerLinea(String line)
         {
             
-            String fechaf = ""; 
+           
             switch (ImpuestoV)
             {
                 case "Impuesto Automotor":
