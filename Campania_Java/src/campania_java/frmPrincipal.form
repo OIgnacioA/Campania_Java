@@ -43,7 +43,7 @@
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="Origen" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Origen_" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jLabel6" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -89,7 +89,7 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="Generar" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="Generar_" alignment="1" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -129,10 +129,10 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="txtArchivoOrigen" alignment="3" min="-2" pref="53" max="-2" attributes="0"/>
-                  <Component id="Origen" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="Origen_" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="Generar" min="-2" max="-2" attributes="0"/>
+              <Component id="Generar_" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
@@ -188,22 +188,22 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txturl">
     </Component>
-    <Component class="javax.swing.JButton" name="Origen">
+    <Component class="javax.swing.JButton" name="Origen_">
       <Properties>
         <Property name="text" type="java.lang.String" value="Origen"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OrigenActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Origen_ActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtArchivoOrigen">
     </Component>
-    <Component class="javax.swing.JButton" name="Generar">
+    <Component class="javax.swing.JButton" name="Generar_">
       <Properties>
         <Property name="text" type="java.lang.String" value="Generar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GenerarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Generar_ActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JProgressBar" name="barraLeidos">
