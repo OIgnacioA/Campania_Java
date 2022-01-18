@@ -36,8 +36,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String txtOrigen = "";
     private String txtDestino = "";
     private int cantidad = 0;
-    private String Dir = ""; 
-    private String Path = "";
+    private String Dir = "";  
     private String ImpuestoV = "";
     private String NombreOrigen = ""; 
     private String FraccionImpuesto =  "";
@@ -71,7 +70,8 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String datosObjeto = "";
     private String objetoFormateado = "";
     private String Variable = "";
-
+    private String nombreArchivoCsv = "";
+    //private String Path = "";
     
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
@@ -96,7 +96,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         Impuesto = new javax.swing.JComboBox<>();
-        txtCantidad = new javax.swing.JTextField();
+        cantidadAleer = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txturl = new javax.swing.JTextField();
@@ -124,7 +124,7 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
 
-        txtCantidad.setText("5");
+        cantidadAleer.setText("5");
 
         jLabel1.setText("Cant. Suscripciones ");
 
@@ -193,7 +193,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                                         .addGap(27, 27, 27)
                                         .addComponent(jLabel1)
                                         .addGap(18, 18, 18)
-                                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cantidadAleer, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jLabel5)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -234,7 +234,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cantidadAleer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)
                         .addComponent(txtCantidadCorte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)
@@ -281,11 +281,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         seleccionarArchivo.setCurrentDirectory(new File(DirOrigen));
         seleccionarArchivo.showOpenDialog(null);
         archivoSeleccionado = seleccionarArchivo.getSelectedFile();
-        Path = archivoSeleccionado.getAbsoluteFile().toString();
-         System.out.println ("path1-----> " + Path);
-        
-        txtOrigen = Path; 
-        
+        txtOrigen = archivoSeleccionado.getAbsoluteFile().toString();
+  
+         
         if(txtOrigen != ""){ 
         txtArchivoOrigen.setText(txtOrigen);
         Generar_.setEnabled(true);
@@ -298,88 +296,110 @@ public class frmPrincipal extends javax.swing.JFrame {
       
             try
             {
-                int cantidad = Integer.parseInt(this.txtCantidad.getText());
+                int cantidad = Integer.parseInt(this.cantidadAleer.getText());
                 seguir = true;
             }
             catch (Exception e) {
-                System.out.println ("que lo pario");
+                System.out.println ("No está especificado 'Cantidad' ");
             }
 
             if (seguir){
                 
                 ImpuestoV = Impuesto.getSelectedItem().toString();
-                txtDestino = Path;
-                
-                MyReplace(Dir, txtDestino);
-                
-        
+                 
+                txtDestino = MyReplace(DirOrigen, txtOrigen);
+
                 Procesar();
 
             }else {
-                txtCantidad.requestFocus();
+                cantidadAleer.requestFocus();
                 JOptionPane.showMessageDialog(null, " Ingrese la cantidad de suscripciones a procesar. ", " Boleta Electrónica ", JOptionPane.ERROR_MESSAGE);  
             }
             
             this.getContentPane().setBackground(Color.orange);
             
-
     }//GEN-LAST:event_Generar_ActionPerformed
 
     
-    
-    
-    
-    
-    
-    
-    
-    
-    public void Procesar(){
+
+    public void Procesar() {
         
         int cantidadMailIgual = 0;
         int counter = 0; 
+        int conta = 0; 
+        int valor1 = 0;
         int distintos = 0; 
         int contador = 0;        
         int escritos = 0;
         int cantidadCorte = Integer.parseInt(txtCantidadCorte.getText());
-        String line ;
+        String line = "" ;
         String mailLinea = ".";
         String datosTodosObjetos =".";
         String ultimoMail = ".";
         int cont=0;
-        BufferedReader file = null; 
-        FileWriter sw = null;
-        FileWriter SWinforme = null;
-        BufferedWriter buffer = null; 
-        int cantidadArchivosGenerados = 1;
         
+        BufferedReader file = null; 
+        
+        FileWriter SW = null; 
+        BufferedWriter CsvSW = null;
+        
+        FileWriter SWinforme = null;
+        BufferedWriter br = null; 
+        
+        
+        
+        int cantidadArchivosGenerados = 1;
+       
+        
+         try {
+         Date fecha1 = FechaOpcion.getDate();
+         DateFormat f=new SimpleDateFormat("dd-MM-yyyy");
+         String fecha2 =f.format(fecha1);
+        
+              fechaOpcion = StringaDate(fecha2);
+         
+         } catch (Exception e) {}
+         
+         
+         
         String  Patth = directorioOrigen + "informe.txt"; 
-        String nombreArchivoGenerado = txtDestino + "-Parte-{1}.csv";
+        String nombreArchivoGenerado = String.format ("%s -Parte- %s.csv", txtDestino, cantidadArchivosGenerados);
+        
+        String nombreArchivoCsv = String.format("%s-Archivo-%s.csv",directorioDestino, txtDestino);
+                  
+        System.out.println ("archivo destino------------->"+nombreArchivoCsv);
+        try{
+            SW = new FileWriter(nombreArchivoCsv,true);
+            CsvSW = new BufferedWriter(SW);     
+            
+            CsvSW.flush();
+            CsvSW.close(); 
+        } catch (Exception e){}
+       
+
         
        try{
-           
-           try{ 
             SWinforme = new FileWriter(DirOrigen,true);
-                buffer = new BufferedWriter(SWinforme);
-                buffer.write("Se generearon los siguientes archivos:");
-                buffer.newLine();
-                buffer.flush();
-                buffer.close();             
-                buffer.write(String.format("Archivo ** %s ** ", nombreArchivoGenerado));
-            } catch (Exception e){}
+                br = new BufferedWriter(SWinforme);
+                br.write("Se generearon los siguientes archivos:");
+                br.newLine();
+                br.write (String.format("Archivo ** %s **", nombreArchivoGenerado));
+                
+                br.flush();
+                br.close(); 
+        } catch (Exception e){}
            
-           
-         } catch (Exception e) {
-                System.out.println("Archivo no encontrado. Cambia la ruta de INFORME");
-        }
-         
-
-        try{
-            
+    
+        EscribirCabecera(CsvSW);
+       
+        try{          
             file = new BufferedReader (new FileReader(txtOrigen));
+            line = file.readLine();
+          }catch(Exception e) {
+            System.out.println("Error de lectura del fichero");
+         }
 
-            while((line = file.readLine()) != null){
-
+            while(line != null){
 
                     LeerLinea(line);
 
@@ -396,123 +416,209 @@ public class frmPrincipal extends javax.swing.JFrame {
                 {
 
 
-                    if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail))
-                    {
+                    if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)){
                         cantidadMailIgual++;
                     }
-                    else
-                    {
+                    else{
                         cantidadMailIgual = 0;             
-                    }                   
-                      if (cantidadMailIgual == 0)
-                    {
+                    }        
+                    
+                    
+                    if (cantidadMailIgual == 0){
                         mailLinea = String.format("%s|",mailAux);             
                     }
-                    else
-                    {                
+                    else{                
                         mailLinea = String.format("s% s%|", mailAux, String.valueOf(cantidadMailIgual));                  
                     }
 
 
-                      //Esto es una prueba num
 
                         ultimoMail = mailAux;
 
-                        formatearCuit(cuitAux);
-                        mailLinea += String.format("%s|Cuit: %s | %s |  %s  | %s | %s | %s | %s | %s", razonsocialAux, cuitAux, fechaVencimiento, fechaOpcion, anio, cuota, impuesto, datosTodosObjetos, porcentaje); 
+                       
+                        mailLinea += String.format("%s|Cuit: %s | %s | %s | %s | %s | %s | %s | %s", razonsocialAux, formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, impuesto, datosTodosObjetos, porcentaje); 
 
                         System.out.println("--Mai Linea ---" + mailLinea);
+                    
+                    try {           
+                        if (escritos == cantidadCorte){
+                           try{ 
 
-                    if (escritos == cantidadCorte)
-                    {
-                        buffer = new BufferedWriter(SWinforme);
-                        buffer.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
-                        buffer.newLine();
-                        buffer.flush();
-                        buffer.close();
+                                br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
+                                br.newLine();
+                                br.flush();
+                              br.close();
 
-                        escritos = 0;
-                        contador = 0;
-                        cantidadArchivosGenerados++;
+                                escritos = 0;
+                                contador = 0;
+                                cantidadArchivosGenerados++;
 
-                        buffer = new BufferedWriter(sw);
-                        buffer.flush();
-                        buffer.close();
-
-                        nombreArchivoGenerado = String.format(" %s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);
-
-                        //sw = new System.IO.StreamWriter(nombreArchivoGenerado);
-
-                        //SWinforme.Write(String.format("Archivo ** {0} **", nombreArchivoGenerado));                        
-                        //this.EscribirCabecera(sw);
-                    }
-
-                    distintos++;//
-                    escritos++;//
-
-
-    //               if (distintos <= this.barraGenerados.Maximum)
-    //              {
-    //               this.barraGenerados.Value = distintos;       //                 
-    //              }
-
-
-                   // FileWriter sw = null;
-                   // PrintWriter pw= null;
-
-                    try {
-                        String archivo = directorioDestino + "prueba.txt";
-
-
-                        sw = new FileWriter(archivo,true);
-
-                        LeerLinea(line);    
-                        buffer = new BufferedWriter(sw);
-
-                        buffer.write(mailLinea);
-                        buffer.newLine();
-
-                        buffer.flush();
-                        buffer.close();
-
-                    } catch (FileNotFoundException e) {
-                        System.out.println("Archivo no encontrado. Cambia la ruta");
-                    }
-
+                              nombreArchivoGenerado = String.format(" %s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);
                                 
+                                br = new BufferedWriter(SWinforme);
+                                br.write("Se generearon los siguientes archivos:");
+                                br.newLine();
+                                br.write (String.format("Archivo ** %s **", nombreArchivoGenerado));
+                                
+                                br.flush();
+                              br.close();
 
-                 }//}//if
+                                EscribirCabecera(CsvSW);
+                                
+                            } catch (Exception e){} 
+                        }      
+                    } catch (Exception e) {
+                      System.out.println("Archivo no encontrado. Cambia la ruta de INFORME");
+                    }   
 
+                    distintos++;
+                    escritos++;
+
+                   /* valor1 = (Integer.parseInt(cantidadAleer.getText())/ 100);
+                    
+                    if ( barraGenerados.getValue()==0){
+                    
+                        barraGenerados.setValue(distintos / valor1);
+                          
+                    }
+                   
+                    if ((distintos/ valor1) <= (barraGenerados.getValue()))
+                    {
+                        barraGenerados.setValue (distintos/ valor1);                
+                    }
+                   */
+
+                   try {
+                   
+                    CsvSW.write(mailLinea);
+                    CsvSW.newLine();
+                    
+                     CsvSW.flush();
+                     CsvSW.close(); 
+                    
+                    } catch (Exception e){
+                    
+                    System.out.print("que pasó?");
+                    
+                    } 
+                     
+                    mailAux = mail;
+                    razonsocialAux = razonsocial;
+                    cuitAux = cuit;                   
+                    datosTodosObjetos = datosObjeto;                    
+                    datosObjeto = "";
+                }
+                else{ 
+                    datosTodosObjetos += datosObjeto;
+                    conta++; 
+                }//if
+
+                try{          
+                     line = file.readLine();
+                  }catch(Exception e) {
+                      System.out.println("Error de lectura del fichero");
+                  }  
+              
             }//while
 
-        }catch(FileNotFoundException e){
+        
+            ultimoMail = mailAux;  
+            
+            
+            mailLinea += String.format("Cuit: %s | %s | %s | %s | %s | %s | %s | %s", formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, impuesto, datosTodosObjetos, porcentaje); 
 
-             System.out.println("Error: Fichero no encontrado");
-            System.out.println(e.getMessage());
-        }
-        catch(Exception e) {
-            System.out.println("Error de lectura del fichero");
-            System.out.println(e.getMessage());
-        }
-        finally {
-            try {
-                if(file != null)
-                    file.close();
+            
+            try{
+                
+               CsvSW.write(mailLinea);
+               CsvSW.newLine();   
+               
+               CsvSW.flush();
+               CsvSW.close(); 
+
+            } catch (Exception e){} 
+            
+            mailAux = mail;
+            razonsocialAux = razonsocial;
+            cuitAux = cuit;
+
+            distintos++;
+            escritos++;
+            
+            try{ 
+                br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
+                br.newLine();
+                br.flush();
+                br.close();
+            }catch(Exception e){} 
+            
+            try{          
+               file.close();
+            }catch(Exception e){} 
+        
+            String mensaje = "";
+            
+            
+             if (counter != (Integer.parseInt(cantidadAleer.getText()))){
+                 
+                mensaje = String.format(", \"Cantidad de registros ERRONEA!!\" La cantidad de suscripciones configuradas %d y es distinta a la cantidad de registros leidos %d. De todas maneras se generaron %d mails para enviar. ", Integer.parseInt(cantidadAleer.getText()), counter, distintos);
+                 JOptionPane.showMessageDialog(null, mensaje);
+                
+            }else{
+                
+                mensaje = String.format("Se leyeron %d suscripciones y se generaron %d mails para enviar. Armar bases?", counter, distintos);
+
+
+               barraGenerados.setValue (100); // agregado Ñ para que la barra de Generados termine. 
+
+              
+               
+               
+                if ( JOptionPane.showConfirmDialog(null, "Control Totales ATENCION", "Alerta!", JOptionPane.YES_NO_OPTION) == 1)
+                {
+                    //this.InformarArchivosGenerados();
+                }
+
             }
-            catch (Exception e) {
-                System.out.println("Error al cerrar el fichero");
-                System.out.println(e.getMessage());
-            }
+            
+            
+            
+            
+            
+            
  }   
  
-}
+
         
 
-public void formatearCuit(String mail){
+private String formatearCuit(String pCuit){
                 
         
+    String cuitFormateado = "";
+            
+        if (pCuit.length() == 11)
+        {
+          String primeraParte = pCuit.substring(0, 2);
+          String dni = pCuit.substring(2, 10);
+          String digito = pCuit.substring(10, 11);
+          cuitFormateado = String.format("%s-%s-%s", primeraParte, dni, digito);
+         }
+        
+     return cuitFormateado;
 
 }
+//Dife
+
+   private void EscribirCabecera(BufferedWriter pSw){
+            if (this.ConCabecera.isSelected())
+            {
+               try {
+                pSw.write("email|nombre|cuit|fechav|fechao|anio|cuota|impuesto|datos|descuento");
+                pSw.newLine();
+               }catch(Exception e){}
+            }
+
+  }
 
 private void LeerLinea(String line)
 {
@@ -538,64 +644,65 @@ private void LeerLinea(String line)
             buenContribuyente = line.substring(393, 394).replaceAll(" ","");                           
             cuit = line.substring(394, 405).replaceAll(" ","");
                            
-                            System.out.println ("mail----->"+ mail);
-                            System.out.println ("objeto----->"+ objeto);
-                            System.out.println ("razon social----->"+ razonsocial);
-                            System.out.println ("fecha de vencimiento----->"+ fechaVencimientoNumero);
-                            System.out.println ("monto cuota----->"+ montoCuota);
-                            System.out.println ("monto anual----->"+ montoAnual);
-                            System.out.println ("codigo electronico----->"+ codigoElectronico);
-                            System.out.println ("debito credito----->"+ debitoCredito);
-                            System.out.println ("buen contribuyente----->"+ buenContribuyente);
-                            System.out.println ("cuit----->"+ cuit);
+                    System.out.println ("mail----->"+ mail);
+                    System.out.println ("objeto----->"+ objeto);
+                    System.out.println ("razon social----->"+ razonsocial);
+                    System.out.println ("fecha de vencimiento----->"+ fechaVencimientoNumero);
+                    System.out.println ("monto cuota----->"+ montoCuota);
+                    System.out.println ("monto anual----->"+ montoAnual);
+                    System.out.println ("codigo electronico----->"+ codigoElectronico);
+                    System.out.println ("debito credito----->"+ debitoCredito);
+                    System.out.println ("buen contribuyente----->"+ buenContribuyente);
+                    System.out.println ("cuit----->"+ cuit);
  
             Variable = "Prueba  Automotor" ;
 
 
-                porcentaje = "20";
-                anio = "2020";
-                cuota = "3";
+            porcentaje = "20";
+            anio = "2020";
+            cuota = "3";
 
-                        break;
-                    }
-                case "Impuesto Edificado":
-                case "Impuesto Baldio":
-                case "Impuesto Rural":
-                    {
-                       
-                        mail = ((line.substring(0, 255).toLowerCase()).replaceAll(" ","") );
-                        objeto = (line.substring(255,266).replaceAll(" ",""));                                                    
-                        objetoFormateado = formatearObjetoInmobiliario(objeto);
-                        razonsocial = trimEnd(line.substring(266,326));   
-                        porcentaje = "";  
-                        fechaVencimientoNumero = (line.substring(334, 344).replaceAll(" ",""));                        
-                        fechaVencimiento = StringaDate(fechaVencimientoNumero); 
-                        montoCuota = line.substring(345, 362).replaceAll(" ","") ;
-                        montoAnual = line.substring(362, 378) ;
-                       // codigoElectronico = line.substring(378, 392).replaceAll(" ","");
-                        debitoCredito = line.substring(392, 393).replaceAll(" ","");                           
-                        buenContribuyente = line.substring(393, 394).replaceAll(" ","");                           
-                        cuit = line.substring(394, 405).replaceAll(" ","");
-
-                        Variable = "Prueba Edificacion -baldio -rural ";    
-                                    
-                        break;
-                    }
-                case "Impuesto Complementario":
-                    {
-                        LeerLineaNuevo(line);
-                        break;
-                    }
-
-                default:
-
-                    break;
-            }
-
-           /* TextInfo myTI = CultureInfo.CurrentCulture.TextInfo;
-            razonsocial = myTI.ToTitleCase(razonsocial);*/
-                   StringUtils.capitalize(razonsocial);
+              break;
         }
+        case "Impuesto Edificado":
+        case "Impuesto Baldio":
+        case "Impuesto Rural":
+        {
+                       
+            mail = ((line.substring(0, 255).toLowerCase()).replaceAll(" ","") );
+            objeto = (line.substring(255,266).replaceAll(" ",""));                                                    
+            objetoFormateado = formatearObjetoInmobiliario(objeto);
+            razonsocial = trimEnd(line.substring(266,326));   
+            porcentaje = "";  
+            fechaVencimientoNumero = (line.substring(334, 344).replaceAll(" ",""));                        
+            fechaVencimiento = StringaDate(fechaVencimientoNumero); 
+            montoCuota = line.substring(345, 362).replaceAll(" ","") ;
+            montoAnual = line.substring(362, 378) ;
+            // codigoElectronico = line.substring(378, 392).replaceAll(" ","");
+            debitoCredito = line.substring(392, 393).replaceAll(" ","");                           
+            buenContribuyente = line.substring(393, 394).replaceAll(" ","");                           
+            cuit = line.substring(394, 405).replaceAll(" ","");
+
+            Variable = "Prueba Edificacion -baldio -rural ";    
+                                    
+              break;
+        }
+        case "Impuesto Complementario":
+        {
+             LeerLineaNuevo(line);
+              break;
+        }
+        default:
+              break;
+        }
+
+
+      razonsocial = Mayusculas(razonsocial);
+       
+}
+
+
+
 private void LeerLineaNuevo(String line){
     
     mail = ((line.substring(0, 120).toLowerCase()).replaceAll(" ","") );
@@ -643,10 +750,8 @@ private void LeerLineaNuevo(String line){
             }
 
 
-            /*TextInfo myTI = CultureInfo.CurrentCulture.TextInfo;
-            razonsocial = myTI.ToTitleCase(razonsocial);*/
-            
-                StringUtils.capitalize(razonsocial);
+            razonsocial = Mayusculas(razonsocial);
+                
     }
     
     private String formatearObjetoInmobiliario(String pObjeto)
@@ -663,10 +768,9 @@ private void LeerLineaNuevo(String line){
 
             FraccionImpuesto = Impuesto.getSelectedItem().toString();
 
-            directorioOrigen = "";
+            directorioDestino = "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino\\";
 
-            directorioDestino = "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";
-
+                                //home :"C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";                    
             //List<String> cuotas = new List<String>();
 
 
@@ -848,8 +952,6 @@ private void LeerLineaNuevo(String line){
 
         Fechas = output;
 
-       System.out.println ("La fecha final ---->"+Fechas);
-      
     return Fechas; 
     
     }
@@ -858,42 +960,49 @@ private void LeerLineaNuevo(String line){
      
         String resultado = "";
         
-        int diff = ( Val2.length() - Val1.length());
-         
-           
+        int diff = ( Val2.length() - Val1.length());          
             
         for (int j = 0 ; j < diff ; j++){
             Val1 += " "; 
         }
-            
-            
-        for (int i= 11 ; i<Val2.length();i++) {
+                      
+        for (int i= 0 ; i<Val2.length();i++) {
         
            if (Val2.charAt(i) != Val1.charAt(i)){
-               NombreOrigen += Val2.charAt(i);
+               
+               if ( Val2.charAt(i) != '.' ){
+                   
+                 NombreOrigen += Val2.charAt(i);
+               
+               }
+               
            }
         }
-        
-      
-   
+
+        resultado = NombreOrigen; //.substring(1)
        
-        resultado = NombreOrigen.substring(1);
-       
-        System.out.print("my Replace----------> " + resultado);
+        System.out.println("my Replace----------> " + resultado);
         
        return resultado; 
     }
     
     
-      private static class StringUtils {
+    
+  public String Mayusculas(String cadena) {
+       
+    char[] caracteres = cadena.toCharArray();
+   
+    caracteres[0] = Character.toUpperCase(caracteres[0]);
 
-        private static void capitalize(String razonsocial) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+    for (int i = 0; i < cadena.length()- 2; i++) {
 
-        public StringUtils() {
-        }
+        if (caracteres[i] == ' ' || caracteres[i] == '.' || caracteres[i] == ','){
+              caracteres[i + 1] = Character.toUpperCase(caracteres[i + 1]); 
+            }
     }
+   
+    return new String(caracteres);
+  }
     
     
   /* 
@@ -916,6 +1025,7 @@ private void LeerLineaNuevo(String line){
     private javax.swing.JButton Origen_;
     private javax.swing.JProgressBar barraGenerados;
     private javax.swing.JProgressBar barraLeidos;
+    private javax.swing.JTextField cantidadAleer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -923,7 +1033,6 @@ private void LeerLineaNuevo(String line){
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField txtArchivoOrigen;
-    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtCantidadCorte;
     private javax.swing.JTextField txturl;
     // End of variables declaration//GEN-END:variables
