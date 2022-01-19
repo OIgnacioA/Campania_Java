@@ -35,6 +35,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String directorioDestino = "";
     private String txtOrigen = "";
     private String txtDestino = "";
+    private String txtDestino2 ="";
     private int cantidad = 0;
     private String Dir = "";  
     private String ImpuestoV = "";
@@ -65,13 +66,13 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String cuitFormateado = "";
     private String planta = "";
     private String plantaDescri = "";
-    private String impuesto = "";
+    //private String impuesto = "";
     private String fechaOpcion = "";
     private String datosObjeto = "";
     private String objetoFormateado = "";
     private String Variable = "";
     private String nombreArchivoCsv = "";
-    //private String Path = "";
+    private String Patth = "";
     
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
@@ -308,7 +309,8 @@ public class frmPrincipal extends javax.swing.JFrame {
                 ImpuestoV = Impuesto.getSelectedItem().toString();
                  
                 txtDestino = MyReplace(DirOrigen, txtOrigen);
-
+              
+                System.out.println("txtdestino ------"+ txtDestino);
                 Procesar();
 
             }else {
@@ -320,37 +322,32 @@ public class frmPrincipal extends javax.swing.JFrame {
             
     }//GEN-LAST:event_Generar_ActionPerformed
 
-    
 
     public void Procesar() {
         
         int cantidadMailIgual = 0;
+        int cont=0;
         int counter = 0; 
         int conta = 0; 
         int valor1 = 0;
         int distintos = 0; 
         int contador = 0;        
         int escritos = 0;
+        int cantidadArchivosGenerados = 1;
         int cantidadCorte = Integer.parseInt(txtCantidadCorte.getText());
         String line = "" ;
         String mailLinea = ".";
         String datosTodosObjetos =".";
         String ultimoMail = ".";
-        int cont=0;
+        
         
         BufferedReader file = null; 
-        
         FileWriter SW = null; 
-        BufferedWriter CsvSW = null;
-        
+       
         FileWriter SWinforme = null;
         BufferedWriter br = null; 
         
-        
-        
-        int cantidadArchivosGenerados = 1;
-       
-        
+
          try {
          Date fecha1 = FechaOpcion.getDate();
          DateFormat f=new SimpleDateFormat("dd-MM-yyyy");
@@ -360,119 +357,101 @@ public class frmPrincipal extends javax.swing.JFrame {
          
          } catch (Exception e) {}
          
-         
-         
-        String  Patth = directorioOrigen + "informe.txt"; 
-        String nombreArchivoGenerado = String.format ("%s -Parte- %s.csv", txtDestino, cantidadArchivosGenerados);
+       
+        String nombreArchivoGenerado = String.format ("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);        
         
-        String nombreArchivoCsv = String.format("%s-Archivo-%s.csv",directorioDestino, txtDestino);
-                  
-        System.out.println ("archivo destino------------->"+nombreArchivoCsv);
+        String nombreArchivoCsv = String.format("%s %s",directorioDestino, nombreArchivoGenerado);           
         try{
             SW = new FileWriter(nombreArchivoCsv,true);
-            CsvSW = new BufferedWriter(SW);     
-            
-            CsvSW.flush();
-            CsvSW.close(); 
-        } catch (Exception e){}
+        } catch (Exception e){System.out.println("Error de lectura del fichero");}
        
-
         
-       try{
-            SWinforme = new FileWriter(DirOrigen,true);
+        
+         Patth = (DirOrigen + "Informe.txt");
+        try{
+            SWinforme = new FileWriter(Patth,true);
                 br = new BufferedWriter(SWinforme);
                 br.write("Se generearon los siguientes archivos:");
                 br.newLine();
                 br.write (String.format("Archivo ** %s **", nombreArchivoGenerado));
                 
-                br.flush();
-                br.close(); 
         } catch (Exception e){}
            
     
-        EscribirCabecera(CsvSW);
+        EscribirCabecera(SW);
        
         try{          
             file = new BufferedReader (new FileReader(txtOrigen));
             line = file.readLine();
-          }catch(Exception e) {
-            System.out.println("Error de lectura del fichero");
-         }
+        }catch(Exception e) {System.out.println("Error de lectura del fichero");}
 
-            while(line != null){
+        
+        while(line != null){
 
-                    LeerLinea(line);
+            LeerLinea(line);
 
-                    if(mailAux == "")
-                    {
-                     mailAux = mail; 
-                     razonsocialAux = razonsocial;
-                     cuitAux = cuit;
-                    }
+            if(mailAux == ""){
+               mailAux = mail; 
+               razonsocialAux = razonsocial;
+               cuitAux = cuit;
+            }
 
-                    ArmarDatosMail();
+            ArmarDatosMail();
 
-                if ((mail != mailAux) || (razonsocial != razonsocialAux))
-                {
+            if ((mail != mailAux) || (razonsocial != razonsocialAux)){
 
-
-                    if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)){
-                        cantidadMailIgual++;
-                    }
-                    else{
-                        cantidadMailIgual = 0;             
-                    }        
+                if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)){
+                    cantidadMailIgual++;
+                }else{
+                    cantidadMailIgual = 0;             
+                }        
                     
                     
-                    if (cantidadMailIgual == 0){
-                        mailLinea = String.format("%s|",mailAux);             
-                    }
-                    else{                
-                        mailLinea = String.format("s% s%|", mailAux, String.valueOf(cantidadMailIgual));                  
-                    }
+                if (cantidadMailIgual == 0){
+                    mailLinea = String.format("%s|",mailAux);             
+                }else{                
+                    mailLinea = String.format("s% + s%|", mailAux, String.valueOf(cantidadMailIgual));                  
+                }
 
+                ultimoMail = mailAux;
+                  
+                mailLinea += String.format("%s|Cuit: %s | %s | %s | %s | %s | %s | %s | %s ", razonsocialAux, formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, ImpuestoV, datosTodosObjetos, porcentaje); 
 
-
-                        ultimoMail = mailAux;
-
-                       
-                        mailLinea += String.format("%s|Cuit: %s | %s | %s | %s | %s | %s | %s | %s", razonsocialAux, formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, impuesto, datosTodosObjetos, porcentaje); 
-
-                        System.out.println("--Mai Linea ---" + mailLinea);
+                System.out.println("--Mai Linea ---" + mailLinea);
                     
-                    try {           
-                        if (escritos == cantidadCorte){
-                           try{ 
+                try {           
+                    if (escritos == cantidadCorte){
+                        try{ 
 
-                                br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
-                                br.newLine();
-                                br.flush();
-                              br.close();
+                            br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
+                            br.newLine();
+                          
+                            escritos = 0;
+                            contador = 0;
+                            cantidadArchivosGenerados++;
 
-                                escritos = 0;
-                                contador = 0;
-                                cantidadArchivosGenerados++;
-
-                              nombreArchivoGenerado = String.format(" %s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);
-                                
-                                br = new BufferedWriter(SWinforme);
-                                br.write("Se generearon los siguientes archivos:");
-                                br.newLine();
-                                br.write (String.format("Archivo ** %s **", nombreArchivoGenerado));
-                                
-                                br.flush();
-                              br.close();
-
-                                EscribirCabecera(CsvSW);
-                                
+                            try{
+                                SW.flush();
+                                SW.close();
                             } catch (Exception e){} 
-                        }      
-                    } catch (Exception e) {
-                      System.out.println("Archivo no encontrado. Cambia la ruta de INFORME");
-                    }   
+                            
 
-                    distintos++;
-                    escritos++;
+                            nombreArchivoGenerado = String.format ("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);        
+                            nombreArchivoCsv = String.format("%s %s",directorioDestino, nombreArchivoGenerado);           
+                                try{
+                                    SW = new FileWriter(nombreArchivoCsv,true);
+                            } catch (Exception e){System.out.println("Error de lectura del fichero");}
+
+                            br.write (String.format("Archivo ** %s **", nombreArchivoGenerado));
+
+                            EscribirCabecera(SW);
+                                
+                        } catch (Exception e){} 
+                    }      
+                } catch (Exception e) {System.out.println("Archivo no encontrado. Cambia la ruta de INFORME");}   
+                    
+                distintos++;
+                escritos++;
 
                    /* valor1 = (Integer.parseInt(cantidadAleer.getText())/ 100);
                     
@@ -488,105 +467,106 @@ public class frmPrincipal extends javax.swing.JFrame {
                     }
                    */
 
-                   try {
+                try {
                    
-                    CsvSW.write(mailLinea);
-                    CsvSW.newLine();
-                    
-                     CsvSW.flush();
-                     CsvSW.close(); 
-                    
-                    } catch (Exception e){
-                    
-                    System.out.print("que pasó?");
-                    
-                    } 
+                SW.append(mailLinea);      
+                SW.append('\n');
+                  
+                } catch (Exception e){System.out.print("PROBLEM1");} 
                      
-                    mailAux = mail;
-                    razonsocialAux = razonsocial;
-                    cuitAux = cuit;                   
-                    datosTodosObjetos = datosObjeto;                    
-                    datosObjeto = "";
+                mailAux = mail;
+                razonsocialAux = razonsocial;
+                cuitAux = cuit;                   
+                datosTodosObjetos = datosObjeto;                    
+                datosObjeto = "";
                 }
                 else{ 
-                    datosTodosObjetos += datosObjeto;
-                    conta++; 
-                }//if
+                datosTodosObjetos += datosObjeto;
+                conta++; 
+            }//if
 
-                try{          
-                     line = file.readLine();
-                  }catch(Exception e) {
-                      System.out.println("Error de lectura del fichero");
-                  }  
-              
-            }//while
-
-        
-            ultimoMail = mailAux;  
+            counter++;   
+            contador++; 
             
+//             if (counter <= this.barraLeidos.Maximum)
+//                {
+//                    this.barraLeidos.Value = counter; 
+//                } 
             
-            mailLinea += String.format("Cuit: %s | %s | %s | %s | %s | %s | %s | %s", formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, impuesto, datosTodosObjetos, porcentaje); 
-
-            
-            try{
-                
-               CsvSW.write(mailLinea);
-               CsvSW.newLine();   
-               
-               CsvSW.flush();
-               CsvSW.close(); 
-
-            } catch (Exception e){} 
-            
-            mailAux = mail;
-            razonsocialAux = razonsocial;
-            cuitAux = cuit;
-
-            distintos++;
-            escritos++;
-            
-            try{ 
-                br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
-                br.newLine();
-                br.flush();
-                br.close();
-            }catch(Exception e){} 
             
             try{          
-               file.close();
-            }catch(Exception e){} 
-        
-            String mensaje = "";
-            
-            
-             if (counter != (Integer.parseInt(cantidadAleer.getText()))){
-                 
-                mensaje = String.format(", \"Cantidad de registros ERRONEA!!\" La cantidad de suscripciones configuradas %d y es distinta a la cantidad de registros leidos %d. De todas maneras se generaron %d mails para enviar. ", Integer.parseInt(cantidadAleer.getText()), counter, distintos);
-                 JOptionPane.showMessageDialog(null, mensaje);
-                
-            }else{
-                
-                mensaje = String.format("Se leyeron %d suscripciones y se generaron %d mails para enviar. Armar bases?", counter, distintos);
-
-
-               barraGenerados.setValue (100); // agregado Ñ para que la barra de Generados termine. 
-
+            line = file.readLine();
+            }catch(Exception e) { System.out.println("Error de lectura del fichero");}  
               
-               
-               
-                if ( JOptionPane.showConfirmDialog(null, "Control Totales ATENCION", "Alerta!", JOptionPane.YES_NO_OPTION) == 1)
-                {
-                    //this.InformarArchivosGenerados();
-                }
+        }//while
 
+        if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)){
+            cantidadMailIgual++;
+           }else{
+            cantidadMailIgual = 0;             
+        }        
+                      
+        if (cantidadMailIgual == 0){
+            mailLinea = String.format("%s|",mailAux);             
+         }else{                
+            mailLinea = String.format("s% + s%|", mailAux, String.valueOf(cantidadMailIgual));                  
+        }
+        
+       
+        ultimoMail = mailAux;  
+            
+        mailLinea += String.format("Cuit: %s | %s | %s | %s | %s | %s | %s | %s ", formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, ImpuestoV, datosTodosObjetos, porcentaje); 
+
+        try{
+           SW.append(mailLinea);
+           SW.append('\n');
+        } catch (Exception e){System.out.print("PROBLEM1");} 
+            
+        mailAux = mail;
+        razonsocialAux = razonsocial;
+        cuitAux = cuit;
+
+        distintos++;
+        escritos++;
+            
+        try{ 
+            br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
+            br.newLine();
+            br.flush();
+            br.close();
+        }catch(Exception e){} 
+            
+        try{          
+            file.close();
+        }catch(Exception e){} 
+        
+        String mensaje = "";
+            
+            
+        if (counter != (Integer.parseInt(cantidadAleer.getText()))){
+                 
+            mensaje = String.format(", \"Cantidad de registros ERRONEA!!\" La cantidad de suscripciones configuradas %d y es distinta a la cantidad de registros leidos %d. De todas maneras se generaron %d mails para enviar. ", Integer.parseInt(cantidadAleer.getText()), counter, distintos);
+            JOptionPane.showMessageDialog(null, mensaje);
+                
+        }else{
+                
+            mensaje = String.format("Se leyeron %d suscripciones y se generaron %d mails para enviar. Armar bases?", counter, distintos);
+
+            barraGenerados.setValue (100); // agregado Ñ para que la barra de Generados termine. 
+
+            if ( JOptionPane.showConfirmDialog(null, "Informar archivos generados? (Zip)", "Alerta!", JOptionPane.YES_NO_OPTION) == 1){
+                   
+                //this.InformarArchivosGenerados();
+                    
             }
+        }
             
+        try{
+            SW.flush();
+            SW.close();
+        } catch (Exception e){} 
             
-            
-            
-            
-            
- }   
+}   
  
 
         
@@ -609,12 +589,12 @@ private String formatearCuit(String pCuit){
 }
 //Dife
 
-   private void EscribirCabecera(BufferedWriter pSw){
+   private void EscribirCabecera(FileWriter pSw){
             if (this.ConCabecera.isSelected())
             {
                try {
                 pSw.write("email|nombre|cuit|fechav|fechao|anio|cuota|impuesto|datos|descuento");
-                pSw.newLine();
+                pSw.append('\n');
                }catch(Exception e){}
             }
 
@@ -622,12 +602,11 @@ private String formatearCuit(String pCuit){
 
 private void LeerLinea(String line)
 {
-            
            
     switch (ImpuestoV)
     {
         case "Impuesto Automotor":
-        case "Impuesto Embarcaciones":
+        case "Impuesto a las Embarcaciones":
         {
                         
             mail = ((line.substring(0, 255).toLowerCase()).replaceAll(" ","") );
@@ -664,8 +643,8 @@ private void LeerLinea(String line)
 
               break;
         }
-        case "Impuesto Edificado":
-        case "Impuesto Baldio":
+        case "Impuesto Urbano Edificado":
+        case "Impuesto Urbano Baldío":
         case "Impuesto Rural":
         {
                        
@@ -774,7 +753,6 @@ private void LeerLineaNuevo(String line){
             //List<String> cuotas = new List<String>();
 
 
-
             switch (FraccionImpuesto)
             {
                 case "Impuesto Automotor":
@@ -792,7 +770,7 @@ private void LeerLineaNuevo(String line){
 
                         break;
                     }
-                case "Impuesto Embarcaciones":
+                case "Impuesto a las Embarcaciones":
                     {
                         directorioOrigen += "Embarcaciones\\";
                         directorioDestino += "Embarcaciones\\";
@@ -802,7 +780,7 @@ private void LeerLineaNuevo(String line){
                         break;
 
                     }
-                case "Impuesto Edificado":
+                case "Impuesto Urbano Edificado":
                     {
                         directorioOrigen += "Edificado\\";
                         directorioDestino += "Edificado\\";
@@ -811,7 +789,7 @@ private void LeerLineaNuevo(String line){
                         txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
                         break;
                     }
-                case "Impuesto Baldio":
+                case "Impuesto Urbano Baldío":
                     {
                         directorioOrigen += "Baldio\\";
                         directorioDestino += "Baldio\\";
@@ -858,40 +836,40 @@ private void LeerLineaNuevo(String line){
    
     private void ArmarDatosMail(){
 
-            switch (debitoCredito) 
-            {
-                case "1":
+        switch (debitoCredito) 
+        {
+            case "1":{
+                
+                medioPago = "Débito en Cuenta";
+                break;
+            }
+            case "D":
+                {
+                    medioPago = "Débito en Cuenta";                        
+                    break;
+                }
+            case "2":
                     {
-                        medioPago = "Débito en Cuenta";
-                        break;
+                    medioPago = "Tarjeta de Crédito";                        
+                    break;
                     }
-                case "D":
-                    {
-                        medioPago = "Débito en Cuenta";                        
-                        break;
-                    }
-                case "2":
-                    {
-                        medioPago = "Tarjeta de Crédito";                        
-                        break;
-                    }
-                case "0":
-                case "C":
+            case "0":
+            case "C":
                     {
                         medioPago = "<a href=\"" + txturl.getText() + objeto + "\">Ingresar</a>";
                         
-                        /*
-                        if (this.Impuesto.SelectedIndex == 5)
-                        {
-                            //medioPago = "<a href=\"https://sso.arba.gov.ar/Login/login?service=http%3A%2F%2Fwww4.arba.gov.ar%2FLiqPredet%2Fsso%2FInicioLiquidacionIIC.do%3FFrame%3DNO%26origen%3DWEB%26imp%3D10%26cuit%3D\">Ingresar</a>";
-                            medioPago =  "<a href=\"https://www.arba.gov.ar/aplicaciones/LiqPredet.asp?imp=10&Fame=NO&origen=WEB&op=IIC\">Ingresar</a>";
-                        }
-                        else
-                        {
-                            medioPago = string.Format("<a href=\"http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D{0}%26opc%3DLIC%26Frame%3DSI%26oi%3D{1}\">Ingresar</a>", impuestoLiquidar, objeto);
-                        }      
-                        */
-                        break;
+            /*
+                if (this.Impuesto.SelectedIndex == 5)
+                {
+                //medioPago = "<a href=\"https://sso.arba.gov.ar/Login/login?service=http%3A%2F%2Fwww4.arba.gov.ar%2FLiqPredet%2Fsso%2FInicioLiquidacionIIC.do%3FFrame%3DNO%26origen%3DWEB%26imp%3D10%26cuit%3D\">Ingresar</a>";
+                medioPago =  "<a href=\"https://www.arba.gov.ar/aplicaciones/LiqPredet.asp?imp=10&Fame=NO&origen=WEB&op=IIC\">Ingresar</a>";
+                }
+                else
+                {
+                medioPago = string.Format("<a href=\"http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D{0}%26opc%3DLIC%26Frame%3DSI%26oi%3D{1}\">Ingresar</a>", impuestoLiquidar, objeto);
+                }      
+                */
+                    break;
                     }
              /*   case "C":
                     {
@@ -905,32 +883,66 @@ private void LeerLineaNuevo(String line){
                         }
                         break;
                     }*/
-                default:
-                    {
-                        // medioPago = "ERROR";
-                        // break;
+            default:
+            {
+                // medioPago = "ERROR";
+                // break;
 
-                        /* Automotores entra acá por defaoult, el "txturl.text" de 
-                           automotores suma "+ {0}" que acá 
-                           va a tomar el valor de 'objeto' */
+                /* Automotores entra acá por defaoult, el "txturl.text" de 
+                automotores suma "+ {0}" que acá 
+                va a tomar el valor de 'objeto' */
 
-
-
-                        medioPago = "<a href=\"" + txturl.getText() + objeto +"\">Ingresar</a>"; 
-                        break;
-                    }
+                medioPago = "<a href=\"" + txturl.getText() + objeto +"\">Ingresar</a>"; 
+                break;
             }
         }
+        
+    
+        if ((Impuesto.getSelectedItem().toString())== "Impuesto Complementario")
+            {
+                datosObjeto = "<tr class='datos'>";
+                datosObjeto += String.format("<td class='gris'>%s - %s</td>", objetoFormateado, plantaDescri);
+                datosObjeto += String.format("<td class='amarillo'>Cuota s%</td>", cuotaNumero);
+                datosObjeto += String.format("<td class='amarillo'>%s</td>", montoCuota);
+                datosObjeto += String.format("<td class='gris'>%s</td>", medioPago);
+               // datosObjeto += string.Format("<td class=''>%s</td>", Variable);
+
+                datosObjeto += "</tr>";
+        }else{
+            
+            if (ConAnual.isSelected())
+             {
+                datosObjeto = "<tr class='datos'>";
+                datosObjeto += String.format("<td rowspan='2' class='gris'>%s</td>", objetoFormateado);
+                datosObjeto += String.format("<td class='amarillo'>Cuota %s</td>", cuotaNumero);
+                datosObjeto += String.format("<td class='amarillo'>%s</td>", montoCuota);
+                datosObjeto += String.format("<td rowspan='2' class='gris'>%s</td>", medioPago);
+                datosObjeto += "</tr>";
+                datosObjeto += "<tr class='datos'><td class='blanco'>Anual</td>";
+                datosObjeto += String.format("<td class='blanco'>%s</td>", montoAnual);
+                 // datosObjeto += String.Format("<td class=''>%s</td>", Variable);
+                datosObjeto += "</tr>";
+            }else{
+                datosObjeto = "<tr class='datos'>";
+                datosObjeto += String.format("<td class='gris'>%s</td>", objetoFormateado); //0190117251
+                datosObjeto += String.format("<td class='amarillo'>Cuota %s</td>", cuotaNumero);// Palabra: 'Cuota'. (?) 
+                datosObjeto += String.format("<td class='amarillo'>%s</td>", montoCuota);//7.780.90
+                datosObjeto += String.format("<td class='gris'>%s</td>", medioPago);//www.ARBA.gov.ar
+                // datosObjeto += String.Format("<td class='gris'>%s</td>", Variable);
+                datosObjeto += "</tr>";
+            }
+        }
+    }
     
     
     
     /////////////////extras Ñ: 
     
-    public static String trimEnd(String value) {
+  public static String trimEnd(String value) {
         return value.replaceFirst("\\s+$", "");
     }
     
-    public static String StringaDate(String fechaCadena){
+  public static String StringaDate(String fechaCadena){
         
        int anio, mes, dia;
      
@@ -956,26 +968,21 @@ private void LeerLineaNuevo(String line){
     
     }
     
-    public String MyReplace(String Val1, String Val2){
+
+  public String MyReplace(String Val3, String Val4){
      
         String resultado = "";
-        
-        int diff = ( Val2.length() - Val1.length());          
+        NombreOrigen = ""; 
+        int diff = ( Val4.length() - Val3.length());          
             
         for (int j = 0 ; j < diff ; j++){
-            Val1 += " "; 
+            Val3 += " "; 
         }
                       
-        for (int i= 0 ; i<Val2.length();i++) {
+        for (int i= 0 ; i<Val4.length();i++) {
         
-           if (Val2.charAt(i) != Val1.charAt(i)){
-               
-               if ( Val2.charAt(i) != '.' ){
-                   
-                 NombreOrigen += Val2.charAt(i);
-               
-               }
-               
+           if (Val4.charAt(i) != Val3.charAt(i)){
+                NombreOrigen += Val4.charAt(i);
            }
         }
 
@@ -985,7 +992,6 @@ private void LeerLineaNuevo(String line){
         
        return resultado; 
     }
-    
     
     
   public String Mayusculas(String cadena) {
