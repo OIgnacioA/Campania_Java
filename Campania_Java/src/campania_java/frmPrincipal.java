@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.Thread.sleep;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -73,6 +75,8 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String Variable = "";
     private String nombreArchivoCsv = "";
     private String Patth = "";
+    int sum = 0;
+    int counter = 0; 
     
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
@@ -272,11 +276,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         
         
           DirOrigen = Dir + "\\" + directorioOrigen;//directorigen tiene el valor que viene de impuesto "automotor//"
-        
-          
+                 
         File archivoSeleccionado;
-        
-        
+            
         JFileChooser seleccionarArchivo = new JFileChooser();
         seleccionarArchivo.setFileFilter(filter);
         seleccionarArchivo.setCurrentDirectory(new File(DirOrigen));
@@ -327,9 +329,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         
         int cantidadMailIgual = 0;
         int cont=0;
-        int counter = 0; 
-        int conta = 0; 
-        int valor1 = 0;
+        int conta = 0;
         int distintos = 0; 
         int contador = 0;        
         int escritos = 0;
@@ -341,6 +341,12 @@ public class frmPrincipal extends javax.swing.JFrame {
         String ultimoMail = ".";
         
         
+        
+         barraLeidos.setMaximum(Integer.parseInt(cantidadAleer.getText()));
+       
+        
+       
+
         BufferedReader file = null; 
         FileWriter SW = null; 
        
@@ -453,19 +459,20 @@ public class frmPrincipal extends javax.swing.JFrame {
                 distintos++;
                 escritos++;
 
-                   /* valor1 = (Integer.parseInt(cantidadAleer.getText())/ 100);
+
+                    /*  if (valor1 == 0){valor1 = 1;}
                     
-                    if ( barraGenerados.getValue()==0){
-                    
-                        barraGenerados.setValue(distintos / valor1);
-                          
-                    }
+                    int  Valor2 = Math.round(distintos/ valor1);
                    
-                    if ((distintos/ valor1) <= (barraGenerados.getValue()))
+                    if ( barraGenerados.getValue()==0){barraGenerados.setValue(Valor2);}
+                   
+                    if ((Valor2) <= (barraGenerados.getValue()))
                     {
-                        barraGenerados.setValue (distintos/ valor1);                
+                        barraGenerados.setValue (Valor2);                
                     }
-                   */
+                    
+                    System.out.println("valor 1----------->"+valor1);
+                    System.out.println("valor 2----------->"+Valor2);*/
 
                 try {
                    
@@ -488,18 +495,46 @@ public class frmPrincipal extends javax.swing.JFrame {
             counter++;   
             contador++; 
             
-//             if (counter <= this.barraLeidos.Maximum)
-//                {
-//                    this.barraLeidos.Value = counter; 
-//                } 
+        
+        System.out.println("counteeeer----->"+counter);
             
+            Thread hilo = new Thread(new Runnable () {    
+            @Override
+            public void run(){         
+                try {         
+                    barraLeidos.setValue(counter);       
+                } catch (Exception e){e.printStackTrace();} 
+
+   
+                /* if (counter >= valor1){               
+                    sum ++;
+                    barraLeidos.setValue(Math.round(sum));
+                    //counter = 0; 
+                    }*/
+                }
+        });
+        
+        hilo.start();
+            
+
+           
+            
+
+            
+            //CargarBarra();
             
             try{          
             line = file.readLine();
             }catch(Exception e) { System.out.println("Error de lectura del fichero");}  
               
+            
+            
         }//while
 
+        
+        
+        
+        
         if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)){
             cantidadMailIgual++;
            }else{
@@ -568,8 +603,7 @@ public class frmPrincipal extends javax.swing.JFrame {
             
 }   
  
-
-        
+ 
 
 private String formatearCuit(String pCuit){
                 
@@ -680,8 +714,6 @@ private void LeerLinea(String line)
        
 }
 
-
-
 private void LeerLineaNuevo(String line){
     
     mail = ((line.substring(0, 120).toLowerCase()).replaceAll(" ","") );
@@ -733,7 +765,7 @@ private void LeerLineaNuevo(String line){
                 
     }
     
-    private String formatearObjetoInmobiliario(String pObjeto)
+private String formatearObjetoInmobiliario(String pObjeto)
         {
            
             String partido = pObjeto.substring(0, 3).replaceAll(" ","") ;
@@ -834,7 +866,7 @@ private void LeerLineaNuevo(String line){
 
     }  
    
-    private void ArmarDatosMail(){
+ private void ArmarDatosMail(){
 
         switch (debitoCredito) 
         {
@@ -938,11 +970,11 @@ private void LeerLineaNuevo(String line){
     
     /////////////////extras Ñ: 
     
-  public static String trimEnd(String value) {
+ public static String trimEnd(String value) {
         return value.replaceFirst("\\s+$", "");
     }
     
-  public static String StringaDate(String fechaCadena){
+ public static String StringaDate(String fechaCadena){
         
        int anio, mes, dia;
      
@@ -968,8 +1000,7 @@ private void LeerLineaNuevo(String line){
     
     }
     
-
-  public String MyReplace(String Val3, String Val4){
+ public String MyReplace(String Val3, String Val4){
      
         String resultado = "";
         NombreOrigen = ""; 
@@ -992,9 +1023,8 @@ private void LeerLineaNuevo(String line){
         
        return resultado; 
     }
-    
-    
-  public String Mayusculas(String cadena) {
+     
+ public String Mayusculas(String cadena) {
        
     char[] caracteres = cadena.toCharArray();
    
@@ -1009,8 +1039,21 @@ private void LeerLineaNuevo(String line){
    
     return new String(caracteres);
   }
-    
-    
+  
+ public void CargarBarra() {
+  
+   
+   
+ }
+                 
+ 
+ 
+ 
+ 
+        /* double valor2 = (Integer.parseInt(cantidadAleer.getText())/ 100);
+        }else{double var1 = ((100 / valor2)/100); int var2 = Math.round(var1); sum = sum + var1;barraLeidos.setValue(sum);}
+        */
+        
   /* 
     public static void main(String args[]) {
       
