@@ -86,7 +86,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Generar Bases para campaña por mail V1");
-       
+        
+        
+        
         Generar_.setEnabled(false);
         Origen_.setEnabled(false);
         
@@ -339,10 +341,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         String mailLinea = ".";
         String datosTodosObjetos =".";
         String ultimoMail = ".";
+       
         
-        
-        
-         barraLeidos.setMaximum(Integer.parseInt(cantidadAleer.getText()));
+      
        
         
        
@@ -404,7 +405,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
             ArmarDatosMail();
 
-            if ((mail != mailAux) || (razonsocial != razonsocialAux)){
+            if ((!mail.equals(mailAux)) || (!razonsocial.equals(razonsocialAux))){
 
                 if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)){
                     cantidadMailIgual++;
@@ -459,18 +460,12 @@ public class frmPrincipal extends javax.swing.JFrame {
                 distintos++;
                 escritos++;
 
-
                     /*  if (valor1 == 0){valor1 = 1;}
-                    
                     int  Valor2 = Math.round(distintos/ valor1);
-                   
                     if ( barraGenerados.getValue()==0){barraGenerados.setValue(Valor2);}
-                   
-                    if ((Valor2) <= (barraGenerados.getValue()))
-                    {
+                    if ((Valor2) <= (barraGenerados.getValue())){
                         barraGenerados.setValue (Valor2);                
                     }
-                    
                     System.out.println("valor 1----------->"+valor1);
                     System.out.println("valor 2----------->"+Valor2);*/
 
@@ -496,45 +491,35 @@ public class frmPrincipal extends javax.swing.JFrame {
             contador++; 
             
         
-        System.out.println("counteeeer----->"+counter);
-            
-            Thread hilo = new Thread(new Runnable () {    
-            @Override
-            public void run(){         
-                try {         
-                    barraLeidos.setValue(counter);       
-                } catch (Exception e){e.printStackTrace();} 
+            System.out.println("counteeeer----->" + counter);
 
-   
-                /* if (counter >= valor1){               
-                    sum ++;
-                    barraLeidos.setValue(Math.round(sum));
-                    //counter = 0; 
-                    }*/
-                }
-        });
-        
-        hilo.start();
-            
+//                     if (counter >= valor1){               
+//                    sum ++;
+//                    barraLeidos.setValue(Math.round(sum));
+//                    //counter = 0; 
+//                    }
 
-           
+             /*Runnable r=new BarraDesarrollo(counter);
+             Thread t = new Thread(r);
+             t.start(); */
+             
             
-
-            
-            //CargarBarra();
-            
-            try{          
-            line = file.readLine();
-            }catch(Exception e) { System.out.println("Error de lectura del fichero");}  
+              CargarBarra(cantidadCorte);
+                      
+                      
+                      
+             try {
+                line = file.readLine();
+            } catch (Exception e) {
+                System.out.println("Error de lectura del fichero");
+            }
               
             
             
         }//while
 
         
-        
-        
-        
+
         if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)){
             cantidadMailIgual++;
            }else{
@@ -564,12 +549,13 @@ public class frmPrincipal extends javax.swing.JFrame {
         distintos++;
         escritos++;
             
-        try{ 
+        try {
             br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
             br.newLine();
             br.flush();
             br.close();
-        }catch(Exception e){} 
+        } catch (Exception e) {
+        }
             
         try{          
             file.close();
@@ -1040,10 +1026,27 @@ private String formatearObjetoInmobiliario(String pObjeto)
     return new String(caracteres);
   }
   
- public void CargarBarra() {
-  
-   
-   
+ 
+ 
+ private void CargarBarra(int IKant) {
+    
+     Thread hilo=new Thread(){
+     
+      @Override
+       public void run(){
+            
+        try {
+           barraLeidos.setMaximum(IKant);
+           barraLeidos.setValue(counter);    
+            System.out.println("kjkjjkjkjk-------"+ counter);
+           
+           System.out.println("***********************************************************************************************");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+      }
+    }; 
+     hilo.start();  
  }
                  
  
