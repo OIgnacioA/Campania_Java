@@ -77,6 +77,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String Patth = "";
     int sum = 0;
     int counter = 0; 
+    int raws = 0; 
     
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
@@ -123,6 +124,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         FechaOpcion = new com.toedter.calendar.JDateChooser();
         Mails = new javax.swing.JLabel();
+        total = new javax.swing.JLabel();
+        tantos = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -159,7 +163,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jLabel3.setText("Subscripciones Leidas");
 
-        jLabel4.setText("Mail generados");
+        jLabel4.setText("Mails generados");
 
         jLabel5.setText("Contar Cada");
 
@@ -175,66 +179,77 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         Mails.setText(".");
 
+        jLabel7.setText("de");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 19, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(Impuesto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(ConAnual)
-                                .addGap(45, 45, 45)
-                                .addComponent(ConCabecera)
-                                .addGap(52, 52, 52)
-                                .addComponent(DiferenciarMails)
-                                .addGap(23, 23, 23))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(Origen_)
-                                        .addGap(2, 2, 2))
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(FechaOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(27, 27, 27)
-                                        .addComponent(jLabel1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cantidadAleer, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtCantidadCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtArchivoOrigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(Impuesto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(ConAnual)
+                                        .addGap(45, 45, 45)
+                                        .addComponent(ConCabecera)
+                                        .addGap(52, 52, 52)
+                                        .addComponent(DiferenciarMails)
+                                        .addGap(23, 23, 23))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(Origen_)
+                                                .addGap(2, 2, 2))
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(FechaOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(27, 27, 27)
+                                                .addComponent(jLabel1)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(cantidadAleer, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jLabel5)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtCantidadCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txtArchivoOrigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(3, 3, 3))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(barraLeidos, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Mails, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(barraLeidos, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(barraGenerados, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(13, 13, 13))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Generar_, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGap(10, 10, 10)
+                                .addComponent(Mails, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(barraGenerados, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)
+                                .addComponent(tantos, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txturl, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txturl, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Generar_, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -255,7 +270,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                         .addComponent(jLabel5)
                         .addComponent(jLabel6))
                     .addComponent(FechaOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txturl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -265,17 +280,24 @@ public class frmPrincipal extends javax.swing.JFrame {
                     .addComponent(Origen_))
                 .addGap(18, 18, 18)
                 .addComponent(Generar_)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(barraLeidos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(total, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(barraGenerados, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
+                                .addComponent(jLabel4)
+                                .addComponent(Mails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(barraGenerados, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Mails))))
-                .addGap(26, 26, 26))
+                            .addComponent(jLabel3)
+                            .addComponent(barraLeidos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tantos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -284,8 +306,8 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void Origen_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Origen_ActionPerformed
  
         //Dir = javax.swing.filechooser.FileSystemView.getFileSystemView().getHomeDirectory().toString();
-        
-       
+
+          DirOrigen ="";
           DirOrigen = Dir + "\\" + directorioOrigen;//directorigen tiene el valor que viene de impuesto "automotor//"
                  
         File archivoSeleccionado;
@@ -295,8 +317,16 @@ public class frmPrincipal extends javax.swing.JFrame {
         seleccionarArchivo.setCurrentDirectory(new File(DirOrigen));
         seleccionarArchivo.showOpenDialog(null);
         archivoSeleccionado = seleccionarArchivo.getSelectedFile();
-        txtOrigen = archivoSeleccionado.getAbsoluteFile().toString();
-  
+        
+        try {
+             txtOrigen = archivoSeleccionado.getAbsoluteFile().toString();
+             
+         }catch(Exception e) {System.out.println("origen vacio");}
+        
+        
+        directorioOrigen = "";
+        directorioDestino = "";
+        System.out.println("origen ventanilla---------------------"+txtOrigen);
          
         if(txtOrigen != ""){ 
         txtArchivoOrigen.setText(txtOrigen);
@@ -359,11 +389,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         int cantidadArchivosGenerados = 1;
         int cantidadCorte = Integer.parseInt(txtCantidadCorte.getText());
         int cantidadaleer = Integer.parseInt(cantidadAleer.getText());
+        Long Lineas = 0L; 
         String line = "" ;
         String mailLinea = ".";
         String datosTodosObjetos =".";
         String ultimoMail = ".";
        
+        
+        BufferedReader filAS = null;
         BufferedReader file = null; 
         FileWriter SW = null; 
        
@@ -403,13 +436,26 @@ public class frmPrincipal extends javax.swing.JFrame {
            
     
         EscribirCabecera(SW);
-       
+        
+         
+        try{
+            filAS = new BufferedReader (new FileReader(txtOrigen));
+            line = filAS.readLine();
+
+            Lineas = filAS.lines().count();
+            raws =  Math.toIntExact(Lineas); 
+            total.setText(String.valueOf(raws)); 
+            filAS.close();
+            }catch(Exception e) {System.out.println("Error de lectura del fichero");}
+        
+        
+
         try{          
             file = new BufferedReader (new FileReader(txtOrigen));
             line = file.readLine();
         }catch(Exception e) {System.out.println("Error de lectura del fichero");}
 
-        
+
             while (line != null) {
 
                 LeerLinea(line);
@@ -481,7 +527,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                     distintos++;
                     escritos++;
 
-                    BarraGenerados(cantidadaleer, distintos);
+                    BarraGenerados(raws, distintos);
 
                     try {
 
@@ -504,8 +550,11 @@ public class frmPrincipal extends javax.swing.JFrame {
 
                 counter++;
                 contador++;
+                
+                tantos.setText(String.valueOf(counter));   
 
-                CargarBarra(cantidadaleer);
+                CargarBarra(raws);
+
 
                 try {
                     line = file.readLine();
@@ -559,7 +608,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         }catch(Exception e){} 
         
         String mensaje = "";
-            
+        
+        
         getContentPane().setBackground(Color.getHSBColor(80, 300, 100));     
         
         if (counter != (Integer.parseInt(cantidadAleer.getText()))){
@@ -776,8 +826,15 @@ private String formatearObjetoInmobiliario(String pObjeto)
     
     private void ImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImpuestoActionPerformed
 
+           
             FraccionImpuesto = Impuesto.getSelectedItem().toString();
 
+            if(FraccionImpuesto == null){
+              FraccionImpuesto =".";
+            }
+            
+            
+            
             directorioDestino = "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino\\";
 
                                 //home :"C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";                    
@@ -1043,31 +1100,33 @@ private String formatearObjetoInmobiliario(String pObjeto)
  
  private void CargarBarra(int IKant) {
     
-     Thread hilo=new Thread(){
-     
-      @Override
-       public void run(){
-            
-        try {
+     try {
            barraLeidos.setMaximum(IKant);
            barraLeidos.setValue(counter);    
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-      }
-    }; 
      
-     hilo.start();  
  }
   
   private void BarraGenerados(int IKant, int IKant2) {
     
-     Thread hilo2=new Thread(){
+     
+      try {
+           barraGenerados.setMaximum(IKant);
+           barraGenerados.setValue(IKant2);  
+           Mails.setText(String.valueOf(IKant2));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+      
+
+      /*Thread hilo2=new Thread(){
      
       @Override
        public void run(){
-            
         try {
            barraGenerados.setMaximum(IKant);
            barraGenerados.setValue(IKant2);  
@@ -1078,8 +1137,7 @@ private String formatearObjetoInmobiliario(String pObjeto)
         }
       }
     }; 
-     
-     hilo2.start();  
+     hilo2.start();  */
  }
           
      
@@ -1111,6 +1169,9 @@ private String formatearObjetoInmobiliario(String pObjeto)
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel tantos;
+    private javax.swing.JLabel total;
     private javax.swing.JTextField txtArchivoOrigen;
     private javax.swing.JTextField txtCantidadCorte;
     private javax.swing.JTextField txturl;
