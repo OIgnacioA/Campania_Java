@@ -90,7 +90,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         Generar_.setEnabled(false);
         Origen_.setEnabled(false);
         
-        Dir = "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";
+        Dir = "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Origen";
               
               //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Origen";
               //ARBA : "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";                  
@@ -779,9 +779,10 @@ private String formatearObjetoInmobiliario(String pObjeto)
 
             FraccionImpuesto = Impuesto.getSelectedItem().toString();
 
-            directorioDestino = "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino\\";
+            directorioDestino = "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\"; 
 
-                                //home :"C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";                    
+                                //home :"C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\"; 
+                                //ARBA : "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino\\";
             //List<String> cuotas = new List<String>();
 
 
