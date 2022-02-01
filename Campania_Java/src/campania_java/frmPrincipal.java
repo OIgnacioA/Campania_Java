@@ -87,9 +87,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String Patth = "";
     int sum = 0;
     int counter = 0; 
-    int raws = 0; 
-        int cont; 
-                   int contt;
+    int raws = 0;
+    int cont; 
+    int contt;
+    int distintos = 0; 
     
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
@@ -101,6 +102,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         setTitle("Generar Bases para campaña por mail V1");
         JT_Tantos.setHorizontalAlignment(JT_Tantos.RIGHT);
         jT_Totales.setHorizontalAlignment(jT_Totales.RIGHT);
+        
+
         
          //this.getContentPane().setBackground(Color.getHSBColor(80, 154, 50)); 
         
@@ -393,7 +396,8 @@ public class frmPrincipal extends javax.swing.JFrame {
 
 
     public void Procesar() {
-      
+     
+      int dist = 0 ; 
       this.getContentPane().setBackground(Color.getHSBColor(80, 150, 49));   
         
       Thread hilo1=new Thread(){
@@ -405,16 +409,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
-       
+      
         int cantidadMailIgual = 0;
         int cont=0;
         int conta = 0;
-        int distintos = 0; 
         int contador = 0;        
         int escritos = 0;
         int cantidadArchivosGenerados = 1;
         int cantidadCorte = Integer.parseInt(txtCantidadCorte.getText());
-        int cantidadaleer = Integer.parseInt(cantidadAleer.getText());
         Long Lineas = 0L; 
         String line = "" ;
         String mailLinea = ".";
@@ -589,10 +591,10 @@ public class frmPrincipal extends javax.swing.JFrame {
                 } catch (Exception e) {
                     System.out.println("Error de lectura del fichero");
                 }
-
+              
             }//while
 
-        
+         
 
         if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)){
             cantidadMailIgual++;
@@ -635,50 +637,16 @@ public class frmPrincipal extends javax.swing.JFrame {
             file.close();
         }catch(Exception e){} 
         
-        String mensaje = "";
-        
-        
-        getContentPane().setBackground(Color.getHSBColor(80, 300, 100));     
-        
-        if (counter != (Integer.parseInt(cantidadAleer.getText()))){
-                 
-            mensaje = String.format(", \"Cantidad de registros ERRONEA!!\" La cantidad de suscripciones configuradas %d y es distinta a la cantidad de registros leidos %d. De todas maneras se generaron %d mails para enviar. ", Integer.parseInt(cantidadAleer.getText()), counter, distintos);
-            JOptionPane.showMessageDialog(null, mensaje);
-                
-        }else{
-                
-            mensaje = String.format("Se leyeron %d suscripciones y se generaron %d mails para enviar. Armar bases?", counter, distintos);
-
-            barraGenerados.setValue (cantidadaleer); // agregado Ñ para que la barra de Generados termine. 
-        }
-        
-        int result = JOptionPane.showConfirmDialog(null, "Informar archivos generados? (Zip)", "Alerta!", JOptionPane.YES_NO_OPTION);
-        
-        if ( result == JOptionPane.YES_OPTION){
-                   
-                InformarArchivosGenerados();
-                directorioDestino = "";
-                 directorioOrigen = "";
-                    
-        }else{
-            
-                directorioDestino = "";
-                 directorioOrigen = "";
-            
-        }
-            
-    
-        
+ 
         try{
             SW.flush();
             SW.close();
         } catch (Exception e){} 
          
         
-        
+        OpcionDeZipeado();
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        
+              
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -686,10 +654,47 @@ public class frmPrincipal extends javax.swing.JFrame {
     }; 
      
     hilo1.start();    
-        
 }   
  
- 
+ public void OpcionDeZipeado(){
+     int cantidadaleer = Integer.parseInt(cantidadAleer.getText());
+     String mensaje = "";
+
+     getContentPane().setBackground(Color.getHSBColor(80, 300, 100));
+
+     if (counter != (Integer.parseInt(cantidadAleer.getText()))) {
+
+        mensaje = String.format(", \"Cantidad de registros ERRONEA!!\" La cantidad de suscripciones configuradas %d y es distinta a la cantidad de registros leidos %d. De todas maneras se generaron %d mails para enviar. ", Integer.parseInt(cantidadAleer.getText()), counter, distintos);
+        JOptionPane.showMessageDialog(null, mensaje);
+
+    } else {
+
+        String mensaje2 = String.format("Se leyeron %d suscripciones y se generaron %d mails para enviar. Armar bases?", counter, distintos);
+        JOptionPane.showMessageDialog(null, mensaje2);
+
+        barraGenerados.setValue(cantidadaleer); // agregado Ñ para que la barra de Generados termine. 
+    }
+
+    int result = JOptionPane.showConfirmDialog(null, "Informar archivos generados? (Zip)", "Alerta!", JOptionPane.YES_NO_OPTION);
+
+    if (result == JOptionPane.YES_OPTION) {
+
+        InformarArchivosGenerados();
+
+        String mensaje1 = String.format("Se creó un Arhivo .Zip en la carpeta %s bajo el nombre -guardado-", directorioDestino);
+        JOptionPane.showMessageDialog(null, mensaje1);
+
+        directorioDestino = "";
+        directorioOrigen = "";
+
+    } else {
+
+        directorioDestino = "";
+        directorioOrigen = "";
+
+    }
+
+ }
 
 private String formatearCuit(String pCuit){
                 
@@ -1065,31 +1070,22 @@ private String formatearObjetoInmobiliario(String pObjeto)
    
  // contiene la ruta donde están los archivos a comprimir
         File Fuente = new File(directorioDestino);
-
      // valida si existe el directorio
      if (Fuente.exists()) {
-         
-         
+            
          // lista los archivos que hay dentro del directorio
          File[] ficheros = Fuente.listFiles();
        
-         System.out.println(" ficheros total : " + ficheros.length);
-
          // ciclo para recorrer todos los archivos a comprimir
          for (int i = 0; i < ficheros.length; i++) {
              System.out.println("Nombre del fichero: " + ficheros[i].getName());
-           
-
 
              try {
                  // ruta completa donde están los archivos a comprimir
                  File zipFile = new File(directorioDestino + "guardado.zip");
-                
-
+               
                  InputStream input = null;
                  ZipOutputStream zipOut = null;
-
-
 
                  zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
                  
@@ -1098,21 +1094,16 @@ private String formatearObjetoInmobiliario(String pObjeto)
                 if (Fuente.isDirectory()) {
                     
                      for (int j = 0; j < ficheros.length; j++) {
-                         
+                            
                          input = new FileInputStream(ficheros[j]);
                          zipOut.putNextEntry(new ZipEntry(Fuente.getName() + File.separator + ficheros[j].getName()));
                          while ((temp = input.read()) != -1) {
-                             zipOut.write(temp);
-                             cont++;
-                             
+                             zipOut.write(temp);     
                          }
-                         System.out.println("while1 " + cont);
-                         
-                         contt++;
-
+                                           
                          input.close();
                      }
-                        System.out.println("while2 " + contt);
+    
                  }
 
                  zipOut.close();
