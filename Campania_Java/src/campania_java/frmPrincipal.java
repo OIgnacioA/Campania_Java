@@ -355,7 +355,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         
         
        
-        System.out.println("origen ventanilla---------------------"+txtOrigen);
+       
          
         if(txtOrigen != ""){ 
         txtArchivoOrigen.setText(txtOrigen);
@@ -382,7 +382,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                  
                 txtDestino = MyReplace(DirOrigen, txtOrigen);
               
-                System.out.println("txtdestino ------"+ txtDestino);
+              
                 Procesar();
 
             }else {
@@ -447,7 +447,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         
         String nombreArchivoCsv = String.format("%s %s",directorioDestino, nombreArchivoGenerado);          
         
-        System.out.println("Destino------------" + nombreArchivoCsv);
+     
         try{
             SW = new FileWriter(nombreArchivoCsv,true);
         } catch (Exception e){System.out.println("Error de lectura del fichero");}
@@ -516,7 +516,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
                     mailLinea += String.format("%s|Cuit: %s | %s | %s | %s | %s | %s | %s | %s ", razonsocialAux, formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, ImpuestoV, datosTodosObjetos, porcentaje);
 
-                    System.out.println("--Mai Linea ---" + mailLinea);
+                   
 
                     try {
                         if (escritos == cantidadCorte) {
@@ -748,16 +748,7 @@ private void LeerLinea(String line)
             buenContribuyente = line.substring(393, 394).replaceAll(" ","");                           
             cuit = line.substring(394, 405).replaceAll(" ","");
                            
-                    System.out.println ("mail----->"+ mail);
-                    System.out.println ("objeto----->"+ objeto);
-                    System.out.println ("razon social----->"+ razonsocial);
-                    System.out.println ("fecha de vencimiento----->"+ fechaVencimientoNumero);
-                    System.out.println ("monto cuota----->"+ montoCuota);
-                    System.out.println ("monto anual----->"+ montoAnual);
-                    System.out.println ("codigo electronico----->"+ codigoElectronico);
-                    System.out.println ("debito credito----->"+ debitoCredito);
-                    System.out.println ("buen contribuyente----->"+ buenContribuyente);
-                    System.out.println ("cuit----->"+ cuit);
+            
  
             Variable = "Prueba  Automotor" ;
 
@@ -892,8 +883,7 @@ private String formatearObjetoInmobiliario(String pObjeto)
                         directorioOrigen += "Automotores\\";
                         directorioDestino += "Automotores\\";
 
-                        System.out.println("Origen-------------> " + directorioOrigen) ;
-                        System.out.println("Destino-------------> " + directorioDestino) ;    
+                      
                         
                         impuestoLiquidar = "1";
                         nombreImpuesto = "Automotor";
@@ -1167,7 +1157,7 @@ private String formatearObjetoInmobiliario(String pObjeto)
 
         resultado = NombreOrigen; //.substring(1)
        
-        System.out.println("my Replace----------> " + resultado);
+      
         
        return resultado; 
     }
