@@ -1,32 +1,42 @@
 package campania_java;
 
-import java.awt.Color;
+/*
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.awt.List;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import static java.lang.Thread.sleep;
+import java.time.LocalDate;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingWorker; */
+
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import java.awt.Color;
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import static java.lang.Thread.sleep;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -77,6 +87,9 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String Patth = "";
     int sum = 0;
     int counter = 0; 
+    int raws = 0; 
+        int cont; 
+                   int contt;
     
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
@@ -86,14 +99,25 @@ public class frmPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Generar Bases para campaña por mail V1");
-       
+        JT_Tantos.setHorizontalAlignment(JT_Tantos.RIGHT);
+        jT_Totales.setHorizontalAlignment(jT_Totales.RIGHT);
+        
+         //this.getContentPane().setBackground(Color.getHSBColor(80, 154, 50)); 
+        
         Generar_.setEnabled(false);
         Origen_.setEnabled(false);
         
         Dir = "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Origen";
-              
+        
               //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Origen";
               //ARBA : "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";                  
+        
+        directorioDestino = "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";      
+        
+        
+               //Home  "C:\Users\sehent\Desktop\CampaniaOriginal\TXTBase-pruebas-\Destino";
+              //ARBA : "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";                  
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -119,6 +143,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         DiferenciarMails = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         FechaOpcion = new com.toedter.calendar.JDateChooser();
+        Mails = new javax.swing.JLabel();
+        JT_Tantos = new javax.swing.JTextField();
+        jT_Totales = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,8 +157,6 @@ public class frmPrincipal extends javax.swing.JFrame {
                 ImpuestoActionPerformed(evt);
             }
         });
-
-        cantidadAleer.setText("5");
 
         jLabel1.setText("Cant. Suscripciones ");
 
@@ -149,13 +176,15 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
 
+        barraLeidos.setStringPainted(true);
+
+        barraGenerados.setForeground(new java.awt.Color(255, 153, 51));
+
         jLabel3.setText("Subscripciones Leidas");
 
-        jLabel4.setText("Mail generados");
+        jLabel4.setText("Mails generados");
 
         jLabel5.setText("Contar Cada");
-
-        txtCantidadCorte.setText("15000");
 
         ConCabecera.setText("Con Cabecera");
 
@@ -165,26 +194,48 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jLabel6.setText("fecha Opcion");
 
+        Mails.setText(".");
+
+        JT_Tantos.setEditable(false);
+
+        jT_Totales.setEditable(false);
+
+        jLabel8.setText("de");
+
+        jLabel9.setText("Subscripciones Leidas:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(32, 32, 32)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Mails, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(barraGenerados, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(191, 191, 191)
+                        .addComponent(Generar_)))
+                .addContainerGap(240, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(Impuesto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(ConAnual)
-                                .addGap(45, 45, 45)
+                                .addGap(138, 138, 138)
                                 .addComponent(ConCabecera)
                                 .addGap(52, 52, 52)
                                 .addComponent(DiferenciarMails)
-                                .addGap(23, 23, 23))
+                                .addGap(28, 28, 28))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -192,39 +243,42 @@ public class frmPrincipal extends javax.swing.JFrame {
                                         .addGap(2, 2, 2))
                                     .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtArchivoOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, 613, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
                                         .addComponent(FechaOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(27, 27, 27)
-                                        .addComponent(jLabel1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cantidadAleer, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtCantidadCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtArchivoOrigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(27, 27, 27)
+                                                .addComponent(ConAnual))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel1)
+                                                .addGap(27, 27, 27)
+                                                .addComponent(cantidadAleer, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jLabel5)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtCantidadCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txturl, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addComponent(jLabel4)
-                                .addGap(20, 20, 20)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(barraGenerados, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
-                            .addComponent(barraLeidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(13, 13, 13))
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(63, 63, 63)
+                                .addComponent(JT_Tantos, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(16, 16, 16)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jT_Totales, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(28, 28, 28))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Generar_, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txturl, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addComponent(barraLeidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -245,7 +299,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                         .addComponent(jLabel5)
                         .addComponent(jLabel6))
                     .addComponent(FechaOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txturl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -253,18 +307,24 @@ public class frmPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtArchivoOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Origen_))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Generar_)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(barraLeidos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(barraGenerados, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Generar_, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addContainerGap())
+                .addGap(11, 11, 11)
+                .addComponent(barraLeidos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(Mails, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(barraGenerados, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JT_Tantos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jT_Totales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -273,8 +333,8 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void Origen_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Origen_ActionPerformed
  
         //Dir = javax.swing.filechooser.FileSystemView.getFileSystemView().getHomeDirectory().toString();
-        
-        
+
+          DirOrigen ="";
           DirOrigen = Dir + "\\" + directorioOrigen;//directorigen tiene el valor que viene de impuesto "automotor//"
                  
         File archivoSeleccionado;
@@ -284,14 +344,21 @@ public class frmPrincipal extends javax.swing.JFrame {
         seleccionarArchivo.setCurrentDirectory(new File(DirOrigen));
         seleccionarArchivo.showOpenDialog(null);
         archivoSeleccionado = seleccionarArchivo.getSelectedFile();
-        txtOrigen = archivoSeleccionado.getAbsoluteFile().toString();
-  
+        
+        try {
+             txtOrigen = archivoSeleccionado.getAbsoluteFile().toString();
+             
+         }catch(Exception e) {System.out.println("origen vacio");}
+        
+        
+       
+        System.out.println("origen ventanilla---------------------"+txtOrigen);
          
         if(txtOrigen != ""){ 
         txtArchivoOrigen.setText(txtOrigen);
         Generar_.setEnabled(true);
         }
-
+             
     }//GEN-LAST:event_Origen_ActionPerformed
 
     private void Generar_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Generar_ActionPerformed
@@ -320,13 +387,25 @@ public class frmPrincipal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, " Ingrese la cantidad de suscripciones a procesar. ", " Boleta Electrónica ", JOptionPane.ERROR_MESSAGE);  
             }
             
-            this.getContentPane().setBackground(Color.orange);
+           
             
     }//GEN-LAST:event_Generar_ActionPerformed
 
 
     public void Procesar() {
+      
+      this.getContentPane().setBackground(Color.getHSBColor(80, 150, 49));   
         
+      Thread hilo1=new Thread(){
+     
+      @Override
+       public void run(){
+            
+        try {
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+       
         int cantidadMailIgual = 0;
         int cont=0;
         int conta = 0;
@@ -335,45 +414,45 @@ public class frmPrincipal extends javax.swing.JFrame {
         int escritos = 0;
         int cantidadArchivosGenerados = 1;
         int cantidadCorte = Integer.parseInt(txtCantidadCorte.getText());
+        int cantidadaleer = Integer.parseInt(cantidadAleer.getText());
+        Long Lineas = 0L; 
         String line = "" ;
         String mailLinea = ".";
         String datosTodosObjetos =".";
         String ultimoMail = ".";
-        
-        
-        
-         barraLeidos.setMaximum(Integer.parseInt(cantidadAleer.getText()));
        
         
-       
-
+        BufferedReader filAS = null;
         BufferedReader file = null; 
         FileWriter SW = null; 
        
         FileWriter SWinforme = null;
         BufferedWriter br = null; 
         
-
-         try {
-         Date fecha1 = FechaOpcion.getDate();
-         DateFormat f=new SimpleDateFormat("dd-MM-yyyy");
-         String fecha2 =f.format(fecha1);
         
-              fechaOpcion = StringaDate(fecha2);
-         
-         } catch (Exception e) {}
+        try {
+            Date fecha1 = FechaOpcion.getDate();
+            DateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+            String fecha2 = f.format(fecha1);
+
+            fechaOpcion = StringaDate(fecha2);
+
+        } catch (Exception e) {
+       }
          
        
         String nombreArchivoGenerado = String.format ("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);        
         
-        String nombreArchivoCsv = String.format("%s %s",directorioDestino, nombreArchivoGenerado);           
+        String nombreArchivoCsv = String.format("%s %s",directorioDestino, nombreArchivoGenerado);          
+        
+        System.out.println("Destino------------" + nombreArchivoCsv);
         try{
             SW = new FileWriter(nombreArchivoCsv,true);
         } catch (Exception e){System.out.println("Error de lectura del fichero");}
        
         
         
-         Patth = (DirOrigen + "Informe.txt");
+         Patth = (directorioDestino + "Informe.txt");
         try{
             SWinforme = new FileWriter(Patth,true);
                 br = new BufferedWriter(SWinforme);
@@ -385,156 +464,136 @@ public class frmPrincipal extends javax.swing.JFrame {
            
     
         EscribirCabecera(SW);
-       
+        
+         
+        try{
+            filAS = new BufferedReader (new FileReader(txtOrigen));
+            line = filAS.readLine();
+
+            Lineas = filAS.lines().count();
+            raws =  Math.toIntExact(Lineas); 
+            jT_Totales.setText(String.valueOf(raws)); 
+            filAS.close();
+            }catch(Exception e) {System.out.println("Error de lectura del fichero");}
+        
+        
+
         try{          
             file = new BufferedReader (new FileReader(txtOrigen));
             line = file.readLine();
         }catch(Exception e) {System.out.println("Error de lectura del fichero");}
 
-        
-        while(line != null){
 
-            LeerLinea(line);
+            while (line != null) {
 
-            if(mailAux == ""){
-               mailAux = mail; 
-               razonsocialAux = razonsocial;
-               cuitAux = cuit;
-            }
+                LeerLinea(line);
 
-            ArmarDatosMail();
-
-            if ((mail != mailAux) || (razonsocial != razonsocialAux)){
-
-                if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)){
-                    cantidadMailIgual++;
-                }else{
-                    cantidadMailIgual = 0;             
-                }        
-                    
-                    
-                if (cantidadMailIgual == 0){
-                    mailLinea = String.format("%s|",mailAux);             
-                }else{                
-                    mailLinea = String.format("s% + s%|", mailAux, String.valueOf(cantidadMailIgual));                  
+                if (mailAux == "") {
+                    mailAux = mail;
+                    razonsocialAux = razonsocial;
+                    cuitAux = cuit;
                 }
 
-                ultimoMail = mailAux;
-                  
-                mailLinea += String.format("%s|Cuit: %s | %s | %s | %s | %s | %s | %s | %s ", razonsocialAux, formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, ImpuestoV, datosTodosObjetos, porcentaje); 
+                ArmarDatosMail();
 
-                System.out.println("--Mai Linea ---" + mailLinea);
-                    
-                try {           
-                    if (escritos == cantidadCorte){
-                        try{ 
+                if ((!mail.equals(mailAux)) || (!razonsocial.equals(razonsocialAux))) {
 
-                            br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
-                            br.newLine();
-                          
-                            escritos = 0;
-                            contador = 0;
-                            cantidadArchivosGenerados++;
-
-                            try{
-                                SW.flush();
-                                SW.close();
-                            } catch (Exception e){} 
-                            
-
-                            nombreArchivoGenerado = String.format ("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);        
-                            nombreArchivoCsv = String.format("%s %s",directorioDestino, nombreArchivoGenerado);           
-                                try{
-                                    SW = new FileWriter(nombreArchivoCsv,true);
-                            } catch (Exception e){System.out.println("Error de lectura del fichero");}
-
-                            br.write (String.format("Archivo ** %s **", nombreArchivoGenerado));
-
-                            EscribirCabecera(SW);
-                                
-                        } catch (Exception e){} 
-                    }      
-                } catch (Exception e) {System.out.println("Archivo no encontrado. Cambia la ruta de INFORME");}   
-                    
-                distintos++;
-                escritos++;
-
-
-                    /*  if (valor1 == 0){valor1 = 1;}
-                    
-                    int  Valor2 = Math.round(distintos/ valor1);
-                   
-                    if ( barraGenerados.getValue()==0){barraGenerados.setValue(Valor2);}
-                   
-                    if ((Valor2) <= (barraGenerados.getValue()))
-                    {
-                        barraGenerados.setValue (Valor2);                
+                    if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)) {
+                        cantidadMailIgual++;
+                    } else {
+                        cantidadMailIgual = 0;
                     }
-                    
-                    System.out.println("valor 1----------->"+valor1);
-                    System.out.println("valor 2----------->"+Valor2);*/
+
+                    if (cantidadMailIgual == 0) {
+                        mailLinea = String.format("%s|", mailAux);
+                    } else {
+                        mailLinea = String.format("s% + s%|", mailAux, String.valueOf(cantidadMailIgual));
+                    }
+
+                    ultimoMail = mailAux;
+
+                    mailLinea += String.format("%s|Cuit: %s | %s | %s | %s | %s | %s | %s | %s ", razonsocialAux, formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, ImpuestoV, datosTodosObjetos, porcentaje);
+
+                    System.out.println("--Mai Linea ---" + mailLinea);
+
+                    try {
+                        if (escritos == cantidadCorte) {
+                            try {
+
+                                br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
+                                br.newLine();
+
+                                escritos = 0;
+                                contador = 0;
+                                cantidadArchivosGenerados++;
+
+                                try {
+                                    SW.flush();
+                                    SW.close();
+                                } catch (Exception e) {
+                                }
+
+                                nombreArchivoGenerado = String.format("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);
+                                nombreArchivoCsv = String.format("%s %s", directorioDestino, nombreArchivoGenerado);
+                                try {
+                                    SW = new FileWriter(nombreArchivoCsv, true);
+                                } catch (Exception e) {
+                                    System.out.println("Error de lectura del fichero");
+                                }
+
+                                br.write(String.format("Archivo ** %s **", nombreArchivoGenerado));
+
+                                EscribirCabecera(SW);
+
+                            } catch (Exception e) {
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Archivo no encontrado. Cambia la ruta de INFORME");
+                    }
+
+                    distintos++;
+                    escritos++;
+
+                    BarraGenerados(raws, distintos);
+
+                    try {
+
+                        SW.append(mailLinea);
+                        SW.append('\n');
+
+                    } catch (Exception e) {
+                        System.out.print("PROBLEM1");
+                    }
+
+                    mailAux = mail;
+                    razonsocialAux = razonsocial;
+                    cuitAux = cuit;
+                    datosTodosObjetos = datosObjeto;
+                    datosObjeto = "";
+                } else {
+                    datosTodosObjetos += datosObjeto;
+                    conta++;
+                }//if
+
+                counter++;
+                contador++;
+                
+                JT_Tantos.setText(String.valueOf(counter));   
+
+                CargarBarra(raws);
+
 
                 try {
-                   
-                SW.append(mailLinea);      
-                SW.append('\n');
-                  
-                } catch (Exception e){System.out.print("PROBLEM1");} 
-                     
-                mailAux = mail;
-                razonsocialAux = razonsocial;
-                cuitAux = cuit;                   
-                datosTodosObjetos = datosObjeto;                    
-                datosObjeto = "";
+                    line = file.readLine();
+                } catch (Exception e) {
+                    System.out.println("Error de lectura del fichero");
                 }
-                else{ 
-                datosTodosObjetos += datosObjeto;
-                conta++; 
-            }//if
 
-            counter++;   
-            contador++; 
-            
-        
-        System.out.println("counteeeer----->"+counter);
-            
-            Thread hilo = new Thread(new Runnable () {    
-            @Override
-            public void run(){         
-                try {         
-                    barraLeidos.setValue(counter);       
-                } catch (Exception e){e.printStackTrace();} 
-
-   
-                /* if (counter >= valor1){               
-                    sum ++;
-                    barraLeidos.setValue(Math.round(sum));
-                    //counter = 0; 
-                    }*/
-                }
-        });
-        
-        hilo.start();
-            
-
-           
-            
-
-            
-            //CargarBarra();
-            
-            try{          
-            line = file.readLine();
-            }catch(Exception e) { System.out.println("Error de lectura del fichero");}  
-              
-            
-            
-        }//while
+            }//while
 
         
-        
-        
-        
+
         if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)){
             cantidadMailIgual++;
            }else{
@@ -564,20 +623,23 @@ public class frmPrincipal extends javax.swing.JFrame {
         distintos++;
         escritos++;
             
-        try{ 
+        try {
             br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
             br.newLine();
             br.flush();
             br.close();
-        }catch(Exception e){} 
+        } catch (Exception e) {
+        }
             
         try{          
             file.close();
         }catch(Exception e){} 
         
         String mensaje = "";
-            
-            
+        
+        
+        getContentPane().setBackground(Color.getHSBColor(80, 300, 100));     
+        
         if (counter != (Integer.parseInt(cantidadAleer.getText()))){
                  
             mensaje = String.format(", \"Cantidad de registros ERRONEA!!\" La cantidad de suscripciones configuradas %d y es distinta a la cantidad de registros leidos %d. De todas maneras se generaron %d mails para enviar. ", Integer.parseInt(cantidadAleer.getText()), counter, distintos);
@@ -587,20 +649,44 @@ public class frmPrincipal extends javax.swing.JFrame {
                 
             mensaje = String.format("Se leyeron %d suscripciones y se generaron %d mails para enviar. Armar bases?", counter, distintos);
 
-            barraGenerados.setValue (100); // agregado Ñ para que la barra de Generados termine. 
-
-            if ( JOptionPane.showConfirmDialog(null, "Informar archivos generados? (Zip)", "Alerta!", JOptionPane.YES_NO_OPTION) == 1){
+            barraGenerados.setValue (cantidadaleer); // agregado Ñ para que la barra de Generados termine. 
+        }
+        
+        int result = JOptionPane.showConfirmDialog(null, "Informar archivos generados? (Zip)", "Alerta!", JOptionPane.YES_NO_OPTION);
+        
+        if ( result == JOptionPane.YES_OPTION){
                    
-                //this.InformarArchivosGenerados();
+                InformarArchivosGenerados();
+                directorioDestino = "";
+                 directorioOrigen = "";
                     
-            }
+        }else{
+            
+                directorioDestino = "";
+                 directorioOrigen = "";
+            
         }
             
+    
+        
         try{
             SW.flush();
             SW.close();
         } catch (Exception e){} 
-            
+         
+        
+        
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+      }
+    }; 
+     
+    hilo1.start();    
+        
 }   
  
  
@@ -710,7 +796,7 @@ private void LeerLinea(String line)
         }
 
 
-      razonsocial = Mayusculas(razonsocial);
+      //razonsocial = Mayusculas(razonsocial);
        
 }
 
@@ -777,9 +863,17 @@ private String formatearObjetoInmobiliario(String pObjeto)
     
     private void ImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImpuestoActionPerformed
 
+           
             FraccionImpuesto = Impuesto.getSelectedItem().toString();
 
-            directorioDestino = "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\"; 
+
+           
+
+            if(FraccionImpuesto == null){
+              FraccionImpuesto =".";
+            }
+            
+
 
                                 //home :"C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\"; 
                                 //ARBA : "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino\\";
@@ -967,7 +1061,69 @@ private String formatearObjetoInmobiliario(String pObjeto)
         }
     }
     
-    
+ private void InformarArchivosGenerados(){
+   
+ // contiene la ruta donde están los archivos a comprimir
+        File Fuente = new File(directorioDestino);
+
+     // valida si existe el directorio
+     if (Fuente.exists()) {
+         
+         
+         // lista los archivos que hay dentro del directorio
+         File[] ficheros = Fuente.listFiles();
+       
+         System.out.println(" ficheros total : " + ficheros.length);
+
+         // ciclo para recorrer todos los archivos a comprimir
+         for (int i = 0; i < ficheros.length; i++) {
+             System.out.println("Nombre del fichero: " + ficheros[i].getName());
+           
+
+
+             try {
+                 // ruta completa donde están los archivos a comprimir
+                 File zipFile = new File(directorioDestino + "guardado.zip");
+                
+
+                 InputStream input = null;
+                 ZipOutputStream zipOut = null;
+
+
+
+                 zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
+                 
+                int temp = 0;
+
+                if (Fuente.isDirectory()) {
+                    
+                     for (int j = 0; j < ficheros.length; j++) {
+                         
+                         input = new FileInputStream(ficheros[j]);
+                         zipOut.putNextEntry(new ZipEntry(Fuente.getName() + File.separator + ficheros[j].getName()));
+                         while ((temp = input.read()) != -1) {
+                             zipOut.write(temp);
+                             cont++;
+                             
+                         }
+                         System.out.println("while1 " + cont);
+                         
+                         contt++;
+
+                         input.close();
+                     }
+                        System.out.println("while2 " + contt);
+                 }
+
+                 zipOut.close();
+             } catch (IOException e) {
+                 System.err.println("Error -> " + e.getMessage());
+             }
+         }
+  }
+ 
+
+ }
     
     /////////////////extras Ñ: 
     
@@ -1041,20 +1197,51 @@ private String formatearObjetoInmobiliario(String pObjeto)
     return new String(caracteres);
   }
   
- public void CargarBarra() {
-  
-   
-   
+ 
+ 
+ private void CargarBarra(int IKant) {
+    
+     try {
+           barraLeidos.setMaximum(IKant);
+           barraLeidos.setValue(counter);    
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+     
  }
-                 
- 
- 
- 
- 
-        /* double valor2 = (Integer.parseInt(cantidadAleer.getText())/ 100);
-        }else{double var1 = ((100 / valor2)/100); int var2 = Math.round(var1); sum = sum + var1;barraLeidos.setValue(sum);}
-        */
-        
+  
+  private void BarraGenerados(int IKant, int IKant2) {
+    
+     
+      try {
+           barraGenerados.setMaximum(IKant);
+           barraGenerados.setValue(IKant2);  
+           Mails.setText(String.valueOf(IKant2));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+      
+
+      /*Thread hilo2=new Thread(){
+     
+      @Override
+       public void run(){
+        try {
+           barraGenerados.setMaximum(IKant);
+           barraGenerados.setValue(IKant2);  
+           Mails.setText(String.valueOf(IKant2));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+      }
+    }; 
+     hilo2.start();  */
+ }
+          
+     
   /* 
     public static void main(String args[]) {
       
@@ -1072,6 +1259,8 @@ private String formatearObjetoInmobiliario(String pObjeto)
     private com.toedter.calendar.JDateChooser FechaOpcion;
     private javax.swing.JButton Generar_;
     private javax.swing.JComboBox<String> Impuesto;
+    private javax.swing.JTextField JT_Tantos;
+    private javax.swing.JLabel Mails;
     private javax.swing.JButton Origen_;
     private javax.swing.JProgressBar barraGenerados;
     private javax.swing.JProgressBar barraLeidos;
@@ -1082,6 +1271,9 @@ private String formatearObjetoInmobiliario(String pObjeto)
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField jT_Totales;
     private javax.swing.JTextField txtArchivoOrigen;
     private javax.swing.JTextField txtCantidadCorte;
     private javax.swing.JTextField txturl;

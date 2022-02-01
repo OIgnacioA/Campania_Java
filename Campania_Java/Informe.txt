@@ -1,0 +1,6 @@
+Se generearon los siguientes archivos:
+Archivo ** try(18).txt-Parte-1.csv **Con 3 suscripciones y 3 mails para enviar
+Archivo ** try(18).txt-Parte-2.csv **Con 3 suscripciones y 3 mails para enviar
+Archivo ** try(18).txt-Parte-3.csv **Con 3 suscripciones y 3 mails para enviar
+Archivo ** try(18).txt-Parte-4.csv **Con 5 suscripciones y 3 mails para enviar
+Archivo ** try(18).txt-Parte-5.csv **Con 4 suscripciones y 2 mails para enviar
