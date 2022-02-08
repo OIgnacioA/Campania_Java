@@ -20,10 +20,12 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -35,6 +37,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.GZIPOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -43,20 +48,23 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class frmPrincipal extends javax.swing.JFrame { 
     
     public static SimpleDateFormat sdf2 = new SimpleDateFormat("DD/MM/YYYY");
+    private String codigoElectronico = "";
+    private String buenContribuyente = "";
+    private String Variable = "";
+    private String nombreImpuesto = "";
+    private String impuestoLiquidar = "";
+    
     private String directorioOrigen = "";
     private String directorioDestino = "";
     private String txtOrigen = "";
     private String txtDestino = "";
     private String txtDestino2 ="";
-    private int cantidad = 0;
     private String Dir = "";  
     private String ImpuestoV = "";
     private String NombreOrigen = ""; 
     private String FraccionImpuesto =  "";
-     private String DirOrigen = "";
+    private String DirOrigen = "";
     private String objeto = ""; 
-    private String nombreImpuesto = "";
-    private String impuestoLiquidar = "";
     private String medioPago = "";
     private String debitoCredito = ""; //ejemplo con contenid previo
     private String mailAux ="";
@@ -73,24 +81,23 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String fechaVencimientoNumero = "";
     private String montoCuota = "";
     private String montoAnual = "";
-    private String codigoElectronico = "";
-    private String buenContribuyente = "";
     private String cuitFormateado = "";
     private String planta = "";
     private String plantaDescri = "";
-    //private String impuesto = "";
     private String fechaOpcion = "";
     private String datosObjeto = "";
     private String objetoFormateado = "";
-    private String Variable = "";
     private String nombreArchivoCsv = "";
     private String Patth = "";
+    private int cantidad = 0;
     int sum = 0;
     int counter = 0; 
     int raws = 0;
     int cont; 
     int contt;
     int distintos = 0; 
+    long size = 0;
+        
     
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
@@ -103,24 +110,25 @@ public class frmPrincipal extends javax.swing.JFrame {
         JT_Tantos.setHorizontalAlignment(JT_Tantos.RIGHT);
         jT_Totales.setHorizontalAlignment(jT_Totales.RIGHT);
         
-
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Images/sobre.png")));
         
          //this.getContentPane().setBackground(Color.getHSBColor(80, 154, 50)); 
         
         Generar_.setEnabled(false);
         Origen_.setEnabled(false);
         
-        Dir = "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Origen";
+        Dir = "\\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas";
         
               //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Origen";
-              //ARBA : "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";                  
+              //ARBA (mi pc)  : "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";                  
+              // ARBA (Compartida -RED) \\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas
+       
+              directorioDestino = "\\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas\\Destino\\";      
         
-        directorioDestino = "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";      
         
-        
-               //Home  "C:\Users\sehent\Desktop\CampaniaOriginal\TXTBase-pruebas-\Destino";
-              //ARBA : "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";                  
-        
+               //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";
+              //ARBA  (mi pc): "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino\\";                  
+        //ARBA (Compartida -RED) : \\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas
     }
 
     @SuppressWarnings("unchecked")
@@ -151,6 +159,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jT_Totales = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        Correc_Mayus = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -207,6 +216,8 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jLabel9.setText("Subscripciones Leidas:");
 
+        Correc_Mayus.setText("Corrección Mayusculas.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -232,14 +243,6 @@ public class frmPrincipal extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(Impuesto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(138, 138, 138)
-                                .addComponent(ConCabecera)
-                                .addGap(52, 52, 52)
-                                .addComponent(DiferenciarMails)
-                                .addGap(28, 28, 28))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(Origen_)
@@ -252,9 +255,6 @@ public class frmPrincipal extends javax.swing.JFrame {
                                         .addComponent(FechaOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addGap(27, 27, 27)
-                                                .addComponent(ConAnual))
-                                            .addGroup(layout.createSequentialGroup()
                                                 .addGap(18, 18, 18)
                                                 .addComponent(jLabel1)
                                                 .addGap(27, 27, 27)
@@ -262,7 +262,20 @@ public class frmPrincipal extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jLabel5)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtCantidadCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                                                .addComponent(txtCantidadCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(27, 27, 27)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(Correc_Mayus)
+                                                    .addComponent(ConAnual)))))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(Impuesto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(138, 138, 138)
+                                .addComponent(ConCabecera)
+                                .addGap(52, 52, 52)
+                                .addComponent(DiferenciarMails)
+                                .addGap(28, 28, 28))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -293,6 +306,8 @@ public class frmPrincipal extends javax.swing.JFrame {
                     .addComponent(ConAnual)
                     .addComponent(ConCabecera)
                     .addComponent(DiferenciarMails))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Correc_Mayus)
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -339,7 +354,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
           DirOrigen ="";
           DirOrigen = Dir + "\\" + directorioOrigen;//directorigen tiene el valor que viene de impuesto "automotor//"
-                 
+                
         File archivoSeleccionado;
             
         JFileChooser seleccionarArchivo = new JFileChooser();
@@ -353,8 +368,8 @@ public class frmPrincipal extends javax.swing.JFrame {
              
          }catch(Exception e) {System.out.println("origen vacio");}
         
-        
-       
+       File myFile = new File(txtOrigen); 
+       size = myFile.length();
        
          
         if(txtOrigen != ""){ 
@@ -395,8 +410,16 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_Generar_ActionPerformed
 
 
-    public void Procesar() {
+public void Procesar() {
      
+    if ((size > 40000000)&&(size < 100000000)){ 
+        String mensaje_0 = ("El archivo supera el peso minimo; Por favor AGUARDE unos instantes y empesará el proceso de carga");
+        JOptionPane.showMessageDialog(null, mensaje_0);}
+    
+    if (size > 100000000){ 
+        String mensaje_0 = ("El archivo supera POR MUCHO el peso mínimo; Por favor AGUARDE: LA OPERACION TARDARÁ UNOS MINUTOS EN INICIAR");
+        JOptionPane.showMessageDialog(null, mensaje_0);}
+    
       int dist = 0 ; 
       this.getContentPane().setBackground(Color.getHSBColor(80, 150, 49));   
         
@@ -471,9 +494,12 @@ public class frmPrincipal extends javax.swing.JFrame {
         try{
             filAS = new BufferedReader (new FileReader(txtOrigen));
             line = filAS.readLine();
-
+        
+            
             Lineas = filAS.lines().count();
             raws =  Math.toIntExact(Lineas); 
+            
+            
             jT_Totales.setText(String.valueOf(raws)); 
             filAS.close();
             }catch(Exception e) {System.out.println("Error de lectura del fichero");}
@@ -616,7 +642,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         try{
            SW.append(mailLinea);
            SW.append('\n');
-        } catch (Exception e){System.out.print("PROBLEM1");} 
+        } catch (Exception e){System.out.print("PROBLEM2");} 
             
         mailAux = mail;
         razonsocialAux = razonsocial;
@@ -656,7 +682,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     hilo1.start();    
 }   
  
- public void OpcionDeZipeado(){
+public void OpcionDeZipeado() throws IOException{
      int cantidadaleer = Integer.parseInt(cantidadAleer.getText());
      String mensaje = "";
 
@@ -712,9 +738,8 @@ private String formatearCuit(String pCuit){
      return cuitFormateado;
 
 }
-//Dife
 
-   private void EscribirCabecera(FileWriter pSw){
+private void EscribirCabecera(FileWriter pSw){
             if (this.ConCabecera.isSelected())
             {
                try {
@@ -725,8 +750,7 @@ private String formatearCuit(String pCuit){
 
   }
 
-private void LeerLinea(String line)
-{
+private void LeerLinea(String line){
            
     switch (ImpuestoV)
     {
@@ -791,8 +815,8 @@ private void LeerLinea(String line)
               break;
         }
 
-
-      //razonsocial = Mayusculas(razonsocial);
+    if (Correc_Mayus.isSelected()){razonsocial = Mayusculas(razonsocial);}
+     
        
 }
 
@@ -843,120 +867,20 @@ private void LeerLineaNuevo(String line){
             }
 
 
-            razonsocial = Mayusculas(razonsocial);
+           if (Correc_Mayus.isSelected()){razonsocial = Mayusculas(razonsocial);}
                 
     }
     
-private String formatearObjetoInmobiliario(String pObjeto)
-        {
-           
-            String partido = pObjeto.substring(0, 3).replaceAll(" ","") ;
-            String partida = pObjeto.substring(3, 9).replaceAll(" ","") ;
-            String digito = pObjeto.substring(9, 10).replaceAll(" ","") ;
+private String formatearObjetoInmobiliario(String pObjeto){
 
-            return (partido + "-" + partida + "-" + digito );
-        }  
-    
-    private void ImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImpuestoActionPerformed
+    String partido = pObjeto.substring(0, 3).replaceAll(" ","") ;
+    String partida = pObjeto.substring(3, 9).replaceAll(" ","") ;
+    String digito = pObjeto.substring(9, 10).replaceAll(" ","") ;
 
-           
-            FraccionImpuesto = Impuesto.getSelectedItem().toString();
+    return (partido + "-" + partida + "-" + digito );
+} 
 
-
-           
-
-            if(FraccionImpuesto == null){
-              FraccionImpuesto =".";
-            }
-            
-
-
-                                //home :"C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\"; 
-                                //ARBA : "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino\\";
-            //List<String> cuotas = new List<String>();
-
-
-            switch (FraccionImpuesto)
-            {
-                case "Impuesto Automotor":
-                    {
-                        directorioOrigen += "Automotores\\";
-                        directorioDestino += "Automotores\\";
-
-                      
-                        
-                        impuestoLiquidar = "1";
-                        nombreImpuesto = "Automotor";
-                        txturl.setText ("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D1%26opc%3DLIC%26Frame%3DSI%26oi%3D");
-
-
-                        break;
-                    }
-                case "Impuesto a las Embarcaciones":
-                    {
-                        directorioOrigen += "Embarcaciones\\";
-                        directorioDestino += "Embarcaciones\\";
-                        nombreImpuesto = "Embarcaciones";
-                        impuestoLiquidar = "3";
-                        txturl.setText ("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D3%26opc%3DLIC%26Frame%3DSI%26oi%3D");
-                        break;
-
-                    }
-                case "Impuesto Urbano Edificado":
-                    {
-                        directorioOrigen += "Edificado\\";
-                        directorioDestino += "Edificado\\";
-                        nombreImpuesto = "Edificado";
-                        impuestoLiquidar = "0";
-                        txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
-                        break;
-                    }
-                case "Impuesto Urbano Baldío":
-                    {
-                        directorioOrigen += "Baldio\\";
-                        directorioDestino += "Baldio\\";
-                        nombreImpuesto = "Baldio";
-                        impuestoLiquidar = "0";
-                        txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
-                        break;
-                    }
-                case "Impuesto Rural":
-                    {
-                        directorioOrigen += "Rural\\";
-                        directorioDestino += "Rural\\";
-                        impuestoLiquidar = "0";
-                        nombreImpuesto = "Rural";
-                        txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
-                        break;
-                    }
-                case "Impuesto Complementario":
-                    {
-                        directorioOrigen += "Complementario\\";
-                        directorioDestino += "Complementario\\";
-                        nombreImpuesto = "Complementario";
-                        impuestoLiquidar = "10";
-                        txturl.setText ("https://www.arba.gov.ar/aplicaciones/LiqPredet.asp?imp=10&Fame=NO&origen=WEB&op=IIC");
-                        break;
-                    }
-
-                default:
-                    {
-                       // cuotas = new List<string>() { "0" };
-                        break;
-                    }       
-                   
-    }//GEN-LAST:event_ImpuestoActionPerformed
-       
-            
-            
-            
-            if(FraccionImpuesto != ""){
-            Origen_.setEnabled(true);
-            }
-
-    }  
-   
- private void ArmarDatosMail(){
+private void ArmarDatosMail(){
 
         switch (debitoCredito) 
         {
@@ -1055,58 +979,150 @@ private String formatearObjetoInmobiliario(String pObjeto)
             }
         }
     }
-    
- private void InformarArchivosGenerados(){
-   
- // contiene la ruta donde están los archivos a comprimir
-        File Fuente = new File(directorioDestino);
-     // valida si existe el directorio
-     if (Fuente.exists()) {
-            
-         // lista los archivos que hay dentro del directorio
-         File[] ficheros = Fuente.listFiles();
-       
-         // ciclo para recorrer todos los archivos a comprimir
-         for (int i = 0; i < ficheros.length; i++) {
-             System.out.println("Nombre del fichero: " + ficheros[i].getName());
-
-             try {
-                 // ruta completa donde están los archivos a comprimir
-                 File zipFile = new File(directorioDestino + "guardado.zip");
-               
-                 InputStream input = null;
-                 ZipOutputStream zipOut = null;
-
-                 zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
-                 
-                int temp = 0;
-
-                if (Fuente.isDirectory()) {
-                    
-                     for (int j = 0; j < ficheros.length; j++) {
-                            
-                         input = new FileInputStream(ficheros[j]);
-                         zipOut.putNextEntry(new ZipEntry(Fuente.getName() + File.separator + ficheros[j].getName()));
-                         while ((temp = input.read()) != -1) {
-                             zipOut.write(temp);     
-                         }
-                                           
-                         input.close();
-                     }
-    
-                 }
-
-                 zipOut.close();
-             } catch (IOException e) {
-                 System.err.println("Error -> " + e.getMessage());
-             }
-         }
-  }
  
-
- }
+private void InformarArchivosGenerados() throws FileNotFoundException, IOException{
+ 
+    ConteoZip form2 = new ConteoZip();
     
-    /////////////////extras Ñ: 
+    form2.setVisible(true);
+    
+    
+      
+    int cont  = 0;
+
+    File Fuente = new File(directorioDestino);
+
+    File[] ficheros = Fuente.listFiles();
+    
+        form2.BarraMax(ficheros.length);
+        form2.textTotal(ficheros.length);
+
+    File zipFile = new File(directorioDestino + "guardado.zip");
+    byte[] buffer = new byte[1024];
+
+    InputStream input = null;
+    ZipOutputStream zipOut = null;
+
+    zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
+
+    int len;
+
+    if (Fuente.isDirectory()) {
+
+        for (int j = 0; j < ficheros.length; j++) {
+
+            input = new FileInputStream(ficheros[j]);
+            zipOut.putNextEntry(new ZipEntry(Fuente.getName() + File.separator + ficheros[j].getName()));
+            while ((len = input.read(buffer)) > 0) {
+                zipOut.write(buffer, 0, len);
+            }
+            cont++;
+            System.out.println("archivo: --" + ficheros[j]);
+            System.out.println("cont " + cont);
+            
+            form2.BarraSuma(cont);
+            form2.textActual(cont);
+            input.close();
+        }
+
+    }
+
+    zipOut.close();
+}
+ 
+    private void ImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImpuestoActionPerformed
+
+        directorioOrigen = ""; 
+        FraccionImpuesto = Impuesto.getSelectedItem().toString();
+
+
+        if(FraccionImpuesto == null){
+          FraccionImpuesto =".";
+        }
+
+        //List<String> cuotas = new List<String>();
+
+
+        switch (FraccionImpuesto)
+        {
+            case "Impuesto Automotor":
+                {
+                    directorioOrigen += "Automotores\\";
+                    directorioDestino += "Automotores\\";
+
+
+
+                    impuestoLiquidar = "1";
+                    nombreImpuesto = "Automotor";
+                    txturl.setText ("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D1%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+
+
+                    break;
+                }
+            case "Impuesto a las Embarcaciones":
+                {
+                    directorioOrigen += "Embarcaciones\\";
+                    directorioDestino += "Embarcaciones\\";
+                    nombreImpuesto = "Embarcaciones";
+                    impuestoLiquidar = "3";
+                    txturl.setText ("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D3%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                    break;
+
+                }
+            case "Impuesto Urbano Edificado":
+                {
+                    directorioOrigen += "Edificado\\";
+                    directorioDestino += "Edificado\\";
+                    nombreImpuesto = "Edificado";
+                    impuestoLiquidar = "0";
+                    txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                    break;
+                }
+            case "Impuesto Urbano Baldío":
+                {
+                    directorioOrigen += "Baldio\\";
+                    directorioDestino += "Baldio\\";
+                    nombreImpuesto = "Baldio";
+                    impuestoLiquidar = "0";
+                    txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                    break;
+                }
+            case "Impuesto Rural":
+                {
+                    directorioOrigen += "Rural\\";
+                    directorioDestino += "Rural\\";
+                    impuestoLiquidar = "0";
+                    nombreImpuesto = "Rural";
+                    txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                    break;
+                }
+            case "Impuesto Complementario":
+                {
+                    directorioOrigen += "Complementario\\";
+                    directorioDestino += "Complementario\\";
+                    nombreImpuesto = "Complementario";
+                    impuestoLiquidar = "10";
+                    txturl.setText ("https://www.arba.gov.ar/aplicaciones/LiqPredet.asp?imp=10&Fame=NO&origen=WEB&op=IIC");
+                    break;
+                }
+
+                default:
+                {
+                        // cuotas = new List<string>() { "0" };
+                       break;
+                 }       
+
+    }//GEN-LAST:event_ImpuestoActionPerformed
+ 
+        if(FraccionImpuesto != ""){
+        Origen_.setEnabled(true);
+        }
+
+    }  
+   
+
+
+/////////////////extras Ñ: 
     
  public static String trimEnd(String value) {
         return value.replaceFirst("\\s+$", "");
@@ -1164,19 +1180,15 @@ private String formatearObjetoInmobiliario(String pObjeto)
      
  public String Mayusculas(String cadena) {
        
-    char[] caracteres = cadena.toCharArray();
-   
-    caracteres[0] = Character.toUpperCase(caracteres[0]);
-
-    for (int i = 0; i < cadena.length()- 2; i++) {
-
-        if (caracteres[i] == ' ' || caracteres[i] == '.' || caracteres[i] == ','){
-              caracteres[i + 1] = Character.toUpperCase(caracteres[i + 1]); 
-            }
-    }
-   
-    return new String(caracteres);
-  }
+      StringBuffer strbf = new StringBuffer();
+      Matcher match = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(cadena);
+      while(match.find()) 
+      {
+         match.appendReplacement(strbf, match.group(1).toUpperCase() + match.group(2).toLowerCase());
+      }
+      
+     return (match.appendTail(strbf).toString());
+}
   
  
  
@@ -1236,6 +1248,7 @@ private String formatearObjetoInmobiliario(String pObjeto)
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox ConAnual;
     private javax.swing.JCheckBox ConCabecera;
+    private javax.swing.JCheckBox Correc_Mayus;
     private javax.swing.JCheckBox DiferenciarMails;
     private com.toedter.calendar.JDateChooser FechaOpcion;
     private javax.swing.JButton Generar_;

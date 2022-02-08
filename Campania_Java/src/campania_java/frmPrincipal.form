@@ -47,15 +47,6 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                              <Component id="Impuesto" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
-                              <Component id="ConCabecera" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                              <Component id="DiferenciarMails" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                          </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
@@ -71,10 +62,6 @@
                                       <Component id="FechaOpcion" min="-2" pref="207" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                                              <Component id="ConAnual" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
                                               <EmptySpace type="separate" max="-2" attributes="0"/>
                                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
@@ -84,9 +71,25 @@
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="txtCantidadCorte" min="-2" pref="65" max="-2" attributes="0"/>
                                           </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="Correc_Mayus" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="ConAnual" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
                                       </Group>
                                   </Group>
                               </Group>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="Impuesto" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
+                              <Component id="ConCabecera" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                              <Component id="DiferenciarMails" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -129,6 +132,8 @@
                   <Component id="ConCabecera" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="DiferenciarMails" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="Correc_Mayus" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -302,6 +307,11 @@
     <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>
         <Property name="text" type="java.lang.String" value="Subscripciones Leidas:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="Correc_Mayus">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Correcci&#xf3;n Mayusculas."/>
       </Properties>
     </Component>
   </SubComponents>
