@@ -1,3 +1,6 @@
+version 8_2
+
+
 prueba en version 1
 
 - Verresultado de  "objetoformateado"en el .NET original
