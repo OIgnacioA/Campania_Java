@@ -466,8 +466,7 @@ public void Procesar() {
 
             fechaOpcion = StringaDate(fecha2);
 
-        } catch (Exception e) {
-       }
+        } catch (Exception e) {}
          
        
         String nombreArchivoGenerado = String.format ("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);        
