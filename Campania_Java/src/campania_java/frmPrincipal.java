@@ -479,15 +479,14 @@ public void Procesar() {
         } catch (Exception e){System.out.println("Error de lectura del fichero");}
        
         
+        Patth = (directorioDestino + "Informe.txt");
         
-         Patth = (directorioDestino + "Informe.txt");
         try{
             SWinforme = new FileWriter(Patth,true);
                 br = new BufferedWriter(SWinforme);
                 br.write("Se generearon los siguientes archivos:");
                 br.newLine();
-                br.write (String.format("Archivo ** %s **", nombreArchivoGenerado));
-                
+                br.write (String.format("Archivo ** %s **", nombreArchivoGenerado));    
         } catch (Exception e){}
            
     
@@ -496,16 +495,13 @@ public void Procesar() {
          
         try{
             filAS = new BufferedReader (new FileReader(txtOrigen));
-            line = filAS.readLine();
-        
-            
+           
             Lineas = filAS.lines().count();
             raws =  Math.toIntExact(Lineas); 
             
-            
             jT_Totales.setText(String.valueOf(raws)); 
             filAS.close();
-            }catch(Exception e) {System.out.println("Error de lectura del fichero");}
+        }catch(Exception e) {System.out.println("Error de lectura del fichero");}
         
         
 
@@ -515,113 +511,113 @@ public void Procesar() {
         }catch(Exception e) {System.out.println("Error de lectura del fichero");}
 
 
-            while (line != null) {
+        while (line != null) {
 
-                LeerLinea(line);
+            LeerLinea(line);
 
-                if (mailAux == "") {
-                    mailAux = mail;
-                    razonsocialAux = razonsocial;
-                    cuitAux = cuit;
+            if (mailAux == "") {
+                mailAux = mail;
+                razonsocialAux = razonsocial;
+                cuitAux = cuit;
+            }
+
+            ArmarDatosMail();
+
+            if ((!mail.equals(mailAux)) || (!razonsocial.equals(razonsocialAux))) {
+
+                if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)) {
+                    cantidadMailIgual++;
+                } else {
+                    cantidadMailIgual = 0;
                 }
 
-                ArmarDatosMail();
-
-                if ((!mail.equals(mailAux)) || (!razonsocial.equals(razonsocialAux))) {
-
-                    if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)) {
-                        cantidadMailIgual++;
-                    } else {
-                        cantidadMailIgual = 0;
-                    }
-
-                    if (cantidadMailIgual == 0) {
-                        mailLinea = String.format("%s|", mailAux);
-                    } else {
-                        mailLinea = String.format("s% + s%|", mailAux, String.valueOf(cantidadMailIgual));
-                    }
-
-                    ultimoMail = mailAux;
-
-                    mailLinea += String.format("%s|Cuit: %s | %s | %s | %s | %s | %s | %s | %s ", razonsocialAux, formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, ImpuestoV, datosTodosObjetos, porcentaje);
-
-                   
-
-                    try {
-                        if (escritos == cantidadCorte) {
-                            try {
-
-                                br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
-                                br.newLine();
-
-                                escritos = 0;
-                                contador = 0;
-                                cantidadArchivosGenerados++;
-
-                                try {
-                                    SW.flush();
-                                    SW.close();
-                                } catch (Exception e) {
-                                }
-
-                                nombreArchivoGenerado = String.format("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);
-                                nombreArchivoCsv = String.format("%s %s", directorioDestino, nombreArchivoGenerado);
-                                try {
-                                    SW = new FileWriter(nombreArchivoCsv, true);
-                                } catch (Exception e) {
-                                    System.out.println("Error de lectura del fichero");
-                                }
-
-                                br.write(String.format("Archivo ** %s **", nombreArchivoGenerado));
-
-                                EscribirCabecera(SW);
-
-                            } catch (Exception e) {
-                            }
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Archivo no encontrado. Cambia la ruta de INFORME");
-                    }
-
-                    distintos++;
-                    escritos++;
-
-                    BarraGenerados(raws, distintos);
-
-                    try {
-
-                        SW.append(mailLinea);
-                        SW.append('\n');
-
-                    } catch (Exception e) {
-                        System.out.print("PROBLEM1");
-                    }
-
-                    mailAux = mail;
-                    razonsocialAux = razonsocial;
-                    cuitAux = cuit;
-                    datosTodosObjetos = datosObjeto;
-                    datosObjeto = "";
+                if (cantidadMailIgual == 0) {
+                    mailLinea = String.format("%s|", mailAux);
                 } else {
-                    datosTodosObjetos += datosObjeto;
-                    conta++;
-                }//if
+                    mailLinea = String.format("s% + s%|", mailAux, String.valueOf(cantidadMailIgual));
+                }
 
-                counter++;
-                contador++;
-                
-                JT_Tantos.setText(String.valueOf(counter));   
+                ultimoMail = mailAux;
 
-                CargarBarra(raws);
+                mailLinea += String.format("%s|Cuit: %s | %s | %s | %s | %s | %s | %s | %s ", razonsocialAux, formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, ImpuestoV, datosTodosObjetos, porcentaje);
+
 
 
                 try {
-                    line = file.readLine();
+                    if (escritos == cantidadCorte) {
+                        try {
+
+                            br.write(String.format("Con %d suscripciones y %d mails para enviar", contador, escritos));
+                            br.newLine();
+
+                            escritos = 0;
+                            contador = 0;
+                            cantidadArchivosGenerados++;
+
+                            try {
+                                SW.flush();
+                                SW.close();
+                            } catch (Exception e) {
+                            }
+
+                            nombreArchivoGenerado = String.format("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);
+                            nombreArchivoCsv = String.format("%s %s", directorioDestino, nombreArchivoGenerado);
+                            try {
+                                SW = new FileWriter(nombreArchivoCsv, true);
+                            } catch (Exception e) {
+                                System.out.println("Error de lectura del fichero");
+                            }
+
+                            br.write(String.format("Archivo ** %s **", nombreArchivoGenerado));
+
+                            EscribirCabecera(SW);
+
+                        } catch (Exception e) {
+                        }
+                    }
                 } catch (Exception e) {
-                    System.out.println("Error de lectura del fichero");
+                    System.out.println("Archivo no encontrado. Cambia la ruta de INFORME");
                 }
-              
-            }//while
+
+                distintos++;
+                escritos++;
+
+                BarraGenerados(raws, distintos);
+
+                try {
+
+                    SW.append(mailLinea);
+                    SW.append('\n');
+
+                } catch (Exception e) {
+                    System.out.print("PROBLEM1");
+                }
+
+                mailAux = mail;
+                razonsocialAux = razonsocial;
+                cuitAux = cuit;
+                datosTodosObjetos = datosObjeto;
+                datosObjeto = "";
+            } else {
+                datosTodosObjetos += datosObjeto;
+                conta++;
+            }//if
+
+            counter++;
+            contador++;
+
+            JT_Tantos.setText(String.valueOf(counter));   
+
+            CargarBarra(raws);
+
+
+            try {
+                line = file.readLine();
+            } catch (Exception e) {
+                System.out.println("Error de lectura del fichero");
+            }
+
+        }//while
 
          
 
