@@ -102,8 +102,12 @@ public class frmPrincipal extends javax.swing.JFrame {
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
   
-    public frmPrincipal() {
+    public frmPrincipal(int raws) {
+        
+        
         initComponents();
+        
+        this.raws = raws;
         setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Generar Bases para campaña por mail V1");
@@ -412,7 +416,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
 public void Procesar() {
      
-    
+    //sacarRaws();
     
     if ((size > 40000000)&&(size < 100000000)){ 
         String mensaje_0 = ("El archivo supera el peso minimo; Por favor AGUARDE unos instantes y empesará el proceso de carga");
@@ -425,6 +429,8 @@ public void Procesar() {
       int dist = 0 ; 
       this.getContentPane().setBackground(Color.getHSBColor(80, 150, 49));   
         
+
+      
       Thread hilo1=new Thread(){
      
       @Override
@@ -493,21 +499,7 @@ public void Procesar() {
     
         EscribirCabecera(SW);
         
-         
-        try{
-            filAS = new BufferedReader (new FileReader(txtOrigen));
-            line = filAS.readLine();
-        
-            
-            Lineas = filAS.lines().count();
-            raws =  Math.toIntExact(Lineas); 
-            
-            
-            jT_Totales.setText(String.valueOf(raws)); 
-            filAS.close();
-            }catch(Exception e) {System.out.println("Error de lectura del fichero");}
-        
-        
+ 
 
         try{          
             file = new BufferedReader (new FileReader(txtOrigen));
@@ -688,6 +680,15 @@ public void Procesar() {
     Origen_.setEnabled(true);
 }   
  
+
+public void sacarRaws(){
+
+   CuentaLineas lineass= new CuentaLineas(txtOrigen);
+   raws=lineass.rawss(txtOrigen);
+
+}
+
+
 public void OpcionDeZipeado() throws IOException{
      int cantidadaleer = Integer.parseInt(cantidadAleer.getText());
      String mensaje = "";
