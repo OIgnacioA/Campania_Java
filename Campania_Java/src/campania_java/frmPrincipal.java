@@ -90,6 +90,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String nombreArchivoCsv = "";
     private String Patth = "";
     private int cantidad = 0;
+    private String txtURL = "";
     int sum = 0;
     int counter = 0; 
     int raws = 0;
@@ -97,18 +98,24 @@ public class frmPrincipal extends javax.swing.JFrame {
     int contt;
     int distintos = 0; 
     long size = 0;
-        
+    OrigenTxT claseOrigen = new OrigenTxT();    
     
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
   
-    public frmPrincipal() {
-        initComponents();
+    public frmPrincipal(int raws, String txturl) {
+        
+        
+        initComponents();     
+        this.raws = raws;
+        txtURL = txturl;
         setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Generar Bases para campaña por mail V1");
         JT_Tantos.setHorizontalAlignment(JT_Tantos.RIGHT);
         jT_Totales.setHorizontalAlignment(jT_Totales.RIGHT);
+        
+       // txturl.setText(txtURL);
         
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Images/sobre.png")));
         
@@ -129,6 +136,11 @@ public class frmPrincipal extends javax.swing.JFrame {
                //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";
               //ARBA  (mi pc): "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino\\";                  
         //ARBA (Compartida -RED) : \\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas
+    }
+
+    frmPrincipal() {
+
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @SuppressWarnings("unchecked")
@@ -349,7 +361,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Origen_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Origen_ActionPerformed
- 
+     /*
         //Dir = javax.swing.filechooser.FileSystemView.getFileSystemView().getHomeDirectory().toString();
 
           DirOrigen ="";
@@ -368,15 +380,12 @@ public class frmPrincipal extends javax.swing.JFrame {
              
          }catch(Exception e) {System.out.println("origen vacio");}
         
-       File myFile = new File(txtOrigen); 
-       size = myFile.length();
-       
-         
+ 
         if(txtOrigen != ""){ 
         txtArchivoOrigen.setText(txtOrigen);
         Generar_.setEnabled(true);
         }
-             
+             */
     }//GEN-LAST:event_Origen_ActionPerformed
 
     private void Generar_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Generar_ActionPerformed
@@ -411,20 +420,13 @@ public class frmPrincipal extends javax.swing.JFrame {
 
 
 public void Procesar() {
-     
-    
-    
-    if ((size > 40000000)&&(size < 100000000)){ 
-        String mensaje_0 = ("El archivo supera el peso minimo; Por favor AGUARDE unos instantes y empesará el proceso de carga");
-        JOptionPane.showMessageDialog(null, mensaje_0);}
-    
-    if (size > 100000000){ 
-        String mensaje_0 = ("El archivo supera POR MUCHO el peso mínimo; Por favor AGUARDE: LA OPERACION TARDARÁ UNOS MINUTOS EN INICIAR");
-        JOptionPane.showMessageDialog(null, mensaje_0);}
-    
+
+
       int dist = 0 ; 
       this.getContentPane().setBackground(Color.getHSBColor(80, 150, 49));   
         
+
+      
       Thread hilo1=new Thread(){
      
       @Override
@@ -492,18 +494,7 @@ public void Procesar() {
     
         EscribirCabecera(SW);
         
-         
-        try{
-            filAS = new BufferedReader (new FileReader(txtOrigen));
-           
-            Lineas = filAS.lines().count();
-            raws =  Math.toIntExact(Lineas); 
-            
-            jT_Totales.setText(String.valueOf(raws)); 
-            filAS.close();
-        }catch(Exception e) {System.out.println("Error de lectura del fichero");}
-        
-        
+
 
         try{          
             file = new BufferedReader (new FileReader(txtOrigen));
@@ -684,13 +675,17 @@ public void Procesar() {
     Origen_.setEnabled(true);
 }   
  
+
 public void OpcionDeZipeado() throws IOException{
-     int cantidadaleer = Integer.parseInt(cantidadAleer.getText());
-     String mensaje = "";
+    
+    
+     
+    int cantidadaleer = Integer.parseInt(cantidadAleer.getText());
+    String mensaje = "";
 
-     getContentPane().setBackground(Color.getHSBColor(80, 300, 100));
+    getContentPane().setBackground(Color.getHSBColor(80, 300, 100));
 
-     if (counter != (Integer.parseInt(cantidadAleer.getText()))) {
+    if (counter != (Integer.parseInt(cantidadAleer.getText()))) {
 
         mensaje = String.format(", \"Cantidad de registros ERRONEA!!\" La cantidad de suscripciones configuradas %d y es distinta a la cantidad de registros leidos %d. De todas maneras se generaron %d mails para enviar. ", Integer.parseInt(cantidadAleer.getText()), counter, distintos);
         JOptionPane.showMessageDialog(null, mensaje);
@@ -712,13 +707,12 @@ public void OpcionDeZipeado() throws IOException{
         String mensaje1 = String.format("Se creó un Arhivo .Zip en la carpeta %s bajo el nombre -guardado-", directorioDestino);
         JOptionPane.showMessageDialog(null, mensaje1);
 
-        directorioDestino = "";
-        directorioOrigen = "";
-
+       claseOrigen.SetTextOrigen("");
+       claseOrigen.SetTextdestino("");
     } else {
 
-        directorioDestino = "";
-        directorioOrigen = "";
+      claseOrigen.SetTextOrigen("");
+       claseOrigen.SetTextdestino("");
 
     }
 
@@ -1033,7 +1027,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
 }
  
     private void ImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImpuestoActionPerformed
-
+/*
         directorioOrigen = ""; 
         FraccionImpuesto = Impuesto.getSelectedItem().toString();
 
@@ -1119,7 +1113,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
         if(FraccionImpuesto != ""){
         Origen_.setEnabled(true);
         }
-
+   */
     }  
    
 
