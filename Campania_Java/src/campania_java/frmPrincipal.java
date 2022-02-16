@@ -122,15 +122,17 @@ public class frmPrincipal extends javax.swing.JFrame {
         
         Dir = "\\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas";
         
+              // ARBA (trabajo real)    \\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas";
+              // ARBA (Compartida -RED -pruebas original avendaño-Cruz- ) \\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas               
               //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Origen";
               //ARBA (mi pc)  : "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";                  
-              // ARBA (Compartida -RED) \\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas
+              
        
-              directorioDestino = "\\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas\\Destino\\";      
+              directorioDestino = "\\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas\\Destino";      
         
         
-               //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino\\";
-              //ARBA  (mi pc): "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino\\";                  
+               //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino";
+              //ARBA  (mi pc): "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino";                  
         //ARBA (Compartida -RED) : \\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas
     }
 
@@ -219,7 +221,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jLabel9.setText("Subscripciones Leidas:");
 
-        Correc_Mayus.setText("Corrección Mayusculas.");
+        Correc_Mayus.setText("Corrección Mayusculas.(Razón Social)");
 
         jLabel7.setText("(Registros Aprox.)");
 
@@ -361,7 +363,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         //Dir = javax.swing.filechooser.FileSystemView.getFileSystemView().getHomeDirectory().toString();
 
           DirOrigen ="";
-          DirOrigen = Dir + "\\" + directorioOrigen;//directorigen tiene el valor que viene de impuesto "automotor//"
+          DirOrigen = Dir + directorioOrigen;//directorigen tiene el valor que viene de impuesto "automotor//"
                 
         File archivoSeleccionado;
             
@@ -1050,8 +1052,8 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
         {
             case "Impuesto Automotor":
                 {
-                    directorioOrigen += "Automotores\\";
-                    directorioDestino += "Automotores\\";
+                    directorioOrigen += "\\Automotores\\";
+                    directorioDestino += "\\Automotores\\";
 
 
 
@@ -1064,8 +1066,8 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                 }
             case "Impuesto a las Embarcaciones":
                 {
-                    directorioOrigen += "Embarcaciones\\";
-                    directorioDestino += "Embarcaciones\\";
+                    directorioOrigen += "\\Embarcaciones\\";
+                    directorioDestino += "\\Embarcaciones\\";
                     nombreImpuesto = "Embarcaciones";
                     impuestoLiquidar = "3";
                     txturl.setText ("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D3%26opc%3DLIC%26Frame%3DSI%26oi%3D");
@@ -1074,8 +1076,8 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                 }
             case "Impuesto Urbano Edificado":
                 {
-                    directorioOrigen += "Edificado\\";
-                    directorioDestino += "Edificado\\";
+                    directorioOrigen += "\\Edificado\\";
+                    directorioDestino += "\\Edificado\\";
                     nombreImpuesto = "Edificado";
                     impuestoLiquidar = "0";
                     txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
@@ -1083,8 +1085,8 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                 }
             case "Impuesto Urbano Baldío":
                 {
-                    directorioOrigen += "Baldio\\";
-                    directorioDestino += "Baldio\\";
+                    directorioOrigen += "\\Baldio\\";
+                    directorioDestino += "\\Baldio\\";
                     nombreImpuesto = "Baldio";
                     impuestoLiquidar = "0";
                     txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
@@ -1092,8 +1094,8 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                 }
             case "Impuesto Rural":
                 {
-                    directorioOrigen += "Rural\\";
-                    directorioDestino += "Rural\\";
+                    directorioOrigen += "\\Rural\\";
+                    directorioDestino += "\\Rural\\";
                     impuestoLiquidar = "0";
                     nombreImpuesto = "Rural";
                     txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
@@ -1101,8 +1103,8 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                 }
             case "Impuesto Complementario":
                 {
-                    directorioOrigen += "Complementario\\";
-                    directorioDestino += "Complementario\\";
+                    directorioOrigen += "\\Complementario\\";
+                    directorioDestino += "\\Complementario\\";
                     nombreImpuesto = "Complementario";
                     impuestoLiquidar = "10";
                     txturl.setText ("https://www.arba.gov.ar/aplicaciones/LiqPredet.asp?imp=10&Fame=NO&origen=WEB&op=IIC");
