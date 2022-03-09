@@ -89,6 +89,12 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String objetoFormateado = "";
     private String nombreArchivoCsv = "";
     private String Patth = "";
+    private String fullPath = ""; 
+    
+    private String ArgumentoreaderNuevo = "";
+    private String ArgumentoOpcionCheck1 = "";
+    private String ArgumentoOpcionCheck2 = "";
+    
     private int cantidad = 0;
     private int sum = 0;
     private int Maximo = 0; 
@@ -97,8 +103,9 @@ public class frmPrincipal extends javax.swing.JFrame {
     private int cont; 
     private int contt;
     private int  valInt = 0 ;
+    private int cantidadaleer = 0 ;
     private int distintos = 0; 
-    private long size = 0;
+    private long size1 = 0;
         
     
     
@@ -106,6 +113,7 @@ public class frmPrincipal extends javax.swing.JFrame {
   
     public frmPrincipal() {
         initComponents();
+        ModoOriginal.setSelected(true);
         setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Generar Bases para campaña por mail V1");
@@ -120,26 +128,27 @@ public class frmPrincipal extends javax.swing.JFrame {
         Generar_.setEnabled(false);
         Origen_.setEnabled(false);
         
-        Dir = "\\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas";
+        directorioOrigen = "\\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen";
         
-              // ARBA (trabajo real)    \\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas";
-              // ARBA (Compartida -RED -pruebas original avendaño-Cruz- ) \\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas               
-              //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Origen";
-              //ARBA (mi pc)  : "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";                  
-              
-       
-              directorioDestino = "\\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas\\Destino";      
-        
-        
-               //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino";
-              //ARBA  (mi pc): "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino";                  
-        //ARBA (Compartida -RED) : \\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas
+            // ARBA (trabajo real)    \\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas";
+            // ARBA (Compartida -RED -pruebas original avendaño-Cruz- ) \\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas               
+            //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Origen";
+            //ARBA (mi pc)  : "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent";                  
+
+
+        directorioDestino = "\\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Destino";      
+
+
+            //Home  "C:\\Users\\sehent\\Desktop\\CampaniaOriginal\\TXTBase-pruebas-\\Destino";
+            //ARBA  (mi pc): "C:\\Users\\oscar.avendano\\Desktop\\DB Campaña\\Archivos de Prueba\\sehent\\Destino";                  
+            //ARBA (Compartida -RED) : \\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen\\Baldio\\archivos pruebas
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        SelectorDeMetodo = new javax.swing.ButtonGroup();
         Impuesto = new javax.swing.JComboBox<>();
         cantidadAleer = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -166,6 +175,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         Correc_Mayus = new javax.swing.JCheckBox();
         jLabel7 = new javax.swing.JLabel();
+        ModoNuevo = new javax.swing.JRadioButton();
+        ModoOriginal = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -225,24 +236,16 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jLabel7.setText("(Registros Aprox.)");
 
+        SelectorDeMetodo.add(ModoNuevo);
+        ModoNuevo.setText("a RED");
+
+        SelectorDeMetodo.add(ModoOriginal);
+        ModoOriginal.setText("A carpeta Local");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(136, 136, 136)
-                        .addComponent(Generar_, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Mails, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(barraGenerados, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -303,6 +306,26 @@ public class frmPrincipal extends javax.swing.JFrame {
                                                     .addComponent(Correc_Mayus)
                                                     .addComponent(ConAnual))))))))))
                 .addGap(27, 27, 27))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(136, 136, 136)
+                        .addComponent(Generar_, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Mails, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(barraGenerados, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ModoOriginal)
+                .addGap(48, 48, 48)
+                .addComponent(ModoNuevo)
+                .addGap(263, 263, 263))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,7 +347,11 @@ public class frmPrincipal extends javax.swing.JFrame {
                         .addComponent(jLabel5)
                         .addComponent(jLabel6))
                     .addComponent(FechaOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ModoNuevo)
+                    .addComponent(ModoOriginal))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txturl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -362,14 +389,14 @@ public class frmPrincipal extends javax.swing.JFrame {
  
         //Dir = javax.swing.filechooser.FileSystemView.getFileSystemView().getHomeDirectory().toString();
 
-          DirOrigen ="";
-          DirOrigen = Dir + directorioOrigen;//directorigen tiene el valor que viene de impuesto "automotor//"
+          /*DirOrigen ="";
+          DirOrigen = Dir + directorioOrigen;//directorigen tiene el valor que viene de impuesto "automotor//" */
                 
         File archivoSeleccionado;
             
         JFileChooser seleccionarArchivo = new JFileChooser();
         seleccionarArchivo.setFileFilter(filter);
-        seleccionarArchivo.setCurrentDirectory(new File(DirOrigen));
+        seleccionarArchivo.setCurrentDirectory(new File(directorioOrigen));
         seleccionarArchivo.showOpenDialog(null);
         archivoSeleccionado = seleccionarArchivo.getSelectedFile();
         
@@ -378,17 +405,23 @@ public class frmPrincipal extends javax.swing.JFrame {
              
          }catch(Exception e) {System.out.println("origen vacio");}
         
-       File myFile = new File(txtOrigen); 
-       
-       size = myFile.length();
-       valInt =  Long.valueOf(size).intValue();
-       Maximo =  (valInt/ 40700) *100; 
-       jT_Totales.setText(Integer.toString(Maximo));
-       JT_Tantos.setText("0");
-         
+            File myFile = new File(txtOrigen); 
+
+            
+            /////Peso, barras y textbox informativos: ///////////////////////// 
+
+             size1 = myFile.length();
+             valInt =  Long.valueOf(size1).intValue();
+             Maximo =  (valInt/ 40700) *100; 
+             jT_Totales.setText(Integer.toString(Maximo));
+             JT_Tantos.setText("0");
+
+             ////////////////////////////////////////////////////////////
+          
+          
         if(txtOrigen != ""){ 
-        txtArchivoOrigen.setText(txtOrigen);
-        Generar_.setEnabled(true);
+            txtArchivoOrigen.setText(txtOrigen);
+            Generar_.setEnabled(true);
         }
              
     }//GEN-LAST:event_Origen_ActionPerformed
@@ -405,18 +438,28 @@ public class frmPrincipal extends javax.swing.JFrame {
                 System.out.println ("No está especificado 'Cantidad' ");
             }
 
-            if (seguir){
+        if (seguir){
                 
-                ImpuestoV = Impuesto.getSelectedItem().toString();
-                 
-                txtDestino = MyReplace(DirOrigen, txtOrigen);
+            ImpuestoV = Impuesto.getSelectedItem().toString();  
+            
+            fullPath = txtOrigen ;
 
-                Procesar();
+           ////////////////////////////////////////////////////////////////////////////////////////
 
-            }else {
-                cantidadAleer.requestFocus();
-                JOptionPane.showMessageDialog(null, " Ingrese la cantidad de suscripciones a procesar. ", " Boleta Electrónica ", JOptionPane.ERROR_MESSAGE);  
+            if ((ModoOriginal.isSelected()  == true ) || ( ModoOriginal.isSelected()  == false)) {
+
+               txtDestino = ObtenerNombre(txtOrigen);
             }
+
+          
+           ///////////////////////////////////////////////////////////////////////////////////////
+
+           Procesar();
+
+        }else {
+            cantidadAleer.requestFocus();
+            JOptionPane.showMessageDialog(null, " Ingrese la cantidad de suscripciones a procesar. ", " Boleta Electrónica ", JOptionPane.ERROR_MESSAGE);  
+        }
             
            
             
@@ -424,8 +467,6 @@ public class frmPrincipal extends javax.swing.JFrame {
 
 public void Procesar() {
      
-    
-    
   /*  if ((size > 40000000)&&(size < 100000000)){ 
         String mensaje_0 = ("El archivo supera el peso minimo; Por favor AGUARDE unos instantes y empesará el proceso de carga");
         JOptionPane.showMessageDialog(null, mensaje_0);}
@@ -445,7 +486,8 @@ public void Procesar() {
         try {
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+       
+        cantidadaleer = Integer.parseInt(cantidadAleer.getText());
         Generar_.setEnabled(false);
         Origen_.setEnabled(false);
         Generar_.setText("Procesando");
@@ -461,18 +503,17 @@ public void Procesar() {
         String mailLinea = ".";
         String datosTodosObjetos =".";
         String ultimoMail = ".";
+        
        
         
         BufferedReader filAS = null;
         BufferedReader file = null; 
         FileWriter SW = null; 
        
-        FileWriter SWinforme = null;
+        FileWriter swResultados = null; 
         BufferedWriter br = null; 
         
-        
-        
-        
+
         try {
             Date fecha1 = FechaOpcion.getDate();
             DateFormat f = new SimpleDateFormat("dd-MM-yyyy");
@@ -482,22 +523,43 @@ public void Procesar() {
 
         } catch (Exception e) {}
          
+
+        String nombreArchivoGenerado = String.format ("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);              
+       // String nombreArchivoCsv = String.format("%s %s",directorioDestino, nombreArchivoGenerado);          
        
-        String nombreArchivoGenerado = String.format ("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);        
         
-        String nombreArchivoCsv = String.format("%s %s",directorioDestino, nombreArchivoGenerado);          
         
-     
+        //////////////////////////////////////////////////////////////////////////////////
+       
+
+            if (ModoOriginal.isSelected() == true)
+            {
+               ArgumentoOpcionCheck1 =  ObtenerPath(fullPath) + "\\" + nombreArchivoGenerado;
+               ArgumentoOpcionCheck2 = fullPath + "-Informe.txt";
+            }
+            else if (ModoNuevo.isSelected() == true)
+            {
+                ArgumentoreaderNuevo = directorioDestino + "\\" + nombreArchivoGenerado;
+                ArgumentoOpcionCheck1 = ArgumentoreaderNuevo;
+                ArgumentoOpcionCheck2 = directorioDestino + "\\" + txtDestino + "-Informe.txt";
+
+            }
+ 
+         ////////////////////////////////////////////////////////////////////////////////
+        
+        
+
         try{
-            SW = new FileWriter(nombreArchivoCsv,true);
+            SW = new FileWriter(ArgumentoOpcionCheck1,true);
         } catch (Exception e){System.out.println("Error de lectura del fichero");}
        
         
         
-         Patth = (directorioDestino + "Informe.txt");
+         //Patth = (directorioDestino + "Informe.txt");
+         
         try{
-            SWinforme = new FileWriter(Patth,true);
-                br = new BufferedWriter(SWinforme);
+            swResultados = new FileWriter(ArgumentoOpcionCheck2,true); 
+                br = new BufferedWriter(swResultados);
                 br.write("Se generearon los siguientes archivos:");
                 br.newLine();
                 br.write (String.format("Archivo ** %s **", nombreArchivoGenerado));
@@ -564,9 +626,29 @@ public void Procesar() {
                                 }
 
                                 nombreArchivoGenerado = String.format("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);
-                                nombreArchivoCsv = String.format("%s %s", directorioDestino, nombreArchivoGenerado);
+                                //nombreArchivoCsv = String.format("%s %s", directorioDestino, nombreArchivoGenerado);
+                                
+
+                                /////////////////////////////////////////////////////////////////////////
+
+                                
+                                if (ModoOriginal.isSelected() == true)
+                                {
+                                    ArgumentoOpcionCheck1 = ObtenerPath(fullPath) + "\\" + nombreArchivoGenerado;
+
+                                }
+                                else if (ModoNuevo.isSelected() == true)
+                                {
+                                  ArgumentoreaderNuevo = directorioDestino + "\\" + nombreArchivoGenerado;
+                                  ArgumentoOpcionCheck1 = ArgumentoreaderNuevo;
+
+                                }
+
+                               /////////////////////////////////////////////////////////////////////
+                                
+
                                 try {
-                                    SW = new FileWriter(nombreArchivoCsv, true);
+                                    SW = new FileWriter(ArgumentoOpcionCheck1, true);
                                 } catch (Exception e) {
                                     System.out.println("Error de lectura del fichero");
                                 }
@@ -688,12 +770,13 @@ public void Procesar() {
 }   
  
 public void OpcionDeZipeado() throws IOException{
-     int cantidadaleer = Integer.parseInt(cantidadAleer.getText());
-     String mensaje = "";
+    
+    getContentPane().setBackground(Color.getHSBColor(80, 300, 100));
+   
+    String mensaje = "";
 
-     getContentPane().setBackground(Color.getHSBColor(80, 300, 100));
 
-     if (counter != (Integer.parseInt(cantidadAleer.getText()))) {
+    if (counter != (Integer.parseInt(cantidadAleer.getText()))) {
 
         mensaje = String.format(", \"Cantidad de registros ERRONEA!!\" La cantidad de suscripciones configuradas %d y es distinta a la cantidad de registros leidos %d. De todas maneras se generaron %d mails para enviar. ", Integer.parseInt(cantidadAleer.getText()), counter, distintos);
         JOptionPane.showMessageDialog(null, mensaje);
@@ -727,6 +810,181 @@ public void OpcionDeZipeado() throws IOException{
 
  }
 
+private void InformarArchivosGenerados() throws FileNotFoundException, IOException{
+ 
+    if (ModoOriginal.isSelected() == true )
+    {
+        System.out.println("modo original de zipeo");
+
+        InformarArchivosGenerados_Original();
+
+        
+        
+    }else if (ModoNuevo.isSelected() == true){
+    
+        ConteoZip form2 = new ConteoZip();
+
+        form2.setVisible(true);
+
+        int cont  = 0;
+
+        File Fuente = new File(directorioDestino);
+
+        File[] ficheros = Fuente.listFiles();
+
+            form2.BarraMax(ficheros.length);
+            form2.textTotal(ficheros.length);
+
+        File zipFile = new File(directorioDestino + "\\" + "guardado.zip");
+        byte[] buffer = new byte[1024];
+
+        InputStream input = null;
+        ZipOutputStream zipOut = null;
+
+        zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
+
+        int len;
+
+        if (Fuente.isDirectory()) {
+
+            for (int j = 0; j < ficheros.length; j++) {
+
+                input = new FileInputStream(ficheros[j]);
+                zipOut.putNextEntry(new ZipEntry(Fuente.getName() + ficheros[j].getName()));
+                while ((len = input.read(buffer)) > 0) {
+                    zipOut.write(buffer, 0, len);
+                }
+                cont++;
+               // System.out.println("archivo: --" + ficheros[j]);
+                //System.out.println("cont " + cont);
+
+                form2.BarraSuma(cont);
+                form2.textActual(cont);
+                input.close();
+            }
+
+        }
+
+        zipOut.close();
+       
+     for (int i = 0; i < ficheros.length; i++) {
+            String extension = "";
+            String ex = ".csv";
+            String ex2 = ".txt";
+            for (int j = 0; j < ficheros[i].getName().length(); j++) {
+                if (ficheros[i].getName().charAt(j) == '.') {
+                    extension = ficheros[i].getName().substring(j, (int) ficheros[i].getName().length());
+                    if (extension.equals(ex)) {
+                        if (ficheros[i].delete()) {
+                            System.out.println("El fichero: " + ficheros[i].getName() + " ha sido borrado satisfactoriamente");
+                        } else {
+                            System.out.println("El fichero no puede ser borrado");
+                        }
+                    } else if (extension.equals(ex2)) {
+                        if (ficheros[i].delete()) {
+                            System.out.println("El fichero: " + ficheros[i].getName() + " ha sido borrado satisfactoriamente");
+                        } else {
+                            System.out.println("El fichero no puede ser borrado");
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+private void  InformarArchivosGenerados_Original() throws FileNotFoundException, IOException{
+
+    
+    
+    
+// solo queda solucionar esto :) 
+
+
+
+
+
+    ConteoZip form2 = new ConteoZip();
+    form2.setVisible(true);
+
+    int cont  = 0;
+
+    File Fuente = new File(fullPath);
+
+    File[] ficheros = Fuente.listFiles();
+
+       // form2.BarraMax(ficheros.length);
+       // form2.textTotal(ficheros.length);
+
+    File zipFile = new File(fullPath + "guardado.zip");
+    byte[] buffer = new byte[1024];
+
+    InputStream input = null;
+    ZipOutputStream zipOut = null;
+
+    zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
+
+    int len;
+
+    if (Fuente.isDirectory()) {
+
+        for (int j = 0; j < ficheros.length; j++) {
+
+            input = new FileInputStream(ficheros[j]);
+
+           if ( (ficheros[j].getName().contains(txtDestino)) || (ficheros[j].length()!= size1 ) ) {  { 
+               
+                zipOut.putNextEntry(new ZipEntry(Fuente.getName() + ficheros[j].getName()));
+                while ((len = input.read(buffer)) > 0) {
+                    zipOut.write(buffer, 0, len);
+                }
+           }
+            
+            cont++;
+
+            form2.BarraSuma(cont);
+            form2.textActual(cont);
+            input.close();
+        }
+
+    }
+
+    zipOut.close();
+    
+    for (int i = 0; i < ficheros.length; i++) {
+        
+        String extension = "";
+        String ex = ".csv";
+        String ex2 = ".txt";
+        
+        
+        for (int j = 0; j < ficheros[i].getName().length(); j++) { 
+            
+          if ( ficheros[j].getName().length() != size1 ) { 
+              
+                if (ficheros[i].getName().charAt(j) == '.') {
+                    extension = ficheros[i].getName().substring(j, (int) ficheros[i].getName().length());
+
+                    if (extension.equals(ex)) {
+                        if (ficheros[i].delete()) {
+                            System.out.println("El fichero: " + ficheros[i].getName() + " ha sido borrado satisfactoriamente");
+                        } else {
+                            System.out.println("El fichero no puede ser borrado");
+                        }
+                    } else if (extension.equals(ex2)) {
+                        if (ficheros[i].delete()) {
+                            System.out.println("El fichero: " + ficheros[i].getName() + " ha sido borrado satisfactoriamente");
+                        } else {
+                            System.out.println("El fichero no puede ser borrado");
+                        }
+                    }
+                }
+            }
+        }
+    }
+ }    
+    
+}
 private String formatearCuit(String pCuit){
                 
         
@@ -822,7 +1080,7 @@ private void LeerLinea(String line){
 
     if (Correc_Mayus.isSelected()){razonsocial = Mayusculas(razonsocial);}
      
-       
+     // System.out.println ("obgeto   + Debito credito : --" + objeto + "   :"+ debitoCredito);
 }
 
 private void LeerLineaNuevo(String line){
@@ -943,7 +1201,7 @@ private void ArmarDatosMail(){
                 automotores suma "+ {0}" que acá 
                 va a tomar el valor de 'objeto' */
 
-                medioPago = "<a href=\"" + txturl.getText() + objeto +"\">Ingresar</a>"; 
+                medioPago = "<a href=\"" + txturl.getText() + objeto + "\">Ingresar</a>";
                 break;
             }
         }
@@ -985,61 +1243,14 @@ private void ArmarDatosMail(){
         }
     }
  
-private void InformarArchivosGenerados() throws FileNotFoundException, IOException{
- 
-    ConteoZip form2 = new ConteoZip();
-    
-    form2.setVisible(true);
-    
-    
-      
-    int cont  = 0;
 
-    File Fuente = new File(directorioDestino);
-
-    File[] ficheros = Fuente.listFiles();
-    
-        form2.BarraMax(ficheros.length);
-        form2.textTotal(ficheros.length);
-
-    File zipFile = new File(directorioDestino + "guardado.zip");
-    byte[] buffer = new byte[1024];
-
-    InputStream input = null;
-    ZipOutputStream zipOut = null;
-
-    zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
-
-    int len;
-
-    if (Fuente.isDirectory()) {
-
-        for (int j = 0; j < ficheros.length; j++) {
-
-            input = new FileInputStream(ficheros[j]);
-            zipOut.putNextEntry(new ZipEntry(Fuente.getName() + File.separator + ficheros[j].getName()));
-            while ((len = input.read(buffer)) > 0) {
-                zipOut.write(buffer, 0, len);
-            }
-            cont++;
-            System.out.println("archivo: --" + ficheros[j]);
-            System.out.println("cont " + cont);
-            
-            form2.BarraSuma(cont);
-            form2.textActual(cont);
-            input.close();
-        }
-
-    }
-
-    zipOut.close();
-}
- 
     private void ImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImpuestoActionPerformed
 
         directorioOrigen = ""; 
         FraccionImpuesto = Impuesto.getSelectedItem().toString();
-
+        
+        directorioOrigen = "\\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Origen";
+        directorioDestino = "\\\\arba.gov.ar\\DE\\GGTI\\Gerencia de Produccion\\Mantenimiento\\Boleta Electronica\\Destino";   
 
         if(FraccionImpuesto == null){
           FraccionImpuesto =".";
@@ -1055,13 +1266,13 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                     directorioOrigen += "\\Automotores\\";
                     directorioDestino += "\\Automotores\\";
 
-
-
                     impuestoLiquidar = "1";
                     nombreImpuesto = "Automotor";
-                    txturl.setText ("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D1%26opc%3DLIC%26Frame%3DSI%26oi%3D");
-
-
+                    txturl.setText ("https://www.arba.gov.ar/Aplicaciones/Liquidacion.asp?imp=1&opc=LIC&oi=");
+                                     
+                    
+                                    
+                                    
                     break;
                 }
             case "Impuesto a las Embarcaciones":
@@ -1070,7 +1281,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                     directorioDestino += "\\Embarcaciones\\";
                     nombreImpuesto = "Embarcaciones";
                     impuestoLiquidar = "3";
-                    txturl.setText ("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D3%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                    txturl.setText ("https://www.arba.gov.ar/Aplicaciones/Liquidacion.asp?imp=3&opc=LIC&oi=");
                     break;
 
                 }
@@ -1080,7 +1291,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                     directorioDestino += "\\Edificado\\";
                     nombreImpuesto = "Edificado";
                     impuestoLiquidar = "0";
-                    txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                    txturl.setText("https://www.arba.gov.ar/Aplicaciones/Liquidacion.asp?imp=0&opc=LIC&oi=");
                     break;
                 }
             case "Impuesto Urbano Baldío":
@@ -1089,7 +1300,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                     directorioDestino += "\\Baldio\\";
                     nombreImpuesto = "Baldio";
                     impuestoLiquidar = "0";
-                    txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                    txturl.setText("https://www.arba.gov.ar/Aplicaciones/Liquidacion.asp?imp=0&opc=LIC&oi=");
                     break;
                 }
             case "Impuesto Rural":
@@ -1098,7 +1309,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                     directorioDestino += "\\Rural\\";
                     impuestoLiquidar = "0";
                     nombreImpuesto = "Rural";
-                    txturl.setText("http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D0%26opc%3DLIC%26Frame%3DSI%26oi%3D");
+                    txturl.setText("https://www.arba.gov.ar/Aplicaciones/Liquidacion.asp?imp=0&opc=LIC&oi=");
                     break;
                 }
             case "Impuesto Complementario":
@@ -1107,7 +1318,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                     directorioDestino += "\\Complementario\\";
                     nombreImpuesto = "Complementario";
                     impuestoLiquidar = "10";
-                    txturl.setText ("https://www.arba.gov.ar/aplicaciones/LiqPredet.asp?imp=10&Fame=NO&origen=WEB&op=IIC");
+                    txturl.setText ("https://www.arba.gov.ar/Aplicaciones/LiqPredet.asp?imp=10&Frame=NO&origen=WEB&opc=IIC");
                     break;
                 }
 
@@ -1118,11 +1329,14 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
                  }       
 
     }//GEN-LAST:event_ImpuestoActionPerformed
- 
+
+   
         if(FraccionImpuesto != ""){
         Origen_.setEnabled(true);
         }
 
+        directorioDestino += "Destino2022";
+          
     }  
    
 
@@ -1131,7 +1345,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
     
  public void ValoresBarra(){
       
- valInt =  Long.valueOf(size).intValue();
+ valInt =  Long.valueOf(size1).intValue();
  Maximo =  (valInt/ 40700) *100; 
 
  CargarBarra(Maximo);
@@ -1139,8 +1353,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
  jT_Totales.setText(Integer.toString(Maximo));
      
  }   
-    
-    
+      
  public static String trimEnd(String value) {
         return value.replaceFirst("\\s+$", "");
     }
@@ -1207,8 +1420,6 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
      return (match.appendTail(strbf).toString());
 }
   
- 
- 
  private void CargarBarra(int IKant) {
     
      try {
@@ -1221,7 +1432,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
      
  }
   
-  private void BarraGenerados(int IKant, int IKant2) {
+ private void BarraGenerados(int IKant, int IKant2) {
     
      
       try {
@@ -1251,7 +1462,75 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
      hilo2.start();  */
  }
           
+ public String ObtenerNombre(String nom){
+
+    String name = "";
+    String Navn = "";
+
+
+        for (int i = nom.length() - 1; i > -1; i--)
+        {
+            if (nom.charAt(i) == '\\')
+            {
+                break; 
+            }
+            name += nom.charAt(i);
+        }
+
+        for (int j = name.length() - 1; j > -1; j--)
+        {
+
+            Navn += name.charAt(j);
+        }
+
+        return Navn;
+     }
      
+ public String ObtenerPath(String nom){   
+    
+    int cont = 0;
+    int cont2 = 0;
+    String Navn = "";
+    boolean go = false; 
+
+    for (int i = nom.length() - 1; i > 0; i--)
+    {
+        if (nom.charAt(i) == '\\')
+        {
+            go = true; 
+            break;
+        }
+    }
+
+    if (go == true)
+    {
+        for (int i = nom.length() - 1; i > 0; i--)
+        {
+            if (nom.charAt(i) == '\\')
+            {
+                cont2++; 
+            }
+
+            cont++;
+
+            if (cont2 == 1) {
+                break;
+            }
+        }
+
+        int diff = nom.length() - cont; ;
+
+        for (int j = 0; j < diff; j++)
+        {
+            Navn += nom.charAt(j);
+        }
+
+        return Navn;
+
+    }else { return nom; }
+
+ } 
+ 
   /* 
     public static void main(String args[]) {
       
@@ -1272,7 +1551,10 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
     private javax.swing.JComboBox<String> Impuesto;
     private javax.swing.JTextField JT_Tantos;
     private javax.swing.JLabel Mails;
+    private javax.swing.JRadioButton ModoNuevo;
+    private javax.swing.JRadioButton ModoOriginal;
     private javax.swing.JButton Origen_;
+    private javax.swing.ButtonGroup SelectorDeMetodo;
     private javax.swing.JProgressBar barraGenerados;
     private javax.swing.JProgressBar barraLeidos;
     private javax.swing.JTextField cantidadAleer;

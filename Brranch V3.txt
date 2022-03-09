@@ -1,8 +1,48 @@
 version 8_2
 
+direccion en RED : \\arba.gov.ar\DE\GGTI\Gerencia de Produccion\Mantenimiento\Boleta Electronica\Origen\Baldio\archivos pruebas
+
+
+
+
+
+https://www.arba.gov.ar/Aplicaciones/Liquidacion.asp?imp=0&opc=LIC    
+
+https://www.arba.gov.ar/Aplicaciones/Liquidacion.asp?imp=0&opc=LIC&oi=0450239879
+
+https://www.arba.gov.ar/Aplicaciones/Liquidacion.asp?imp=0&opc=LIC   &oi=      0551959082
+
+
+
+
+
+
+https://www.arba.gov.ar/Aplicaciones/Liquidacion.asp?imp=0&opc=LIC&oi=KP042
+
+
+
+
+
+
+
+
+
+
+http://www.arba.gov.ar/AplicacionesFrame.asp?url=Aplicaciones%2FLiquidacion%2Easp%3Fimp%3D1%26opc%3DLIC%26Frame%3DSI%26oi%3D+AA294QS
+
+
+
+
+
+
+
+
+
+
 
 prueba en version 1
 
+- "débitocrédito" puede tomar otros valores que no sean "o" o "c"? ( ya que solo en estos casos toma la direccion desde el Gui) - es necesario probar otros impuestos para saber esto - 
 - Verresultado de  "objetoformateado"en el .NET original
 - Código electronico" en impuesto rural (case4), está comentado en el original?
 - testear el recorte sobre "impuesto complementario"
