@@ -39,7 +39,7 @@ public class ConteoZip extends javax.swing.JFrame {
 
         jLabel4.setText("Generados");
 
-        jButton1.setText("Cancelar.");
+        jButton1.setText("Cancelar/ Terminar.");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
