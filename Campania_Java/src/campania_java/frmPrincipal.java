@@ -104,6 +104,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private int counter = 0; 
     private int raws = 0;
     private int contzip = 0; 
+    private int contzipOld = 0;
     private int  valInt = 0 ;
     private int cantidadaleer = 0 ;
     private int distintos = 0; 
@@ -848,28 +849,31 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
 
            
     }else if (ModoNuevo.isSelected() == true){
-    
-        ConteoZip form2 = new ConteoZip();
-
-        form2.setVisible(true);
-
-        int cont  = 0;
+      
 
         File Fuente = new File(directorioDestino);
-
         File[] ficheros = Fuente.listFiles();
-
-            form2.BarraMax(ficheros.length);
-            form2.textTotal(ficheros.length);
-
-        File zipFile = new File(directorioDestino + "\\" + "guardado.zip");
         byte[] buffer = new byte[1024];
-
+        File zipFile = null; // new File(directorioDestino + "\\" + "_guardado("+ contzip +").zip");
+         
+         
+        /// comprobar que no exista ya un zip: cambiar nombre: Y NOMBRAR al Zip
+    
+            zipFile = VerificarZipPrevio(Fuente, ficheros, zipFile); 
+            
+        
+        ///formulario informativo: 
+        ConteoZip form2 = new ConteoZip();
+        form2.setVisible(true);
+        form2.BarraMax(ficheros.length);
+        form2.textTotal(ficheros.length);
+        int cont  = 0;
+        //////////////////////////////////////   
+            
+       
         InputStream input = null;
         ZipOutputStream zipOut = null;
-
         zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
-
         int len;
 
         if (Fuente.isDirectory()) {
@@ -892,6 +896,9 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
 
         zipOut.close();
        
+        //////////////////////////Borrado: 
+
+        
      for (int i = 0; i < ficheros.length; i++) {
             String extension = "";
             String ex = ".csv";
@@ -934,34 +941,19 @@ private void  InformarArchivosGenerados_Original() throws FileNotFoundException,
     //////////////////////////
 
 
-    /// Comprobar si existe ya un zip en carpeta: 
-    Existe = VerificarEstadoDeCarpeta(fullPath + "_guardado.zip");
-    File zipFile = null;
-   
-    if (Existe == true){ 
-    System.out.println("re existe");    
-     String mensaje = String.format(" ADVERTENCIA!! %n La carpeta destino ya cuenta con un '.ZIP' de las %n caracteristicas del proyecto.  %n  ° El programa comenzará a SOBREESCRIBIR estos archivos repetidos.  %n ° Se aconseja REVISAR LA CARPETA DESTINO %n antes de continuar PARA NO PERDER DATOS");
-        JOptionPane.showMessageDialog(null, mensaje);
-        
-    contzip++;
-    zipFile = new File(fullPath + "_guardado-(" + contzip + ")-.zip");
-    
-    }else if (Existe == false) {
-        System.out.println(" no no existe");
-    zipFile = new File(fullPath + "_guardado.zip");
-    }
-    /////////////////////////////////////////////
-    
-    
     File Fuente = new File(CarpetaDestino);
     File[] ficheros = Fuente.listFiles();
     byte[] buffer = new byte[1024];
+    File zipFile = null;
+    
+    // comprobar que no exista ya un zip: cambiar nombre:
+    
+        zipFile = VerificarZipPrevio(Fuente, ficheros, zipFile); 
+    
 
     InputStream input = null;
     ZipOutputStream zipOut = null;
-
     zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
-
     int len;
 
     if (Fuente.isDirectory()) {
@@ -992,6 +984,9 @@ private void  InformarArchivosGenerados_Original() throws FileNotFoundException,
 
     zipOut.close();
     
+    ////////Borrado: 
+    
+
     for (int i = 0; i < ficheros.length; i++) {
         
         String extension = "";
@@ -1028,30 +1023,114 @@ private void  InformarArchivosGenerados_Original() throws FileNotFoundException,
      
     
 }
-private boolean VerificarEstadoDeCarpeta(String nom){
 
-    File file1 = new File(nom);
-   
+   public File VerificarZipPrevio(File Fuente, File[] ficheros, File zipFile ){ 
 
-    //Checks if file1 exists
-    if(file1.exists() && !file1.isDirectory()){
-        
-        System.out.println(file1 + " Exists");
-        
-      return true; 
-        
-    }else{
-        System.out.println(file1 + " Does not exists");
-      return false;  
-    }
+    int tempN = 0 ;
+    String tempS = "";
+    String tempS2 = "";
+    int cont2 = 1; 
+    int contParentesis = 0; 
+    if (Fuente.isDirectory()) {
+     
+        for (int k = 0; k < ficheros.length; k++) {
+      
+            if (ficheros[k].getName().contains("_guardado")) { //se busca el archivo con nombre de zip.
 
-    }
+                for (int l = ficheros[k].getName().length(); l > -1; l--){
 
+                    if ((ficheros[k].getName().charAt(l-1)) == ')') { //Busca el parentesis------charAt mide contando el cero. Por eso se resta uno.
+                        
+                        int temp2 = l ;
 
+                    ///Medir distancia entre parentesis
+                        while (ficheros[k].getName().charAt(temp2-2) != '('){
+                            contParentesis++;
+                            temp2--;
+                        }
+                        
+                        temp2 = l; 
+                        
+                    /// Tomar elementos ENTRE los parentesis
+                        while (cont2 <= contParentesis) {
+                            
+                            tempS += (ficheros[k].getName().charAt(temp2 - 2)) ;
 
+                            temp2--;
+                            cont2++;
+                        }
+                        
+                    /// Voltear numero dentro d elos parentesis
+                        if (contParentesis >1){ 
+                            
+                            for (int n = tempS.length() - 1; n > -1; n--) {
+                          
+                              tempS2 += tempS.charAt(n);
+                            }
+                        }else {tempS2 = tempS;}
+                        
+                        tempN =  Integer.valueOf (tempS2);
+                        tempS2 = "";
+                        tempS = "";
+                        temp2 = 0; 
+                        cont2 = 1;
+                        contParentesis = 0 ;
+                        
+                        System.out.println("--------------->: " + tempN);
+                        
+                    ///Seleccion del numero mas grande entre los zips.
+                    
+                        if (contzipOld < tempN){contzipOld = tempN;}
+                        System.out.println("--------------->: " + ficheros[k].getName().charAt(l - 2));
+                        break;
+                        
+                    }       
+                }
+            }
+            
+            
+        }
 
+    
+     }
+    
+      //////////////////////////////////////////////////////////////////////////////////
 
+        if (ModoOriginal.isSelected() == true)
+        {
 
+            if (contzipOld >= contzip) {
+
+                contzipOld++;
+                zipFile = new File(fullPath + "_guardado("+ contzipOld +").zip");
+            }else {
+
+                contzip++;   
+                zipFile = new File(fullPath + "_guardado("+ contzip +").zip");
+            }
+
+            
+        }
+        else if (ModoNuevo.isSelected() == true)
+        {
+
+            if (contzipOld >= contzip) {
+
+                contzipOld++;
+                zipFile = new File(directorioDestino + "\\" + "_guardado("+ contzipOld +").zip");
+            }else {
+
+                contzip++;   
+                zipFile = new File(directorioDestino + "\\" + "_guardado("+ contzip +").zip");
+            }
+
+           
+
+        }
+         ////////////////////////////////////////////////////////////////////////////////
+    
+      return zipFile;
+   }
 
 
 
