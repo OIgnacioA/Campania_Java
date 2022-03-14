@@ -46,8 +46,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class frmPrincipal extends javax.swing.JFrame { 
-    
-    public static SimpleDateFormat sdf2 = new SimpleDateFormat("DD/MM/YYYY");
+
     private String codigoElectronico = "";
     private String buenContribuyente = "";
     private String Variable = "";
@@ -55,7 +54,9 @@ public class frmPrincipal extends javax.swing.JFrame {
     private String impuestoLiquidar = "";
     private int cont; 
     private int contt;
+    private boolean Existe ;
     
+    public static SimpleDateFormat sdf2 = new SimpleDateFormat("DD/MM/YYYY");
     private File zipFile = null;
     private String directorioOrigen = "";
     private String directorioDestino = "";
@@ -106,13 +107,12 @@ public class frmPrincipal extends javax.swing.JFrame {
     private int counter = 0; 
     private int raws = 0;
     private int contzip = 0; 
-    private int contzipOld = 0;
     private int  valInt = 0 ;
     private int cantidadaleer = 0 ;
     private int distintos = 0; 
     private int ContadorCSV = 0;
     private long size1 = 0;
-    private boolean Existe ;
+    
     
         
     
@@ -203,6 +203,9 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
 
+        cantidadAleer.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        cantidadAleer.setText("1000000");
+
         jLabel1.setText("Cant. Suscripciones ");
 
         jLabel2.setText("URL");
@@ -281,9 +284,9 @@ public class frmPrincipal extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
-                                .addGap(78, 78, 78)
-                                .addComponent(barraGenerados, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(57, 57, 57)
+                                .addGap(27, 27, 27)
+                                .addComponent(barraGenerados, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(62, 62, 62)
                                 .addComponent(Mails, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(143, 143, 143))
                             .addGroup(layout.createSequentialGroup()
@@ -298,34 +301,31 @@ public class frmPrincipal extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(ModoOriginal)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(FechaOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(FechaOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
+                                        .addGap(84, 84, 84)
                                         .addComponent(jLabel1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(cantidadAleer, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGap(10, 10, 10)
                                         .addComponent(txtCantidadCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel10))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(136, 136, 136)
+                                        .addGap(175, 175, 175)
                                         .addComponent(ModoNuevo))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(55, 55, 55)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(barraLeidos, javax.swing.GroupLayout.PREFERRED_SIZE, 651, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(barraLeidos, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(125, 125, 125)
+                                        .addGap(152, 152, 152)
                                         .addComponent(Generar_, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -342,13 +342,15 @@ public class frmPrincipal extends javax.swing.JFrame {
                     .addComponent(jT_Totales, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(39, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(Correc_Mayus)
                         .addGap(161, 161, 161))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(Impuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(ModoOriginal)
+                            .addComponent(Impuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(45, 45, 45)
                         .addComponent(ConAnual)
                         .addGap(18, 18, 18)
@@ -371,14 +373,14 @@ public class frmPrincipal extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cantidadAleer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cantidadAleer, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)
                         .addComponent(jLabel5)
                         .addComponent(jLabel10)
                         .addComponent(txtCantidadCorte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(FechaOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ModoNuevo)
                     .addComponent(ModoOriginal))
@@ -413,7 +415,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                     .addComponent(jT_Totales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(jLabel9))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -421,11 +423,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void Origen_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Origen_ActionPerformed
  
-        //Dir = javax.swing.filechooser.FileSystemView.getFileSystemView().getHomeDirectory().toString();
-
-          /*DirOrigen ="";
-          DirOrigen = Dir + directorioOrigen;//directorigen tiene el valor que viene de impuesto "automotor//" */
-                
+               
         File archivoSeleccionado;
             
         JFileChooser seleccionarArchivo = new JFileChooser();
@@ -456,7 +454,10 @@ public class frmPrincipal extends javax.swing.JFrame {
             txtArchivoOrigen.setText(txtOrigen);
             Generar_.setEnabled(true);
         }
-             
+        
+       ModoNuevo.setEnabled(false);
+       ModoOriginal.setEnabled(false);
+       
     }//GEN-LAST:event_Origen_ActionPerformed
 
     private void Generar_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Generar_ActionPerformed
@@ -500,14 +501,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
 public void Procesar() {
      
-  /*  if ((size > 40000000)&&(size < 100000000)){ 
-        String mensaje_0 = ("El archivo supera el peso minimo; Por favor AGUARDE unos instantes y empesará el proceso de carga");
-        JOptionPane.showMessageDialog(null, mensaje_0);}
-    
-    if (size > 100000000){ 
-        String mensaje_0 = ("El archivo supera POR MUCHO el peso mínimo; Por favor AGUARDE: LA OPERACION TARDARÁ UNOS MINUTOS EN INICIAR");
-        JOptionPane.showMessageDialog(null, mensaje_0);}*/
-    
+
       int dist = 0 ; 
       this.getContentPane().setBackground(Color.getHSBColor(80, 150, 49));   
         
@@ -805,8 +799,7 @@ System.out.println ("-------------------------XXXX----------" + ArgumentoOpcionC
  
 public void OpcionDeZipeado() throws IOException{
     
-    
-    
+
     getContentPane().setBackground(Color.getHSBColor(80, 300, 100));
    
     String mensaje = "";
@@ -837,15 +830,8 @@ public void OpcionDeZipeado() throws IOException{
         String mensaje1 = String.format("Se creó un Arhivo .Zip en la carpeta: %n %s %n  bajo el nombre:  %s", carpetLocal,nombreDeZip);
         JOptionPane.showMessageDialog(null, mensaje1);
 
-       // directorioDestino = "";
-       // directorioOrigen = "";
-
-    } else {
-
-       // directorioDestino = "";
-       // directorioOrigen = "";
-
-    }
+    } 
+    
     counter = 0; //refrescar cantidad de subscriptores leidos. 
     distintos = 0; //refrescar cantidad de mails generados. 
     zipFile = null;
@@ -864,14 +850,13 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
         File Fuente = new File(directorioDestino);
         File[] ficheros = Fuente.listFiles();
         byte[] buffer = new byte[1024];
-        //File zipFile = null; // new File(directorioDestino + "\\" + "_guardado("+ contzip +").zip");
-         
-         
+      
+
         /// comprobar que no exista ya un zip: cambiar nombre: Y NOMBRAR al Zip
     
             zipFile = VerificarZipPrevio(Fuente, ficheros, zipFile); 
             
-       ////////                          
+         ////////                          
             
       
              
@@ -916,7 +901,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
         
         zipOut.close();
        
-        //////////////////////////Borrado: 
+        //////////////////////////Borrador: 
 
         
      for (int i = 0; i < ficheros.length; i++) {
@@ -1007,7 +992,7 @@ private void  InformarArchivosGenerados_Original() throws FileNotFoundException,
     cont  = 0;
     zipOut.close();
     
-    ////////Borrado: 
+    ////////Borrador: 
     
 
     for (int i = 0; i < ficheros.length; i++) {
@@ -1084,7 +1069,7 @@ private void  InformarArchivosGenerados_Original() throws FileNotFoundException,
                                 cont2++;
                             }
 
-                        /// Voltear numero dentro d elos parentesis
+                        /// Voltear numero dentro de los parentesis
                             if (contParentesis >1){ 
 
                                 for (int n = tempS.length() - 1; n > -1; n--) {
@@ -1100,9 +1085,9 @@ private void  InformarArchivosGenerados_Original() throws FileNotFoundException,
                             cont2 = 1;
                             contParentesis = 0 ;
 
-                        ///Seleccion del numero mas grande entre los zips.
+                        ///Seleccion del número mas grande entre los zips.
 
-                            if (contzipOld < tempN){contzipOld = tempN;}
+                            if (contzip < tempN){contzip = tempN;}
                             //System.out.println("--------------->: " + ficheros[k].getName().charAt(l - 2));
                             break;
 
@@ -1113,34 +1098,22 @@ private void  InformarArchivosGenerados_Original() throws FileNotFoundException,
         }
     
       //////////////////////////////////////////////////////////////////////////////////
-
+         contzip++;
+         
         if (ModoOriginal.isSelected() == true){
-            
-            if (contzipOld >= contzip) {
-                contzipOld++;
-                nombreDeZip = txtDestino + "_guardado("+ contzipOld +").zip" ;
-                zipFile = new File(CarpetaDestino + "\\" + nombreDeZip);
-            }else {          
-                contzip++; 
-                nombreDeZip = txtDestino + "_guardado("+ contzip +").zip" ;
-                zipFile = new File(CarpetaDestino + "\\" + nombreDeZip);
-            }
 
+            nombreDeZip = txtDestino + "_guardado("+ contzip +").zip" ;
+            zipFile = new File(CarpetaDestino + "\\" + nombreDeZip);
+           
         }
         else if (ModoNuevo.isSelected() == true){
+
+            nombreDeZip = txtDestino + "_guardado("+ contzip +").zip" ;
+            zipFile = new File(directorioDestino + "\\" +  nombreDeZip);
             
-            if (contzipOld >= contzip) {
-                contzipOld++;
-                nombreDeZip = txtDestino + "_guardado("+ contzipOld +").zip" ;
-                zipFile = new File(directorioDestino + "\\" +  nombreDeZip);
-            }else {
-                contzip++;  
-                nombreDeZip = txtDestino + "_guardado("+ contzip +").zip" ;
-                zipFile = new File(directorioDestino + "\\" + nombreDeZip);
-            }
         }
-         ////////////////////////////////////////////////////////////////////////////////
-    
+        ////////////////////////////////////////////////////////////////////////////////
+      contzip = 0 ;
       return zipFile;
     }
 
