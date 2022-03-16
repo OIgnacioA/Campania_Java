@@ -126,6 +126,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         JT_Tantos.setHorizontalAlignment(JT_Tantos.CENTER);
         jT_Totales.setHorizontalAlignment(jT_Totales.CENTER);
         
+        ConCabecera.setSelected(true);
         ModoOriginal.setSelected(true);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -748,9 +749,8 @@ System.out.println ("-------------------------XXXX----------" + ArgumentoOpcionC
         
        
         ultimoMail = mailAux;  
-            
-        mailLinea += String.format("Cuit: %s | %s | %s | %s | %s | %s | %s | %s ", formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, ImpuestoV, datosTodosObjetos, porcentaje); 
-
+       
+        mailLinea += String.format("%s|Cuit: %s | %s | %s | %s | %s | %s | %s | %s ", razonsocialAux, formatearCuit(cuitAux), fechaVencimiento, fechaOpcion, anio, cuota, ImpuestoV, datosTodosObjetos, porcentaje);
         try{
            SW.append(mailLinea);
            SW.append('\n');
