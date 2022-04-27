@@ -104,7 +104,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private int cantidad = 0;
     private int sum = 0;
     private int Maximo = 0; 
-    private int counter = 0; 
+    private int counter = 1; 
     private int raws = 0;
     private int contzip = 0; 
     private int  valInt = 0 ;
@@ -112,6 +112,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private int distintos = 0; 
     private int ContadorCSV = 0;
     private long size1 = 0;
+    private int conterror = 0; 
     
     
         
@@ -130,7 +131,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         ModoOriginal.setSelected(true);
         setLocationRelativeTo(null);
         setResizable(false);
-        setTitle("Generar Bases para campaña por mail - [Avendaño - Cruz]");
+        setTitle("Generar Bases para campaña por mail - [Avendaño - Cruz] 2.0");
         JT_Tantos.setHorizontalAlignment(JT_Tantos.RIGHT);
         jT_Totales.setHorizontalAlignment(jT_Totales.RIGHT);
         Mails.setHorizontalAlignment(Mails.RIGHT);
@@ -195,7 +196,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         ModoOriginal = new javax.swing.JRadioButton();
         jLabel10 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         Impuesto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Impuesto Automotor", "Impuesto a las Embarcaciones", "Impuesto Urbano Edificado", "Impuesto Urbano Baldío", "Impuesto Rural", "Impuesto Complementario" }));
         Impuesto.addActionListener(new java.awt.event.ActionListener() {
@@ -795,6 +796,7 @@ System.out.println ("-------------------------XXXX----------" + ArgumentoOpcionC
     
     Generar_.setEnabled(true);
     Origen_.setEnabled(true);
+    System.out.println("Lineas erroneas: " + conterror);
 }   
  
 public void OpcionDeZipeado() throws IOException{
@@ -835,6 +837,8 @@ public void OpcionDeZipeado() throws IOException{
     counter = 0; //refrescar cantidad de subscriptores leidos. 
     distintos = 0; //refrescar cantidad de mails generados. 
     zipFile = null;
+    
+    
  }
 
 private void InformarArchivosGenerados() throws FileNotFoundException, IOException{
@@ -874,7 +878,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
         zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
         int len;
 
-       
+      
         
         if (Fuente.isDirectory()) {
 
@@ -897,6 +901,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
             }
              cont  = 0;
              ContadorCSV = 0;
+             
         }
         
         zipOut.close();
@@ -933,6 +938,9 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
             }
         }
     }
+    
+   
+    
 }
 
 private void  InformarArchivosGenerados_Original() throws FileNotFoundException, IOException{
@@ -1036,6 +1044,7 @@ private void  InformarArchivosGenerados_Original() throws FileNotFoundException,
 
         int tempN = 0 ;
         String tempS = "";
+        char charr = ' '; 
         String tempS2 = "";
         int cont2 = 1; 
         int contParentesis = 0; 
@@ -1044,11 +1053,12 @@ private void  InformarArchivosGenerados_Original() throws FileNotFoundException,
 
             for (int k = 0; k < ficheros.length; k++) {
 
-                if (ficheros[k].getName().contains("_guardado")) { //se busca el archivo con nombre de zip.
+                if (ficheros[k].getName().contains("zip")) { //se busca el archivo con nombre de zip.
 
                     for (int l = ficheros[k].getName().length(); l > -1; l--){
 
-                        if ((ficheros[k].getName().charAt(l-1)) == ')') { //Busca el parentesis------charAt mide contando el cero. Por eso se resta uno.
+                  
+                        if ((ficheros[k].getName().charAt(l-1)) == ')') { //Busca el parentesis------charAt mide contando el cero. Por eso se resta uno. Length arranca en el 1. 
 
                             int temp2 = l ;
 
@@ -1091,7 +1101,8 @@ private void  InformarArchivosGenerados_Original() throws FileNotFoundException,
                             //System.out.println("--------------->: " + ficheros[k].getName().charAt(l - 2));
                             break;
 
-                        }       
+                        }  
+ 
                     }
                 }
             }
@@ -1102,13 +1113,13 @@ private void  InformarArchivosGenerados_Original() throws FileNotFoundException,
          
         if (ModoOriginal.isSelected() == true){
 
-            nombreDeZip = txtDestino + "_guardado("+ contzip +").zip" ;
+            nombreDeZip = txtDestino + "_("+ contzip +").zip" ;
             zipFile = new File(CarpetaDestino + "\\" + nombreDeZip);
            
         }
         else if (ModoNuevo.isSelected() == true){
 
-            nombreDeZip = txtDestino + "_guardado("+ contzip +").zip" ;
+            nombreDeZip = txtDestino + "_("+ contzip +").zip" ;
             zipFile = new File(directorioDestino + "\\" +  nombreDeZip);
             
         }
@@ -1166,10 +1177,22 @@ private void LeerLinea(String line){
             montoAnual = line.substring(362, 378) ;
             codigoElectronico = line.substring(378, 392).replaceAll(" ","");
             debitoCredito = line.substring(392, 393).replaceAll(" ","");                           
-            buenContribuyente = line.substring(393, 394).replaceAll(" ","");                           
-            cuit = line.substring(394, 405).replaceAll(" ","");
-                           
+            buenContribuyente = line.substring(393, 394).replaceAll(" ","");    
             
+            
+            
+            try{ 
+            
+            cuit = line.substring(394, 405).replaceAll(" ","");
+            //System.out.println ("cuit: " + cuit + " en linea: " + counter);
+                           
+            } catch (Exception e){
+                
+                cuit ="";
+                //System.out.println ("cuit: " + cuit + " en linea: " + counter);
+                //System.out.println("error en línea: "+ counter + ", de tipo : ( " + e.getLocalizedMessage());
+                conterror++;
+            }
  
             Variable = "Prueba  Automotor" ;
 
@@ -1196,8 +1219,18 @@ private void LeerLinea(String line){
             montoAnual = line.substring(362, 378) ;
             // codigoElectronico = line.substring(378, 392).replaceAll(" ","");
             debitoCredito = line.substring(392, 393).replaceAll(" ","");                           
-            buenContribuyente = line.substring(393, 394).replaceAll(" ","");                           
+            buenContribuyente = line.substring(393, 394).replaceAll(" ","");    
+            
+            try{ 
+            
             cuit = line.substring(394, 405).replaceAll(" ","");
+                           
+            } catch (Exception e){
+                
+                cuit ="";
+                System.out.println("error en línea: "+ counter + ", de tipo : ( " + e.getMessage());
+                conterror++;
+            }
 
             Variable = "Prueba Edificacion -baldio -rural ";    
                                     
@@ -1231,7 +1264,20 @@ private void LeerLineaNuevo(String line){
          montoCuota = line.substring(210, 227).replaceAll(" ","") ;
          montoAnual = line.substring(227, 244) ;
          debitoCredito = line.substring(244, 245).replaceAll(" ","");                                                  
-         cuit = line.substring(245, 256).replaceAll(" ","");
+         
+         
+         
+         
+          try{ 
+            
+              cuit = line.substring(245, 256).replaceAll(" ","");
+                           
+            } catch (Exception e){
+                
+                cuit ="";
+                System.out.println("error en línea: "+ counter + ", de tipo : ( " + e.getMessage());
+                conterror++;
+            }
     
          Variable = "Prueba  Complementario ";
 
