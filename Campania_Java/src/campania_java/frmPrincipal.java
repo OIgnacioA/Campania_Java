@@ -1,26 +1,73 @@
 package campania_java;
 
-/*
+// QR --------------------
+import java.util.UUID;
+/*import javax.swing.JFileChooser;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+
+import com.google.zxing.Writer;
+import com.google.zxing.WriterException;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.awt.List;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import static java.lang.Thread.sleep;
-import java.time.LocalDate;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SwingWorker; */
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon; 
 
+// Base64   ----------------
+
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths; */
+import java.util.Base64;
+
+
+
+// Form original  ---------------
+
+/*import java.util.UUID;
+import javax.swing.JFileChooser;
+import java.io.File;
+import java.io.IOException;
+import com.google.zxing.Writer;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.util.zip.GZIPOutputStream;*/
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.WriterException;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import java.awt.Color;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -39,7 +86,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.GZIPOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -113,15 +159,18 @@ public class frmPrincipal extends javax.swing.JFrame {
     private int ContadorCSV = 0;
     private long size1 = 0;
     private int conterror = 0; 
+    private String QRString = "";
     
     
-        
+    //QR QRnuevo = new QR();
+   // Encoder Encoder = new Encoder();
+   // File f =  new File("C:\\Users\\oscar.avendano\\Desktop\\imgs\\foto.png");
     
     private FileNameExtensionFilter filter = new FileNameExtensionFilter ("Archivos Txt", "txt");
   
     public frmPrincipal() {
         initComponents();
-        
+       
         txtCantidadCorte.setHorizontalAlignment(txtCantidadCorte.CENTER);
         cantidadAleer.setHorizontalAlignment(cantidadAleer.CENTER);
         JT_Tantos.setHorizontalAlignment(JT_Tantos.CENTER);
@@ -614,8 +663,24 @@ System.out.println ("-------------------------XXXX----------" + ArgumentoOpcionC
                     cuitAux = cuit;
                 }
 
-                ArmarDatosMail();
+                
 
+               //////////////////////////////QR/////////////////////////// 
+
+               
+               
+                //QR QRnuevo = new QR(); ------- Este llamado está global, para que se instancie solo una vez, y pueda reconocerse desde cualquier parte. 
+                //Encoder Encoder = new Encoder(); ----same... 
+  
+               // QRnuevo.generador(medioPago); ---- Este llamado está en Armar datos. Asi medio de pago tiene un valor para darle a generador. 
+             
+                
+                
+                
+               ////////////////////////////////////////////////////////////// 
+                
+               ArmarDatosMail();
+                
                 if ((!mail.equals(mailAux)) || (!razonsocial.equals(razonsocialAux))) {
 
                     if ((DiferenciarMails.isSelected()) && (mailAux == ultimoMail)) {
@@ -1416,8 +1481,20 @@ private void ArmarDatosMail(){
                 datosObjeto += String.format("<td class='amarillo'>Cuota %s</td>", cuotaNumero);// Palabra: 'Cuota'. (?) 
                 datosObjeto += String.format("<td class='amarillo'>%s</td>", montoCuota);//7.780.90
                 datosObjeto += String.format("<td class='gris'>%s</td>", medioPago);//www.ARBA.gov.ar
+                
+              /* QRnuevo.generador(medioPago);
+               
+                try {
+                   QRString = Encoder.encodeFileToBase64Binary(f);      
+                } catch (IOException ex) {Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);}
+                
+                datosObjeto += String.format("<td><img src='data:image/png;base64, %s' alt='Red dot'/></td>", QRString);//www.ARBA.gov.ar
+                */
+              
                 // datosObjeto += String.Format("<td class='gris'>%s</td>", Variable);
                 datosObjeto += "</tr>";
+                
+                System.out.println(datosObjeto);
             }
         }
     }
@@ -1755,3 +1832,143 @@ private void ArmarDatosMail(){
 
   
 }
+
+ class QR extends javax.swing.JFrame {
+
+  //private FileInputStream File; 
+  // ruta de la imagen 
+  //String userDir = "C:\\Users\\oscar.avendano";
+
+    public void generador(String mailQr) {
+            
+            
+        String codigo = mailQr;
+        int size = 100;
+        String FileType = "png";
+        String filePath = "C:\\Users\\oscar.avendano\\Desktop\\imgs";
+
+        //generar el QR 
+
+        QRCodeWriter qrcode = new QRCodeWriter();
+
+
+        try {
+            BitMatrix matrix = qrcode.encode(codigo, BarcodeFormat.QR_CODE, size, size);
+
+            File f = new File(filePath + "\\foto."+ FileType);
+
+            f.setWritable(true);
+            f.setReadable(true);
+
+            int matrixWidth = matrix.getWidth();
+
+
+            BufferedImage image = new BufferedImage (matrixWidth,matrixWidth, BufferedImage.TYPE_INT_RGB);
+            image.createGraphics();
+
+            Graphics2D gd = (Graphics2D) image.getGraphics();
+            gd.setColor(Color.white);//fondo
+            gd.fillRect(0,0, size, size);
+            gd.setColor(Color.black);//qr
+
+
+            for (int b = 0; b < matrixWidth; b++) {
+
+                for (int j = 0; j < matrixWidth;j++){
+
+                    if (matrix.get(b, j)) {
+                        gd.fillRect (b,j,1,1);           
+                    }
+                }                  
+            }
+
+            
+            
+            try {
+                ImageIO.write( image, FileType, f);
+            } catch (IOException ex) {
+                Logger.getLogger(QR.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            Image MImagen = new ImageIcon(filePath + "\\foto"+ FileType).getImage();
+
+
+           /* try {
+
+            File x = new File ("C:\\Users\\oscar.avendano\\Desktop\\imgs");
+            FileInputStream fis = new FileInputStream(x);
+            FileOutputStream fos = new FileOutputStream("C:\\Users\\oscar.avendano\\Desktop\\bits");
+            int n =0;
+            byte[] b = new byte[2048];
+            int i = 0;
+
+            while ((n = fis.read())!= -1) {// Leer y escribir
+               fos.write(n);
+            }
+
+            fis.close();
+            fos.close();
+           } catch (FileNotFoundException e) {
+            e.printStackTrace();
+           }catch (IOException e) {
+            e.printStackTrace();
+           }
+
+
+          // mostrar la imagen 
+
+
+            ImageIO.write(image, FileType, f);
+            Image MImagen = new ImageIcon(filePath + "\\foto"+ FileType).getImage();
+            //ImageIcon mIcono = new ImageIcon(MImagen.getScaledInstance(lblqr.getWidth(), lblqr.getHeight(), 0));
+
+            //lblqr.setIcon(mIcono);   
+
+            } catch (WriterException ex) {
+
+                Logger.getLogger(QR.class.getName()).log(Level.SEVERE, null, ex);
+
+            }catch (IOException ex) {
+                 Logger.getLogger(QR.class.getName()).log(Level.SEVERE, null, ex);*/
+           
+            } catch (WriterException ex) {
+            Logger.getLogger(QR.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        
+    }
+        
+
+                                          
+ class Encoder { 
+     
+      
+
+    public String encodeFileToBase64Binary(File file) throws IOException{
+         String encodedfile = null;
+        try {
+            
+            FileInputStream fIS = new FileInputStream(file);
+
+            byte[] bytes = new byte[(int)file.length()];
+            
+            fIS.read(bytes);
+            
+            encodedfile = Base64.getEncoder().encodeToString(bytes); //encodeBase64(bytes).toString();
+
+        } catch (FileNotFoundException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+        } catch (IOException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+        }
+        
+        
+        
+         
+         return encodedfile;
+         
+        }
+    }

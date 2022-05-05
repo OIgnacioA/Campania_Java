@@ -20,6 +20,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +32,7 @@ import javax.swing.ImageIcon;
 
 public class QR extends javax.swing.JFrame {
 
-  
+  private FileInputStream File; 
     public QR() {
         initComponents();
        setTitle("Generador de Codigo QR- Avendaño-Cruz");
@@ -97,7 +100,7 @@ public class QR extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int size = 1000;
+        int size = 100;
         String FileType = "png";
         
         String codigo =txtCode.getText().trim();
@@ -105,30 +108,35 @@ public class QR extends javax.swing.JFrame {
         // ruta de la imagen 
         
 
-        String userDir = System.getProperty("user.home");
-        JFileChooser Chooser  = new JFileChooser(userDir +"/Desktop");
+        String userDir = "C:\\Users\\oscar.avendano";
+        JFileChooser Chooser  = new JFileChooser(userDir +"\\Desktop\\imgs");
         
         Chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
-        if ( Chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)  {
+        if (Chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)  {
         filePath = Chooser.getSelectedFile () .getAbsolutePath();
         
-        
+             
         // Generar el nombre
         
         UUID uuid= UUID.randomUUID();
         String randomName = uuid.toString();
         
         //generar el QR 
+        
         QRCodeWriter qrcode = new QRCodeWriter();
         
         
             try {
                 BitMatrix matrix = qrcode.encode(codigo, BarcodeFormat.QR_CODE, size, size);
+                                         
+                File f = new File(filePath + "\\" + randomName +"."+ FileType);
                 
-                File f = new File(filePath + "/" +randomName + FileType);
+                f.setWritable(true);
+                f.setReadable(true);
                 
                 int matrixWidth = matrix.getWidth();
                 
+                  
                 BufferedImage image = new BufferedImage (matrixWidth,matrixWidth, BufferedImage.TYPE_INT_RGB);
                 image.createGraphics();
                 
@@ -136,26 +144,61 @@ public class QR extends javax.swing.JFrame {
                 gd.setColor(Color.white);//fondo
                 gd.fillRect(0,0, size, size);
                 gd.setColor(Color.black);//qr
+             
                 
                 for (int b = 0; b < matrixWidth; b++) {
                 
                     for (int j = 0; j < matrixWidth;j++){
 
                         if (matrix.get(b, j)) {
-                             gd.fillRect (b,j,1,1);
+
+                            gd.fillRect (b,j,1,1);           
+
                         }
                     }
+                    
+                }
+                
+                
+              try {
+                  
+                File x = new File ("C:\\Users\\oscar.avendano\\Desktop\\imgs");
+                FileInputStream fis = new FileInputStream(x);
+                FileOutputStream fos = new FileOutputStream("C:\\Users\\oscar.avendano\\Desktop\\bits");
+                int n =0;
+                byte[] b = new byte[2048];
+                int i = 0;
+
+
+
+                while ((n = fis.read())!= -1) {// Leer y escribir
+
+                   fos.write(n);
                 }
 
-                
-                
+
+                fis.close();
+                fos.close();
+               } catch (FileNotFoundException e) {
+                e.printStackTrace();
+               }catch (IOException e) {
+                e.printStackTrace();
+               }
+
+
               // mostrar la imagen 
-              
-              
-              ImageIO.write(image, FileType, f);
-              Image MImagen = new ImageIcon(filePath + "/" +randomName + FileType).getImage();
-              ImageIcon mIcono = new ImageIcon(MImagen.getScaledInstance(lblqr.getWidth(), lblqr.getHeight(), 0));
-              lblqr.setIcon(mIcono);  
+
+
+          ImageIO.write(image, FileType, f);
+          Image MImagen = new ImageIcon(filePath + "\\" +randomName + FileType).getImage();
+          ImageIcon mIcono = new ImageIcon(MImagen.getScaledInstance(lblqr.getWidth(), lblqr.getHeight(), 0));
+
+
+
+
+
+          lblqr.setIcon(mIcono);  
+            
                 
             } catch (WriterException ex) {
                 
@@ -169,12 +212,7 @@ public class QR extends javax.swing.JFrame {
         
     }
         
-        
-        
-        
-        
-        
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
