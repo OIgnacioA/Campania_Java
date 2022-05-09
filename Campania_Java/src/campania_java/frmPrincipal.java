@@ -160,6 +160,8 @@ public class frmPrincipal extends javax.swing.JFrame {
     private long size1 = 0;
     private int conterror = 0; 
     private String QRString = "";
+    private String QRString1 = "";
+    private String QRString2 = "";
     
     
     //QR QRnuevo = new QR();
@@ -1284,7 +1286,12 @@ private void LeerLinea(String line){
             montoAnual = line.substring(362, 378) ;
             // codigoElectronico = line.substring(378, 392).replaceAll(" ","");
             debitoCredito = line.substring(392, 393).replaceAll(" ","");                           
-            buenContribuyente = line.substring(393, 394).replaceAll(" ","");    
+            buenContribuyente = line.substring(393, 394).replaceAll(" ","");  
+            
+            
+          
+            System.out.println("----***"+debitoCredito);
+            
             
             try{ 
             
@@ -1410,6 +1417,9 @@ private void ArmarDatosMail(){
             case "C":
                     {
                         medioPago = "<a href=\"" + txturl.getText() + objeto + "\">Ingresar</a>";
+                        QRString1="https://qrcode.tec-it.com/API/QRCode?data="+txturl.getText()+ objeto;
+                        QRString2 = "<td><img src= " + QRString1 + " height='100' width='100'></td>";
+                       
                         
             /*
                 if (this.Impuesto.SelectedIndex == 5)
@@ -1446,6 +1456,10 @@ private void ArmarDatosMail(){
                 va a tomar el valor de 'objeto' */
 
                 medioPago = "<a href=\"" + txturl.getText() + objeto + "\">Ingresar</a>";
+                QRString1="https://qrcode.tec-it.com/API/QRCode?data="+txturl.getText()+ objeto;
+                QRString2 = "<td><img src= " + QRString1 + " height='100' width='100'></td>";   
+                        
+                        ;
                 break;
             }
         }
@@ -1458,6 +1472,8 @@ private void ArmarDatosMail(){
                 datosObjeto += String.format("<td class='amarillo'>Cuota s%</td>", cuotaNumero);
                 datosObjeto += String.format("<td class='amarillo'>%s</td>", montoCuota);
                 datosObjeto += String.format("<td class='gris'>%s</td>", medioPago);
+                datosObjeto += String.format(QRString2);
+                
                // datosObjeto += string.Format("<td class=''>%s</td>", Variable);
 
                 datosObjeto += "</tr>";
@@ -1470,6 +1486,8 @@ private void ArmarDatosMail(){
                 datosObjeto += String.format("<td class='amarillo'>Cuota %s</td>", cuotaNumero);
                 datosObjeto += String.format("<td class='amarillo'>%s</td>", montoCuota);
                 datosObjeto += String.format("<td rowspan='2' class='gris'>%s</td>", medioPago);
+                datosObjeto += String.format(QRString2);
+                
                 datosObjeto += "</tr>";
                 datosObjeto += "<tr class='datos'><td class='blanco'>Anual</td>";
                 datosObjeto += String.format("<td class='blanco'>%s</td>", montoAnual);
@@ -1492,6 +1510,9 @@ private void ArmarDatosMail(){
                 */
               
                 // datosObjeto += String.Format("<td class='gris'>%s</td>", Variable);
+                
+                datosObjeto += String.format(QRString2);
+                
                 datosObjeto += "</tr>";
                 
                 System.out.println(datosObjeto);
