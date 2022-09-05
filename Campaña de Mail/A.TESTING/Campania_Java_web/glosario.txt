@@ -1,0 +1,6 @@
+txtOrigen: valor del path completo del archivo seleccionado en el FileChooser. 
+
+
+fullPath:  direccion completa del archivo seleccionado, se filtra en ObtenerPath, y se tiene el path de la carpeta de origen del            archivo seleccionado. 
+
+directorioOrigen:  El origen es siempre el mismo en el caso de WEB. Tenia el valor elegido ene l combobox para labsuqueda del 	   Filechooser. 
