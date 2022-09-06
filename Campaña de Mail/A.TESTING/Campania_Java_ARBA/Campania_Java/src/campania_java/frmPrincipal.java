@@ -569,7 +569,7 @@ public void Procesar() {
         } catch (Exception e) {}
 
 
-        String nombreArchivoGenerado = String.format ("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);              
+        String nombreArchivoGenerado = String.format ("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);      //.csv        
         // String nombreArchivoCsv = String.format("%s %s",directorioDestino, nombreArchivoGenerado);          
 
 
@@ -649,7 +649,6 @@ public void Procesar() {
 
             LeerLinea(line);
 
-     
             
             if (mailAux == "") {
                 mailAux = mail;
@@ -702,14 +701,14 @@ public void Procesar() {
                                 SW.close();
                             } catch (Exception e) {}
 
-                            nombreArchivoGenerado = String.format("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados);
+                            nombreArchivoGenerado = String.format("%s-Parte-%s.csv", txtDestino, cantidadArchivosGenerados); //.csv
                             //nombreArchivoCsv = String.format("%s %s", directorioDestino, nombreArchivoGenerado);
 
 
                             ////////////////////////////////////////////////////////////////////////
 
 
-                            if (ModoOriginal.isSelected() == true) //modo rodolfo
+                            if (ModoOriginal.isSelected() == true) //modo rodo
                             {
                                 ArgumentoOpcionCheck1 = CarpetaDestino + "\\" + nombreArchivoGenerado;
                             }
@@ -758,13 +757,13 @@ public void Procesar() {
 
                 try {
 
-                 //filtroNombresInternos(mail); //para prueba de QR
+                // filtroNombresInternos(mail); //para prueba de QR
    
                    if (inermail== true){ 
 
-
-                        SW.append(mailLinea);
-                        SW.append('\n');
+                            SW.append(mailLinea + "\r\n"); //cambio de cierre a windows (CRLF)
+                        
+                        //SW.append();
                     }
 
                 } catch (Exception e) {System.out.print("PROBLEM1");}
@@ -831,13 +830,13 @@ public void Procesar() {
         
         try{
             
-            //filtroNombresInternos(mail); //para prueba de QR....en espera.... 
+        //    filtroNombresInternos(mail); //para prueba de QR....en espera.... 
                     
                 if (inermail== true){ 
                        
                      
-                    SW.append(mailLinea);
-                    SW.append('\n');
+                    SW.append(mailLinea + "\r\n");//cambio de cierre a windows (CRLF)
+                  //  SW.append('\n');
                         
                 }
        
@@ -1004,7 +1003,7 @@ private void InformarArchivosGenerados() throws FileNotFoundException, IOExcepti
         
      for (int i = 0; i < ficheros.length; i++) {
             String extension = "";
-            String ex = ".csv";
+            String ex = ".txt";
             String ex2 = ".txt";
             
            if ((ficheros[i].getName().contains(txtDestino)) && (ficheros[i].length()!= size1 )) {  //debe llamarse como el archivo que se esta traajando, asi no guarda cualquier otra cosa. y no ser el mismo archivo (tener el mismo peso) 
@@ -1245,8 +1244,8 @@ private void EscribirCabecera(Writer pSw){ /*-----------------------UTF8*/
             if (this.ConCabecera.isSelected())
             {
                try {
-                pSw.write("email|nombre|cuit|fechav|fechao|anio|cuota|impuesto|datos|descuento");
-                pSw.append('\n');
+                pSw.write("email|nombre|cuit|fechav|fechao|anio|cuota|impuesto|datos|descuento" + "\r\n" ); //cambio de cierre a windows (CRLF)
+               // pSw.append('\n');
                }catch(Exception e){}
             }
 
@@ -1358,9 +1357,13 @@ private void LeerLinea(String line){
         default:
               break;
         }
+    
+     //razonsocial = filtroNombresCaracteres(razonsocial); 
 
     if (Correc_Mayus.isSelected()){razonsocial = Mayusculas(razonsocial);}
      
+   
+    
 }
 
 private void LeerLineaNuevo(String line){  //"Impuesto Complementario"
@@ -1908,10 +1911,10 @@ private void ArmarDatosMail(){
        hilo1.interrupt();
     }//GEN-LAST:event_jButton1ActionPerformed
  
- public boolean filtroNombresInternos(String mail){
+ /*public void filtroNombresInternos(String mail){
  
 
-    String [] ARBAM = new String [] {"ccccc@hotmal"};
+    String [] ARBAM = new String [] {"patriciafeo64@gmail.com","sebastian_marcon@hotmail.com"}; //
     
     for (int i = 0 ; i < ARBAM.length; i++){
     
@@ -1924,10 +1927,25 @@ private void ArmarDatosMail(){
 
     }
     
-    return  inermail; 
+   
  
- }   
+ }   */
     
+ public String filtroNombresCaracteres(String Nombre){
+ 
+      String  nombre2 = ""; 
+     
+    for (int i = 0; i<Nombre.length(); i++){
+
+     if(Nombre.substring(i,i+1).matches("[a-z]*")){
+        nombre2+=Nombre.substring(i,i+1);
+     } else {
+        nombre2+=" ";
+     }
+     
+    } 
+    return nombre2 ;
+ }
 
  public void ValoresBarra(){
       
